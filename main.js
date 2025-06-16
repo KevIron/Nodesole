@@ -13,23 +13,26 @@ class Editor {
 class Node {
     constructor() {
         this._nodeContainer = document.createElement("div");
-        this._generateNodeTemplate();
+        this._attachNodeEventListeners();
     }
 
-    _generateNodeTemplate() {
-        container.classList.add("node");
+    _attachNodeEventListeners() {
+        this._nodeContainer.classList.add("node");
 
         const nodeMoverFunction = this._moveNode.bind(this);
 
-        container.addEventListener("mousedown", () =>  container.addEventListener("mousemove", nodeMoverFunction));
-        container.addEventListener("mouseup", () => container.removeEventListener("mousemove", nodeMoverFunction));
+        this._nodeContainer.addEventListener("mousedown", () =>  document.addEventListener("mousemove", nodeMoverFunction));
+        this._nodeContainer.addEventListener("mouseup", () => document.removeEventListener("mousemove", nodeMoverFunction));
     }
 
     _moveNode({movementX, movementY}) {
         const style = window.getComputedStyle(this._nodeContainer);
 
-        this._nodeContainer.style.top = `${parseInt(style.top) + movementY}px`;
-        this._nodeContainer.style.left = `${parseInt(style.left) + movementX}px`;
+        const newTopPos = parseInt(style.top) + movementY;
+        const newLeftPos = parseInt(style.left) + movementX;
+
+        this._nodeContainer.style.top = `${newTopPos}px`;
+        this._nodeContainer.style.left = `${newLeftPos}px`;
     }
 
     getNodeElement() {
