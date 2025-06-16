@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.editor-container {
+    display: grid;
+    grid-template-areas: "stack";
+
+    /* width: 1000px; */
+    /* height: 700px; */
+    background-color: azure;
+
+    overflow: scroll;
+
+    > * {
+        grid-area: stack;
+    } 
+
+    .nodes-container {
+        position: relative;
+    }
+
+    .editor-grid {
+        height: 100vh;
+        width: 100%;
+    }
+}
+
+.node {
+    width: 200px;
+    height: 300px;
+    background-color: red;
+
+    position: absolute;
+}
