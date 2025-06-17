@@ -3,6 +3,30 @@
 class Editor {
     constructor() {
         this._nodeGrid = document.querySelector(".nodes-container");
+        this._canvas = document.querySelector(".editor-grid");
+
+        const ctx = this._canvas.getContext("2d");
+        const rect = this._nodeGrid.getBoundingClientRect();
+
+        
+        ctx.canvas.width  = rect.width;
+        ctx.canvas.height = rect.height;
+        
+        ctx.strokeStyle = "gray";
+
+        for (let i = 0; i < rect.width; i += 16) {
+            ctx.beginPath();
+            ctx.moveTo(i, 0);
+            ctx.lineTo(i, ctx.canvas.width);
+            ctx.stroke()
+        }
+        
+        for (let j = 0; j < rect.height; j += 16) {
+            ctx.beginPath();
+            ctx.moveTo(0, j);
+            ctx.lineTo(ctx.canvas.width, j);
+            ctx.stroke()
+        }
     }
 
     insertNode(node) {

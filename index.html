@@ -9,11 +9,28 @@
     <script src="main.js" defer></script>
 
     <link rel="stylesheet" href="./styles/index.css" />
+    <link rel="stylesheet" href="./styles/editor.css" />
 </head>
 <body>
-    <div class="editor-container">
-        <div class="nodes-container"></div>
-        <canvas class="editor-grid"></canvas>
-    </div>
+    <main class="main-layout">
+        <div class="editor-wrapper">
+            <div class="editor-pages">
+                <div class="page active">
+                    <span>Main</span>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </div>
+                <div class="page">
+                    <span>Other procedure</span>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </div>
+            </div>
+            <div class="editor-container">
+                <div class="nodes-container"></div>
+                <canvas class="editor-grid"></canvas>
+            </div>
+        </div>
+        <div class="console-wrapper"></div>
+        <div class="properties-wrapper"></div>
+    </main>
 </body>
 </html>

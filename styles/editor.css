@@ -1,0 +1,88 @@
+.main-layout {
+    display: grid;
+    grid-template-columns: minmax(300px, 1fr) minmax(200px, 500px);
+    grid-template-rows: 1fr 1fr;
+    gap: 1.5rem;
+
+    height: 100%;
+}
+
+.editor-container,
+.console-wrapper,
+.properties-wrapper {
+    border: var(--border-width-primary) solid var(--accent-primary);
+    border-radius: var(--border-radius-primary);
+}
+
+.console-wrapper,
+.properties-wrapper {
+    background-color: var(--background-secondary);
+}
+
+/* NODE EDITOR STYLES */
+
+.editor-wrapper {
+    grid-row: span 2;
+
+    display: grid;
+    grid-template-rows: min-content 1fr;
+}
+
+.editor-pages {
+    display: flex;
+    gap: 0.5rem;
+
+
+    & > .page {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        height: 2.25rem;
+        min-width: 9rem;
+        padding: 0.5rem 0.75rem;
+        background-color: var(--background-tertiary);
+
+        border-radius: var(--border-radius-primary) var(--border-radius-primary) 0 0;
+        border: var(--border-width-primary) solid var(--accent-primary);
+        border-bottom-width: 0;
+
+        color: var(--accent-primary);
+        text-wrap: nowrap;
+    }
+
+    & > .page.active {
+        background-color: var(--background-secondary);
+    }
+
+    & .close-icon {
+        fill: var(--accent-primary);
+        height: 100%;
+    } 
+}
+
+.editor-container {
+    display: grid;
+    grid-template-areas: "stack";
+
+    height: 100%;
+    border-radius: 0 var(--border-radius-primary) var(--border-radius-primary) var(--border-radius-primary);
+
+    overflow: hidden;
+
+    > * {
+        grid-area: stack;
+    } 
+
+    .nodes-container {
+        position: relative;
+        background-color: transparent;
+    }
+
+    .editor-grid {
+        background-color: #393D3F;
+        height: 100%;
+        width: 100%;
+        overflow: auto;
+    }
+}
