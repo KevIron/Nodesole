@@ -5,9 +5,13 @@ class Editor {
         this._nodeGrid = document.querySelector(".nodes-container");
         this._canvas = document.querySelector(".editor-grid");
 
+        this._drawGrid();
+        window.addEventListener("resize", this._drawGrid.bind(this))
+    }
+
+    _drawGrid() {
         const ctx = this._canvas.getContext("2d");
         const rect = this._nodeGrid.getBoundingClientRect();
-
         
         ctx.canvas.width  = rect.width;
         ctx.canvas.height = rect.height;
@@ -17,7 +21,7 @@ class Editor {
         for (let i = 0; i < rect.width; i += 16) {
             ctx.beginPath();
             ctx.moveTo(i, 0);
-            ctx.lineTo(i, ctx.canvas.width);
+            ctx.lineTo(i, ctx.canvas.height);
             ctx.stroke()
         }
         

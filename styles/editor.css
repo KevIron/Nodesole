@@ -26,20 +26,24 @@
 
     display: grid;
     grid-template-rows: min-content 1fr;
+
+    max-width: 100%;
 }
 
 .editor-pages {
     display: flex;
     gap: 0.5rem;
+    min-width: 0;
 
 
     & > .page {
+        min-width: 2.25rem;
+
         display: flex;
         align-items: center;
         justify-content: space-between;
 
         height: 2.25rem;
-        min-width: 9rem;
         padding: 0.5rem 0.75rem;
         background-color: var(--background-tertiary);
 
@@ -47,8 +51,19 @@
         border: var(--border-width-primary) solid var(--accent-primary);
         border-bottom-width: 0;
 
-        color: var(--accent-primary);
+        color: #dee2e6;
         text-wrap: nowrap;
+    }
+
+    & > .page > span {
+        min-width: 0;
+        min-height: 0;
+
+        flex-basis: 0;
+        flex-shrink: 0;
+        flex-grow: 1;
+        
+        overflow: hidden;
     }
 
     & > .page.active {
