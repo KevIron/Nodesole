@@ -121,3 +121,7 @@
         pointer-events: none;
     }
 }
+
+.connection {
+    position: absolute;
+}

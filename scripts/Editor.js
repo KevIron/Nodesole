@@ -9,7 +9,8 @@ export default class Editor {
         this._connections = document.querySelector(".connections");
         this._grid = document.querySelector(".grid");
 
-        this.viewportOffset = { x: 0, y: 0};
+        this.dragStartPos = {x: 0, y: 0 }
+        this.viewportOffset = { x: 0, y: 0 };
         this.zoom = 1;
 
         this.gridSize = 16;
@@ -18,26 +19,38 @@ export default class Editor {
         this._attachEventListeners();
     }
 
-    _attachEventListeners() {
-        window.addEventListener("resize", this._drawGrid.bind(this))
-        
-        const handler = this._handleMove.bind(this);
-
-        this._editorContainer.addEventListener("mousedown", () => {
-            document.addEventListener("mousemove", handler)}
-        );
-
-        this._editorContainer.addEventListener("mouseup", () => document.removeEventListener("mousemove", handler));
+    _convertToViewportPos({x, y}) {
+        const mainContainerPos = this._editorContainer.getBoundingClientRect();
+        const clickedPos = { x: x - mainContainerPos.x, y: y - mainContainerPos.y }
+        return { x: clickedPos.x - this.viewportOffset.x, y: clickedPos.y - this.viewportOffset.y }
     }
 
-    _handleMove(e) {
-        e.preventDefault();
-        e.stopPropagation();
+    _attachEventListeners() {
+        window.addEventListener("resize", this._drawGrid.bind(this))
+        this._editorContainer.addEventListener("mousedown", this._handleClick.bind(this));
+    }
 
+    /**
+     * This function handles a click event inside of the editor
+     * it figures out what part of the editor was clicked and activates an approperiate functionality
+     * @param {PointerEvent} e - Click Event 
+     */
+    _handleClick(e) {
         const closestNode = e.target.closest(".node");
+        const closestSVG = e.target.closest("svg");
 
-        if (closestNode) this._moveNode(e, closestNode);
-        if (e.target.classList.contains("editor-container")) this._moveVieport(e);
+        let handler = undefined;
+
+        if (closestSVG) handler = this._drawConnection;
+        else if (closestNode) handler = (e) => this._moveNode(e, closestNode);
+        else if (e.target.classList.contains("editor-container")) handler = this._moveVieport;
+        
+        wthis._convertToViewportPos({x: e.clientX, y: e.clientY})
+
+        handler = handler.bind(this);
+
+        document.addEventListener("mousemove", handler);
+        document.addEventListener("mouseup", () => document.removeEventListener("mousemove", handler), { once: true });
     }
 
     _moveVieport({movementX, movementY}) {
@@ -56,6 +69,17 @@ export default class Editor {
 
         node.style.top = `${newTopPos}px`;
         node.style.left = `${newLeftPos}px`;
+    }
+
+    _drawConnection() {
+        
+    }
+
+    _insertConnectorSVG({x, y}) {
+        const newConnection = document.createElement(svg);
+
+        newConnection.
+        newConnection.classList.add("connection");
     }
 
     _drawGrid() {
