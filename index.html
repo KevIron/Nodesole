@@ -6,10 +6,11 @@
 
     <title>Nodsole</title>
 
-    <script src="main.js" defer></script>
+    <script src="main.js" type="module" defer></script>
 
     <link rel="stylesheet" href="./styles/index.css" />
     <link rel="stylesheet" href="./styles/editor.css" />
+    <link rel="stylesheet" href="./styles/nodes.css" />
 </head>
 <body>
     <main class="main-layout">
@@ -19,15 +20,17 @@
                     <span>Main</span>
                     <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
                 </div>
-                <div class="page">
-                    <span>Other procedure</span>
-                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
-                </div>
             </div>
+            
+            <!-- MAIN EDITOR -->
             <div class="editor-container">
-                <div class="nodes-container"></div>
-                <canvas class="editor-grid"></canvas>
+                <div class="viewport">
+                    <div class="nodes"></div>
+                    <div class="connections"></div>
+                </div>
+                <canvas class="grid"></canvas>
             </div>
+
         </div>
         <div class="console-wrapper"></div>
         <div class="properties-wrapper"></div>

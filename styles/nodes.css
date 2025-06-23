@@ -1,0 +1,29 @@
+.node {
+    background-color: #0B0C0D;
+    border-radius: 5px;
+    color: #dee2e6;
+
+    position: absolute;
+    pointer-events: all;
+
+    display: grid;
+}
+
+.node-header {
+    background-color: #37b24d;
+    border-radius: 5px 5px 0 0;
+    padding: 4px 32px;
+    color: #fff;
+    text-wrap: nowrap;
+}
+
+.node-body {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    padding: 8px 12px;
+    justify-content: center;
+
+    .descriptions {
+        text-align: center;   
+    }
+}

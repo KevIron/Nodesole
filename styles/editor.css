@@ -84,20 +84,40 @@
     border-radius: 0 var(--border-radius-primary) var(--border-radius-primary) var(--border-radius-primary);
 
     overflow: hidden;
+    position: relative;
+    cursor: grab;
 
     > * {
         grid-area: stack;
     } 
 
-    .nodes-container {
-        position: relative;
+    .viewport {
+        display: grid;
+        grid-template-areas: "stack";
+
+        position: absolute;
         background-color: transparent;
+        pointer-events: none;
+
+        width: 100%;
+        height: 100%;
     }
 
-    .editor-grid {
+    .nodes,
+    .connections {
+        position: relative;
+        background-color: transparent;
+        grid-area: stack;
+
+        width: 100%;
+        height: 100%;
+    }
+
+    .grid {
         background-color: #393D3F;
         height: 100%;
         width: 100%;
         overflow: auto;
+        pointer-events: none;
     }
 }
