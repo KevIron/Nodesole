@@ -87,6 +87,10 @@
     position: relative;
     cursor: grab;
 
+    * {
+        user-select: none;    
+    }
+
     > * {
         grid-area: stack;
     } 
@@ -113,6 +117,9 @@
         height: 100%;
     }
 
+    .nodes { z-index: 1 }
+    .connections { z-index: 0 }
+
     .grid {
         background-color: #393D3F;
         height: 100%;
@@ -124,4 +131,20 @@
 
 .connection {
     position: absolute;
+    pointer-events: none;
+
+    stroke-width: 3;
+    stroke: #fff;
+    fill: none;
+}
+
+.input-point,
+.output-point {
+    width: 26px;
+    height: 18px;
+}
+
+.input-point.used,
+.output-point.used {
+    fill: #F5F5F5;
 }

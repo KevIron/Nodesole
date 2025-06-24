@@ -17,6 +17,12 @@
     text-wrap: nowrap;
 }
 
+.node-output {
+    .node-header {
+        background-color: #fd5050;
+    }
+}
+
 .node-body {
     display: grid;
     grid-template-columns: auto 1fr auto;

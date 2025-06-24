@@ -13,16 +13,21 @@ export default class Editor {
         this.viewportOffset = { x: 0, y: 0 };
         this.zoom = 1;
 
+        this._currentlyDrawnConnection = null;
+
         this.gridSize = 16;
 
         this._drawGrid();
         this._attachEventListeners();
     }
 
-    _convertToViewportPos({x, y}) {
+    _convertScreenToViewportPos({x, y}) {
         const mainContainerPos = this._editorContainer.getBoundingClientRect();
-        const clickedPos = { x: x - mainContainerPos.x, y: y - mainContainerPos.y }
-        return { x: clickedPos.x - this.viewportOffset.x, y: clickedPos.y - this.viewportOffset.y }
+
+        const offsetX = x - mainContainerPos.x
+        const offsetY = y - mainContainerPos.y;
+
+        return { x: offsetX - this.viewportOffset.x, y: offsetY - this.viewportOffset.y }
     }
 
     _attachEventListeners() {
@@ -30,35 +35,92 @@ export default class Editor {
         this._editorContainer.addEventListener("mousedown", this._handleClick.bind(this));
     }
 
-    /**
-     * This function handles a click event inside of the editor
-     * it figures out what part of the editor was clicked and activates an approperiate functionality
-     * @param {PointerEvent} e - Click Event 
-     */
     _handleClick(e) {
+        e.preventDefault();
+
+        if (e.button != 0) return;
+
+        let action = { onMove: undefined, onRelease: undefined }
+
         const closestNode = e.target.closest(".node");
-        const closestSVG = e.target.closest("svg");
+        const closestConnector = e.target.closest("svg");
 
-        let handler = undefined;
+        if (closestConnector) action = this._handleConnectionDrawing(closestConnector);
+        else if (closestNode) action = this._handleNodeDragging(closestNode);
+        else if (e.target.classList.contains("editor-container"))  action = this._handlePanning();
 
-        if (closestSVG) handler = this._drawConnection;
-        else if (closestNode) handler = (e) => this._moveNode(e, closestNode);
-        else if (e.target.classList.contains("editor-container")) handler = this._moveVieport;
-        
-        wthis._convertToViewportPos({x: e.clientX, y: e.clientY})
-
-        handler = handler.bind(this);
-
-        document.addEventListener("mousemove", handler);
-        document.addEventListener("mouseup", () => document.removeEventListener("mousemove", handler), { once: true });
+        document.addEventListener("mousemove", action.onMove);
+        document.addEventListener("mouseup", (e) => {
+            action.onRelease?.(e);
+            document.removeEventListener("mousemove", action.onMove);
+        }, { once: true });
     }
 
-    _moveVieport({movementX, movementY}) {
-        this.viewportOffset.y += movementY;
-        this.viewportOffset.x += movementX;
+    _handleConnectionDrawing(clickedConnector) {
+        const startPos = this._getConnectionPoint(clickedConnector);
+        const svg = this._createConnectorSVG(startPos);
 
-        this._viewport.style.transform = `translate(${this.viewportOffset.x}px, ${this.viewportOffset.y}px)`;
-        this._drawGrid();
+        this._currentlyDrawnConnection = svg;
+
+        const handler = (e) => {
+            const endPos = this._convertScreenToViewportPos({x: e.clientX, y: e.clientY});
+            this._drawConnection(startPos, endPos);
+        }
+
+        const remover = (e) => {
+            const connectionPoint = e.target.closest(".input-point");
+
+            if (this._currentlyDrawnConnection && !connectionPoint) {
+                this._currentlyDrawnConnection.remove();
+                this._currentlyDrawnConnection = null;
+            } else {
+                const endPos = this._getConnectionPoint(connectionPoint);
+                
+                this._drawConnection(startPos, endPos);
+
+                clickedConnector.classList.add("used");
+                connectionPoint.classList.add("used");
+
+                this._currentlyDrawnConnection = null;
+            }
+        }
+
+        return { onMove: handler, onRelease: remover }
+    }
+
+    _handleNodeDragging(node) {
+        const handler = (e) => {
+            this._moveNode(e, node);
+        }
+
+        return { onMove: handler, onRelease: undefined }
+    }
+
+    _handlePanning() {
+        const handler = (e) => {
+            this._moveVieport(e);
+        }
+
+        return { onMove: handler, onRelease: undefined }
+    }
+
+    _drawConnection(startPos, endPos) {
+        const dst = { x: endPos.x - startPos.x, y: endPos.y - startPos.y }
+
+        const scale = `scale(${ dst.x > 0 ? 1 : -1}, ${ dst.y > 0 ? 1 : -1})`;
+        const translate = `translate(${ dst.x > 0 ? 0 : -dst.x}px, ${ dst.y > 0 ? 0 : -dst.y}px)`
+
+        this._currentlyDrawnConnection.style.transform = `${scale} ${translate}`;
+
+        dst.x = Math.abs(dst.x);
+        dst.y = Math.abs(dst.y);
+
+        this._currentlyDrawnConnection.style.width = `${dst.x + 2}px`;
+        this._currentlyDrawnConnection.style.height = `${dst.y + 2}px`;
+
+        const curve = this._currentlyDrawnConnection.querySelector("path");
+
+        curve.setAttribute("d", `M 0 2 C ${dst.x / 2} 0, ${dst.x / 2} ${dst.y}, ${dst.x} ${dst.y}`);
     }
 
     _moveNode({movementX, movementY}, node) {
@@ -71,15 +133,34 @@ export default class Editor {
         node.style.left = `${newLeftPos}px`;
     }
 
-    _drawConnection() {
-        
+    _moveVieport({movementX, movementY}) {
+        this.viewportOffset.y += movementY;
+        this.viewportOffset.x += movementX;
+
+        this._viewport.style.transform = `translate(${this.viewportOffset.x}px, ${this.viewportOffset.y}px)`;
+        this._drawGrid();
     }
 
-    _insertConnectorSVG({x, y}) {
-        const newConnection = document.createElement(svg);
+    _createConnectorSVG({x, y}) {
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        const path = document.createElementNS('http://www.w3.org/2000/svg',"path"); 
 
-        newConnection.
-        newConnection.classList.add("connection");
+        svg.classList.add("connection");
+        svg.style.top = `${y}px`;
+        svg.style.left = `${x}px`;
+
+        svg.appendChild(path);
+
+        this._connections.appendChild(svg);
+
+        return svg;
+    }
+
+    _getConnectionPoint(connectorSVG) {
+        const data = connectorSVG.getBoundingClientRect();
+        const connectorPos = { x: data.x + data.width, y: data.y + Math.floor(data.height / 2) - 2 }
+
+        return this._convertScreenToViewportPos(connectorPos)
     }
 
     _drawGrid() {
