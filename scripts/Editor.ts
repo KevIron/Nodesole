@@ -99,7 +99,9 @@ export default class Editor {
     }
 
     private attachEventListeners() {
-        window.addEventListener("resize", () => this.renderGrid());
+        window.addEventListener("resize", () => {
+            this.renderGrid();
+        });
 
         window.addEventListener("pointermove", (e) => {
             this._currentAction?.onMove(e);
@@ -125,7 +127,15 @@ export default class Editor {
             this._currentAction?.onClick?.(e);
         });
 
-        this._editorContainer.addEventListener("wheel", (e) => this.handleScroll(e))
+        this._editorContainer.addEventListener("wheel", (e) => {
+            if (!this._canDraw) return;
+            this._canDraw = false;
+
+            requestAnimationFrame(() => {
+                this.handleScroll(e);
+                this._canDraw = true;
+            }); 
+        });
     }
 
     private handleScroll(e: WheelEvent) {
@@ -191,6 +201,8 @@ export default class Editor {
         const width = parseInt(style.width);
         const height = parseInt(style.height);
         
+        console.log(width, height);
+
         this._editorGrid.width = width;
         this._editorGrid.height = height;
 
@@ -244,7 +256,7 @@ export default class Editor {
     }
 }
 
-const body = document.querySelector("body")!;
+const body = document.querySelector<HTMLElement>(".editor-tabs")!;
 const editor = new Editor(body);
 
 editor.inserNode(NODE_TYPES.ENTRY_NODE);

@@ -12,11 +12,13 @@ export class MoveNodeAction implements IEditorAction {
     private _lastOffset: Vec2;
 
     private _editor: Editor;
+    private _canRedraw: boolean;
 
     constructor(editor: Editor, node: Node) {
         this._node = node;
         this._lastOffset = new Vec2(0, 0);
         this._editor = editor;
+        this._canRedraw = true;
     }
 
     private redrawConnection(conn: NodeConnection, type: "input" | "output") {
@@ -43,14 +45,7 @@ export class MoveNodeAction implements IEditorAction {
         connections.output.forEach(conn => this.redrawConnection(conn, "output"));
     }
 
-    public onClick(e: PointerEvent): void {
-        const { offsetX, offsetY } = e;
-
-        this._lastOffset.x = Math.round(offsetX * this._editor.getZoomFactor());
-        this._lastOffset.y = Math.round(offsetY * this._editor.getZoomFactor());
-    }
-
-    public onMove(e: PointerEvent): void {
+    private handleMove(e: PointerEvent) {
         const { clientX, clientY } = e;
 
         const pos = new Vec2(
@@ -61,6 +56,24 @@ export class MoveNodeAction implements IEditorAction {
 
         this._node.setPosition(newPos);
         this.updateConnections();
+    }
+
+    public onClick(e: PointerEvent): void {
+        const { offsetX, offsetY } = e;
+
+        this._lastOffset.x = Math.round(offsetX * this._editor.getZoomFactor());
+        this._lastOffset.y = Math.round(offsetY * this._editor.getZoomFactor());
+    }
+
+    public onMove(e: PointerEvent): void {
+        if (!this._canRedraw) return;
+
+        this._canRedraw = false;
+
+        requestAnimationFrame(() => {
+            this.handleMove(e);
+            this._canRedraw = true;
+        })
     }
 }
 
