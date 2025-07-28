@@ -1,0 +1,55 @@
+.viewport-container {
+    --editor-bg: #f1f3f5;
+
+    display: grid;
+    grid-template-areas: "stack";
+    position: relative;
+    
+    width: 80%;
+    height: 80%;
+
+    background-color: var(--editor-bg);
+    overflow: hidden;
+}
+
+.viewport-container > * {
+    grid-area: stack;
+}
+
+.viewport {
+    pointer-events: none;
+    position: absolute;
+}
+
+.nodes,
+.connections {
+    position: relative;
+    pointer-events: all;
+}
+
+/* .nodes { z-index: 1 } */
+/* .connections { z-index: 0 } */
+
+.viewport-grid {
+    pointer-events: none;
+}
+
+.connector {
+    fill: none;
+    stroke: black;
+    stroke-width: 1px;
+    width: 16px;
+    height: 16px;
+}
+
+.connector.connected {
+    fill: hsl(0, 0%, 0%);
+}
+
+.connection {
+    position: absolute;
+    stroke: #000;
+    stroke-width: 4;
+    pointer-events: none;
+    fill: none;
+}
