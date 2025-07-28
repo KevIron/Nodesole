@@ -1,14 +1,22 @@
-.viewport-container {
-    --editor-bg: #f1f3f5;
+.selector, 
+.properties {
+    background-color: var(--bg-secondary);
+    box-shadow: 
+        var(--shadow-primary), 
+        var(--shadow-primary-reversed);
 
+    z-index: 1;
+}
+
+.viewport-container {
     display: grid;
     grid-template-areas: "stack";
     position: relative;
     
-    background-color: var(--editor-bg);
-    overflow: hidden;
+    background-color: var(--bg-primary);
 
     height: 100%;
+    overflow: hidden;
 }
 
 .viewport-container > * {

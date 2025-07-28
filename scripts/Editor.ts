@@ -201,7 +201,7 @@ export default class Editor {
         const width = parseInt(style.width);
         const height = parseInt(style.height);
         
-        console.log(width, height);
+        lineColor = style.getPropertyValue("--border-primary");
 
         this._editorGrid.width = width;
         this._editorGrid.height = height;
