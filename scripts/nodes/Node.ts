@@ -1,4 +1,4 @@
-import Vec2 from "../Vector.js";
+import Vec2 from "../utils/Vector.js";
 
 import type { Connection } from "../utils/Connections.js";
 

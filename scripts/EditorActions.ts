@@ -1,4 +1,4 @@
-import Vec2 from "./Vector.ts";
+import Vec2 from "./utils/Vector.ts";
 import Editor from "./Editor.ts";
 import * as Connections from "./utils/Connections.ts";
 

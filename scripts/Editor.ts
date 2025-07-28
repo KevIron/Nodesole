@@ -1,4 +1,4 @@
-import Vec2 from "./Vector.ts";
+import Vec2 from "./utils/Vector.ts";
 import EntryNode from "./nodes/EntryNode.ts";
 import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./EditorActions.ts";
 

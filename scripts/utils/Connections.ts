@@ -1,4 +1,4 @@
-import Vec2 from "../Vector.ts";
+import Vec2 from "./Vector.ts";
 
 export type Connection = { svg: SVGSVGElement, path: SVGPathElement };
 

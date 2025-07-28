@@ -1,7 +1,5 @@
 import Node from "./Node.js";
 
-import type { NodeStructure } from "../types.js";
-
 export default class EntryNode extends Node {
     _nodeStyleClass: string;
     _nodeTitle: string;
