@@ -125,6 +125,11 @@ export class DrawConnectionAction implements IEditorAction {
 
         this._connection = Connections.createConnectionElement();
     }
+
+    public stopDrawing() {
+        this._firstConnector?.classList.remove("connected");
+        this._connection.svg.remove();
+    }
     
     public onClick(e: PointerEvent): void {
         const clickedElement = e.target as HTMLElement;
@@ -154,16 +159,13 @@ export class DrawConnectionAction implements IEditorAction {
             !secondConnector ||
             firstConnector === secondConnector ||
             secondConnector.dataset?.type === firstConnector.dataset?.type
-        ) {
-            firstConnector?.classList.remove("connected");
-            this._connection.svg.remove();
-
-            return;          
-        }
+        ) { this.stopDrawing(); return; }
 
         const firstConnectorData = Connections.getConnectorData(firstConnector);
         const secondConnectorData = Connections.getConnectorData(secondConnector);
-   
+        
+        if (firstConnectorData.dataType != secondConnectorData.dataType) { this.stopDrawing(); return; }
+
         const firstNode = this._node; 
 
         const secondNodeEl = secondConnector.closest<HTMLElement>(".node")!;        

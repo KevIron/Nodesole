@@ -35,9 +35,6 @@
     pointer-events: all;
 }
 
-/* .nodes { z-index: 1 } */
-/* .connections { z-index: 0 } */
-
 .viewport-grid {
     pointer-events: none;
     position: absolute;
@@ -62,4 +59,42 @@
     stroke-width: 4;
     pointer-events: none;
     fill: none;
+}
+
+/* INSPECTOR */
+
+.category {
+    padding: 1.6rem 3.2rem;
+    border-block: 1px solid var(--border-primary);
+}
+
+.category-body {
+    display: grid;
+    grid-template-columns: auto 1fr auto 1fr;
+    gap: 1.6rem;
+    
+    margin-top: 2.4rem;
+
+    font-size: 1.28rem;
+    
+    & input {
+        width: 100%;
+        background-color: transparent;
+        border: none;
+        text-align: right;
+    }
+}
+
+.category-body.inactive {
+    display: none;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & > h3 {
+        font-weight: 500;
+    }
 }

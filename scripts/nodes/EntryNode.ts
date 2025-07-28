@@ -10,7 +10,7 @@ export default class EntryNode extends Node {
         this._nodeStyleClass = "node__entry";
         this._nodeTitle = "EntryNode";
 
-        this.addConnector("INPUT 1", "input");
-        this.addConnector("OUTPUt 2", "output");
+        this.addConnector("INPUT 1", "", "input", "CONTROL_FLOW");
+        this.addConnector("OUTPUt 2", "first", "output", "CONTROL_FLOW");
     }
 }

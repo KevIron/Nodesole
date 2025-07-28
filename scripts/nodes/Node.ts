@@ -1,9 +1,11 @@
 import Vec2 from "../utils/Vector.js";
+import { DATA_TYPES } from "../utils/Connections.js";
 
 import type { Connection } from "../utils/Connections.js";
 
 export type NodeConnection = {
     readonly connector: SVGSVGElement,
+    readonly dataType: DATA_TYPES,
     visuals: Connection[],
     nodes: Node[],
     opositeConnectors: SVGSVGElement[],
@@ -59,7 +61,16 @@ export default abstract class Node {
         this._nodeContainer.style.transform = nodeTransform;
     }
 
-    public addConnector(name: string, type: "input" | "output") {
+    public getPosition() {
+        if (!this._nodeContainer) return new Vec2(0, 0);
+
+        const transform = window.getComputedStyle(this._nodeContainer).transform;
+        const [ x, y ] = transform.replace(/[a-z(),]+/g, "").split(" ").slice(-2);
+
+        return new Vec2(parseFloat(x), parseFloat(y));
+    }
+
+    public addConnector(name: string, description: string, type: "input" | "output", dataType: DATA_TYPES) {
         const formatedName = name.toLowerCase().replace(/\s/g, "-");
 
         const container = document.createElement("div");
@@ -70,15 +81,18 @@ export default abstract class Node {
 
         connetor.dataset.type = type;
         connetor.dataset.name = formatedName;
+        connetor.dataset.dataType = dataType;
+
         connetor.setAttribute("viewBox", "0 0 10 10");
         connetor.insertAdjacentHTML("afterbegin", "<rect width='10' height='10' x='0' y='0'>");
         
-        container.insertAdjacentHTML("afterbegin", `<p>${name}</p>`);
+        container.insertAdjacentHTML("afterbegin", `<p>${description}</p>`);
         container.insertAdjacentElement(type === "input" ? "afterbegin" : "beforeend", connetor);
         
         this._nodeBody[type].push(container);
         this._connections[type].set(formatedName, {
             connector: connetor,
+            dataType: dataType,
             visuals: [],
             nodes: [],
             opositeConnectors: []
@@ -102,6 +116,7 @@ export default abstract class Node {
     public insertInto(container: HTMLDivElement) {
         this._nodeContainer = this.buildElement();
         container.insertAdjacentElement("beforeend", this._nodeContainer);
+        this.setPosition(new Vec2(0, 0));
     }
 
     public getConnections() {

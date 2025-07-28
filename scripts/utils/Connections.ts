@@ -2,6 +2,10 @@ import Vec2 from "./Vector.ts";
 
 export type Connection = { svg: SVGSVGElement, path: SVGPathElement };
 
+export type DATA_TYPES =
+    "CONTROL_FLOW" |
+    "DATA";
+
 export function createConnectionElement(): Connection {
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -28,11 +32,12 @@ export function findConnectorCenter(connector: Element) {
     return center;
 }
 
-export function getConnectorData(connector: SVGSVGElement): { name: string, type: "input" | "output"} {
+export function getConnectorData(connector: SVGSVGElement): { name: string, type: "input" | "output", dataType: DATA_TYPES} {
     const dataset = connector.dataset;
     const connectorData = {
         name: dataset.name!,
         type: dataset.type! as "input" | "output",
+        dataType: dataset.dataType! as DATA_TYPES
     };
 
     return connectorData;

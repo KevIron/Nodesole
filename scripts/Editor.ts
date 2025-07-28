@@ -1,5 +1,6 @@
 import Vec2 from "./utils/Vector.ts";
 import EntryNode from "./nodes/EntryNode.ts";
+import ConsoleWritterNode from "./nodes/ConsoleWritterNode.ts";
 import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./EditorActions.ts";
 
 import type { IEditorAction } from "./types.ts";
@@ -7,7 +8,8 @@ import type { Connection } from "./utils/Connections.ts";
 import type Node from "./nodes/Node.ts";
 
 enum NODE_TYPES {
-    ENTRY_NODE
+    ENTRY_NODE,
+    CONSOLE_WRITTER_NODE
 }
 
 export default class Editor {
@@ -75,6 +77,17 @@ export default class Editor {
             this._existingNodes.set(uuid, node);
 
             node.insertInto(this._nodesContainer);
+            node.setPosition(new Vec2(0, 0));
+        }
+
+        if (nodeType === NODE_TYPES.CONSOLE_WRITTER_NODE) {
+            const node = new ConsoleWritterNode();
+            const uuid = node.getID();
+
+            this._existingNodes.set(uuid, node);
+
+            node.insertInto(this._nodesContainer);
+            node.setPosition(new Vec2(0, 0));
         }
     }
 
@@ -178,6 +191,7 @@ export default class Editor {
 
         if (clickedElement.classList.contains("node")) {
             const node = this.getNodeFromElement(clickedElement);
+            node.getPosition();
             this._currentAction = new MoveNodeAction(this, node);
         }
 
@@ -260,7 +274,4 @@ const body = document.querySelector<HTMLElement>(".editor-tabs")!;
 const editor = new Editor(body);
 
 editor.inserNode(NODE_TYPES.ENTRY_NODE);
-editor.inserNode(NODE_TYPES.ENTRY_NODE);
-editor.inserNode(NODE_TYPES.ENTRY_NODE);
-editor.inserNode(NODE_TYPES.ENTRY_NODE);
-editor.inserNode(NODE_TYPES.ENTRY_NODE);
+editor.inserNode(NODE_TYPES.CONSOLE_WRITTER_NODE);

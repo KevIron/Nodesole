@@ -1,4 +1,8 @@
 .node {
+    --node-logic: oklch(0.7 0.14 30);
+}
+
+.node {
     display: grid;
     position: absolute;
 }
@@ -45,3 +49,4 @@
 /* STYLES FOR SPECIFIC NODE TYPES */
 
 .node__entry { --header-color: hsl(120, 90%, 40%) }
+.node__console-writter { --header-color: var(--node-logic) }
