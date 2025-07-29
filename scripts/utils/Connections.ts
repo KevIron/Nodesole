@@ -52,6 +52,9 @@ export function renderConnetion(conn: Connection, pos1: Vec2, pos2: Vec2) {
         Math.abs(pos1.y - pos2.y)
     );
 
+    if (distance.x < 6) distance.x = 6;
+    if (distance.y < 6) distance.y = 6;
+
     connectionStyle.width = `${2 * distance.x}px`;
     connectionStyle.height = `${2 * distance.y}px`;
         

@@ -59,6 +59,9 @@ export class MoveNodeAction implements IEditorAction {
     }
 
     public onClick(e: PointerEvent): void {
+        e.preventDefault();
+        (document.activeElement as HTMLElement)?.blur();
+
         const { offsetX, offsetY } = e;
 
         this._lastOffset.x = Math.round(offsetX * this._editor.getZoomFactor());
@@ -87,6 +90,9 @@ export class MoveViewportAction implements IEditorAction {
     }
 
     public onClick(e: PointerEvent): void {
+        e.preventDefault();
+        (document.activeElement as HTMLElement)?.blur();
+        
         const { clientX, clientY } = e;
 
         this._lastPos.x = clientX;
@@ -132,6 +138,9 @@ export class DrawConnectionAction implements IEditorAction {
     }
     
     public onClick(e: PointerEvent): void {
+        e.preventDefault();
+        (document.activeElement as HTMLElement)?.blur();
+
         const clickedElement = e.target as HTMLElement;
         const connector = clickedElement.closest("svg")!;
 

@@ -50,7 +50,7 @@
 }
 
 .connector.connected {
-    fill: hsl(0, 0%, 0%);
+    fill: hsl(0, 0%, 0%) !important;
 }
 
 .connection {
@@ -85,6 +85,12 @@
     }
 }
 
+.icon {
+    width: 2.4rem;
+    height: 2.4rem;
+}
+
+.icon.inactive,
 .category-body.inactive {
     display: none;
 }

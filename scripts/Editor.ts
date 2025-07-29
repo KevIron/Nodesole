@@ -1,6 +1,7 @@
 import Vec2 from "./utils/Vector.ts";
 import EntryNode from "./nodes/EntryNode.ts";
 import ConsoleWritterNode from "./nodes/ConsoleWritterNode.ts";
+import Inspector from "./Inspector.ts";
 import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./EditorActions.ts";
 
 import type { IEditorAction } from "./types.ts";
@@ -28,6 +29,8 @@ export default class Editor {
     private _canDraw: boolean;
     public _lastMousePos: Vec2;
 
+    private _entryNode!: Node;
+
     constructor(parentContainer: HTMLElement) {
         this._editorContainer = this.buildElement();
 
@@ -49,6 +52,8 @@ export default class Editor {
         this.attachEventListeners();
         this.updateViewportTransform();
         this.renderGrid();
+
+        this.inserNode(NODE_TYPES.ENTRY_NODE);
     }
 
     public setViewportOffset(vec: Vec2) {
@@ -75,6 +80,7 @@ export default class Editor {
             const uuid = node.getID();
 
             this._existingNodes.set(uuid, node);
+            this._entryNode = node;
 
             node.insertInto(this._nodesContainer);
             node.setPosition(new Vec2(0, 0));
@@ -141,6 +147,8 @@ export default class Editor {
         });
 
         this._editorContainer.addEventListener("wheel", (e) => {
+            (document.activeElement as HTMLElement)?.blur();
+            
             if (!this._canDraw) return;
             this._canDraw = false;
 
@@ -184,11 +192,10 @@ export default class Editor {
     }
 
     private determineAction(e: PointerEvent) {
-        e.preventDefault();
         e.stopPropagation();
 
         const clickedElement = e.target as HTMLElement;
-
+        
         if (clickedElement.classList.contains("node")) {
             const node = this.getNodeFromElement(clickedElement);
             node.getPosition();
@@ -249,6 +256,10 @@ export default class Editor {
         }
     }
 
+    public execute() {
+
+    }
+
     public convertCoordinates(pos: Vec2) {
         const contianerRect = this._editorContainer.getBoundingClientRect();
         const containerPos = new Vec2(contianerRect.left, contianerRect.top);
@@ -273,5 +284,7 @@ export default class Editor {
 const body = document.querySelector<HTMLElement>(".editor-tabs")!;
 const editor = new Editor(body);
 
-editor.inserNode(NODE_TYPES.ENTRY_NODE);
 editor.inserNode(NODE_TYPES.CONSOLE_WRITTER_NODE);
+
+const properties = document.querySelector<HTMLElement>(".properties")!;
+const inspector = new Inspector(properties);

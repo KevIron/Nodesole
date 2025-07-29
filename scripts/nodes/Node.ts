@@ -6,31 +6,44 @@ import type { Connection } from "../utils/Connections.js";
 export type NodeConnection = {
     readonly connector: SVGSVGElement,
     readonly dataType: DATA_TYPES,
+    
     visuals: Connection[],
     nodes: Node[],
     opositeConnectors: SVGSVGElement[],
 };
 
 export default abstract class Node {
-    private _nodeContainer: HTMLDivElement | null;
+    protected _nodeContainer: HTMLDivElement | null;
+    protected _nodeBody: HTMLDivElement | null;
   
-    private _nodeBody: Record<"input" | "output", HTMLElement[]>;
+    private _nodeConnectors: Record<"input" | "output", HTMLElement[]>;
     private _connections: Record<"input" | "output", Map<string, NodeConnection>>;
 
     abstract _nodeStyleClass: string;
     abstract _nodeTitle: string;
+    abstract _nodeBodyTemplate: string;
     
     private _id: string;
 
+    protected onElementInsert?(): void;
+
     constructor () {
         this._nodeContainer = null;
-        this._nodeBody = { input: [], output: [] };
+        this._nodeBody = null;
+        this._nodeConnectors = { input: [], output: [] };
 
         this._id = crypto.randomUUID();
         this._connections = { 
             input: new Map<string, NodeConnection>(), 
             output: new Map<string, NodeConnection>(), 
         };
+    }
+
+    private renderConnectors() {
+        if (!this._nodeBody) return;
+
+        this._nodeConnectors.input.forEach(input => this._nodeBody!.insertAdjacentElement("beforeend", input));
+        this._nodeConnectors.output.forEach(output => this._nodeBody!.insertAdjacentElement("beforeend", output));
     }
 
     private buildElement() {
@@ -47,11 +60,11 @@ export default abstract class Node {
 
         nodeContainer.setAttribute("data-id", this._id);
         nodeHeader.textContent = this._nodeTitle;
+        nodeBody.insertAdjacentHTML("afterbegin", this._nodeBodyTemplate)
+        this._nodeBody = nodeBody;
+        this._nodeContainer = nodeContainer;
 
-        this._nodeBody.input.forEach(input => nodeBody.insertAdjacentElement("beforeend", input));
-        this._nodeBody.output.forEach(output => nodeBody.insertAdjacentElement("beforeend", output));
-
-        return nodeContainer;
+        this.renderConnectors();
     }
 
     public setPosition(pos: Vec2) {
@@ -89,7 +102,7 @@ export default abstract class Node {
         container.insertAdjacentHTML("afterbegin", `<p>${description}</p>`);
         container.insertAdjacentElement(type === "input" ? "afterbegin" : "beforeend", connetor);
         
-        this._nodeBody[type].push(container);
+        this._nodeConnectors[type].push(container);
         this._connections[type].set(formatedName, {
             connector: connetor,
             dataType: dataType,
@@ -114,9 +127,12 @@ export default abstract class Node {
     }
 
     public insertInto(container: HTMLDivElement) {
-        this._nodeContainer = this.buildElement();
-        container.insertAdjacentElement("beforeend", this._nodeContainer);
+        this.buildElement();
+
+        container.insertAdjacentElement("beforeend", this._nodeContainer!);
+
         this.setPosition(new Vec2(0, 0));
+        this.onElementInsert?.();
     }
 
     public getConnections() {
