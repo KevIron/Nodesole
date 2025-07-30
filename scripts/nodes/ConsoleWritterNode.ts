@@ -5,6 +5,8 @@ export default class ConsoleWritterNode extends Node {
     _nodeTitle: string;
     _nodeBodyTemplate: string;
 
+    private _formatString: string;
+
     constructor () {
         super();
 
@@ -17,11 +19,18 @@ export default class ConsoleWritterNode extends Node {
             </div>
         `;
 
+        this._formatString = "";
+
         this.addConnector("control-flow", "", "input", "CONTROL_FLOW");
         this.addConnector("control-flow", "", "output", "CONTROL_FLOW");
     }
 
     protected onElementInsert(): void {
-        const inputs = this._nodeBody?.querySelectorAll(".input");
+        const input = this._nodeBody?.querySelector("input")!;
+        input.addEventListener("change", (e) => this._formatString = input.value);
+    }
+
+    public async execute(): Promise<void> {
+        console.log(this._formatString);
     }
 }

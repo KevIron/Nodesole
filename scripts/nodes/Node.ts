@@ -27,6 +27,8 @@ export default abstract class Node {
 
     protected onElementInsert?(): void;
 
+    abstract execute(): Promise<void>;
+
     constructor () {
         this._nodeContainer = null;
         this._nodeBody = null;
@@ -126,6 +128,10 @@ export default abstract class Node {
         return this._id;
     }
 
+    public getTitle() {
+        return this._nodeTitle;
+    }
+
     public insertInto(container: HTMLDivElement) {
         this.buildElement();
 
@@ -137,5 +143,9 @@ export default abstract class Node {
 
     public getConnections() {
         return this._connections;
+    }
+
+    public getConnectors() {
+        return this._nodeConnectors;
     }
 }

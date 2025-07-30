@@ -14,4 +14,6 @@ export default class EntryNode extends Node {
 
         this.addConnector("control-flow", "", "output", "CONTROL_FLOW");
     }
+
+    public async execute(): Promise<void> { }
 }

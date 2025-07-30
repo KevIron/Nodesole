@@ -7,6 +7,7 @@ import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./Edit
 import type { IEditorAction } from "./types.ts";
 import type { Connection } from "./utils/Connections.ts";
 import type Node from "./nodes/Node.ts";
+import traverse from "./utils/Execution.js";
 
 enum NODE_TYPES {
     ENTRY_NODE,
@@ -157,6 +158,12 @@ export default class Editor {
                 this._canDraw = true;
             }); 
         });
+
+        document.addEventListener("keydown", (e)=> {
+            if (e.key === "k") {
+                this.execute();
+            }
+        })
     }
 
     private handleScroll(e: WheelEvent) {
@@ -256,8 +263,16 @@ export default class Editor {
         }
     }
 
-    public execute() {
+    public async execute() {
+        const seenNodes = new Set<string>();
+        const executionStack: string[] = [];
 
+        traverse(this._existingNodes, seenNodes, executionStack, this._entryNode.getID());
+
+        for (const id of executionStack) {
+            const node = this._existingNodes.get(id)!;
+            node.execute();
+        }
     }
 
     public convertCoordinates(pos: Vec2) {
@@ -284,6 +299,8 @@ export default class Editor {
 const body = document.querySelector<HTMLElement>(".editor-tabs")!;
 const editor = new Editor(body);
 
+editor.inserNode(NODE_TYPES.CONSOLE_WRITTER_NODE);
+editor.inserNode(NODE_TYPES.CONSOLE_WRITTER_NODE);
 editor.inserNode(NODE_TYPES.CONSOLE_WRITTER_NODE);
 
 const properties = document.querySelector<HTMLElement>(".properties")!;
