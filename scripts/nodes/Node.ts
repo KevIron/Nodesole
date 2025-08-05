@@ -1,5 +1,6 @@
 import Vec2 from "../utils/Vector.js";
 import { DATA_TYPES } from "../utils/Connections.js";
+import { getConnectorData } from "../utils/Connections.js";
 
 import type { Connection } from "../utils/Connections.js";
 
@@ -12,12 +13,25 @@ export type NodeConnection = {
     opositeConnectors: SVGSVGElement[],
 };
 
+export type NodeDataTypes = "string" | "number" | "boolean" | "array";
+
+export type NodeValue = {
+    valueType: NodeDataTypes,
+    value: 
+        string |
+        number |
+        boolean |
+        NodeValue[]
+}
+
 export default abstract class Node {
     protected _nodeContainer: HTMLDivElement | null;
     protected _nodeBody: HTMLDivElement | null;
   
     protected _nodeConnectors: Record<"input" | "output", HTMLElement[]>;
     protected _connections: Record<"input" | "output", Map<string, NodeConnection>>;
+
+    protected _nodeOutputData: Record<string, NodeValue>;
 
     abstract _nodeStyleClass: string;
     abstract _nodeTitle: string;
@@ -28,7 +42,6 @@ export default abstract class Node {
     protected onElementInsert?(): void;
 
     abstract execute(): Promise<void>;
-    // abstract getNodeData();
 
     constructor () {
         this._nodeContainer = null;
@@ -39,7 +52,26 @@ export default abstract class Node {
         this._connections = { 
             input: new Map<string, NodeConnection>(), 
             output: new Map<string, NodeConnection>(), 
-        };
+        }; 
+
+        this._nodeOutputData = {};
+    }
+
+    protected evaluateInput() {
+        const inputData: Record<string, NodeValue> = {};
+
+        for (const [connectorName, connnection] of this._connections.input) {
+            if (connnection.dataType === "CONTROL_FLOW") continue;
+
+            const opositeConnector = connnection.opositeConnectors[0];
+            const opositeConnectorName = getConnectorData(opositeConnector).name;
+
+            const connectedNode = connnection.nodes[0];
+
+            inputData[connectorName] = connectedNode.getOutputData(opositeConnectorName);
+        }
+        
+        return inputData;
     }
 
     protected renderConnectors() {
@@ -137,6 +169,14 @@ export default abstract class Node {
 
         const nodeTransform = `translate(${pos.x}px, ${pos.y}px)`;
         this._nodeContainer.style.transform = nodeTransform;
+    }
+
+    public getOutputData(connectorName: string) {
+       return this._nodeOutputData[connectorName];
+    }
+
+    public setOutputData(connectorName: string, value: NodeValue) {
+        this._nodeOutputData[connectorName] = value;
     }
 
     public getConnections() {

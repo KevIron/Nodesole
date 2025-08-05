@@ -22,15 +22,35 @@ export default class ConsoleWritterNode extends Node {
         this._formatString = "";
 
         this.addConnector("control-flow", "", "input", "CONTROL_FLOW");
+        this.addConnector("printable-data", "data", "input", "DATA");
         this.addConnector("control-flow", "", "output", "CONTROL_FLOW");
     }
 
+   protected renderConnectors() {
+        if (!this._nodeBody) return;
+
+        const inputs = document.createElement("div");
+        const outputs = document.createElement("div");
+
+        inputs.classList.add("inputs");
+        outputs.classList.add("outputs");
+
+        this._nodeConnectors.input.forEach(input => inputs.insertAdjacentElement("beforeend", input));
+        this._nodeConnectors.output.forEach(output => outputs.insertAdjacentElement("beforeend", output)); 
+
+        this._nodeBody.insertAdjacentElement("beforeend", inputs);
+        this._nodeBody.insertAdjacentElement("beforeend", outputs);
+    } 
+
     protected onElementInsert(): void {
-        const input = this._nodeBody?.querySelector("input")!;
-        input.addEventListener("change", (e) => this._formatString = input.value);
+        const input = this._nodeBody?.querySelector<HTMLInputElement>("#format")!;
+        input.addEventListener("change", (e) => this._formatString = input.value || "");
     }
 
     public async execute(): Promise<void> {
-        console.log(this._formatString);
+        const inputs = this.evaluateInput();
+        const outputString = this._formatString.replace("%d", inputs["printable-data"].value.toString());
+
+        console.log(outputString);
     }
 }

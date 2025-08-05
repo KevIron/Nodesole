@@ -43,19 +43,19 @@
 
 .connector {
     fill: none;
-    stroke: black;
+    stroke: oklch(0.4 0 0);
     stroke-width: 1px;
     width: 16px;
     height: 16px;
 }
 
 .connector.connected {
-    fill: hsl(0, 0%, 0%) !important;
+    fill: oklch(0.4 0 0) !important;
 }
 
 .connection {
     position: absolute;
-    stroke: #000;
+    stroke: oklch(0.4 0 0);
     stroke-width: 4;
     pointer-events: none;
     fill: none;

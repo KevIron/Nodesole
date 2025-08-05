@@ -6,7 +6,7 @@ export default function traverse(nodeList: Map<string, Node>, seenNodes: Set<str
     if (seenNodes.has(curNode)) return;
     seenNodes.add(curNode);
 
-    for (const [ _, conn ] of connections.input) {
+    for (const [ , conn ] of connections.input) {
         for (const nextNode of conn.nodes) {
             traverse(nodeList, seenNodes, executionStack, nextNode.getID());
         }
@@ -14,7 +14,7 @@ export default function traverse(nodeList: Map<string, Node>, seenNodes: Set<str
 
     executionStack.push(curNode); 
     
-    for (const [ _, conn ] of connections.output) {
+    for (const [ , conn ] of connections.output) {
         for (const nextNode of conn.nodes) {
             traverse(nodeList, seenNodes, executionStack, nextNode.getID());
         }

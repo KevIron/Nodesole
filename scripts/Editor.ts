@@ -1,6 +1,7 @@
 import Vec2 from "./utils/Vector.ts";
 import EntryNode from "./nodes/EntryNode.ts";
 import ConsoleWritterNode from "./nodes/ConsoleWritterNode.ts";
+import ConstantEmmiterNode from "./nodes/ConstantEmmiterNode.ts";
 import Inspector from "./Inspector.ts";
 import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./EditorActions.ts";
 
@@ -11,7 +12,8 @@ import traverse from "./utils/Execution.js";
 
 enum NODE_TYPES {
     ENTRY_NODE,
-    CONSOLE_WRITTER_NODE
+    CONSOLE_WRITTER_NODE, 
+    CONSTANT_EMMITER_NODE,
 }
 
 export default class Editor {
@@ -89,6 +91,16 @@ export default class Editor {
 
         if (nodeType === NODE_TYPES.CONSOLE_WRITTER_NODE) {
             const node = new ConsoleWritterNode();
+            const uuid = node.getID();
+
+            this._existingNodes.set(uuid, node);
+
+            node.insertInto(this._nodesContainer);
+            node.setPosition(new Vec2(0, 0));
+        }
+        
+        if (nodeType === NODE_TYPES.CONSTANT_EMMITER_NODE) {
+            const node = new ConstantEmmiterNode();
             const uuid = node.getID();
 
             this._existingNodes.set(uuid, node);
@@ -176,7 +188,7 @@ export default class Editor {
         const minZoom = 0.5;
 
         // Convert deltaY to a value that multiplies the current zoom
-        this._zoomFactor *= Math.exp(e.deltaY * zoomSpeed);
+        this._zoomFactor *= Math.exp(-e.deltaY * zoomSpeed);
 
         // Calmp the zoom and prevent weird decimals
         this._zoomFactor = Math.min(Math.max(minZoom, this._zoomFactor), maxZoom);
@@ -271,7 +283,7 @@ export default class Editor {
 
         for (const id of executionStack) {
             const node = this._existingNodes.get(id)!;
-            node.execute();
+            await node.execute();
         }
     }
 
@@ -300,8 +312,7 @@ const body = document.querySelector<HTMLElement>(".editor-tabs")!;
 const editor = new Editor(body);
 
 editor.inserNode(NODE_TYPES.CONSOLE_WRITTER_NODE);
-editor.inserNode(NODE_TYPES.CONSOLE_WRITTER_NODE);
-editor.inserNode(NODE_TYPES.CONSOLE_WRITTER_NODE);
+editor.inserNode(NODE_TYPES.CONSTANT_EMMITER_NODE);
 
 const properties = document.querySelector<HTMLElement>(".properties")!;
 const inspector = new Inspector(properties);
