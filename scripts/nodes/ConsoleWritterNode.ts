@@ -49,8 +49,15 @@ export default class ConsoleWritterNode extends Node {
 
     public async execute(): Promise<void> {
         const inputs = this.evaluateInput();
-        const outputString = this._formatString.replace("%d", inputs["printable-data"].value.toString());
+        const printableData = inputs["printable-data"]?.value?.toString?.();
 
-        console.log(outputString);
+        if (printableData) {
+            const outputString = this._formatString.replace("%d", printableData);
+            console.log(outputString);
+
+            return;
+        }
+
+        console.log(this._formatString);
     }
 }

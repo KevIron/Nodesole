@@ -279,7 +279,7 @@ export default class Editor {
         const seenNodes = new Set<string>();
         const executionStack: string[] = [];
 
-        traverse(this._existingNodes, seenNodes, executionStack, this._entryNode.getID());
+        traverse(seenNodes, executionStack, this._entryNode);
 
         for (const id of executionStack) {
             const node = this._existingNodes.get(id)!;

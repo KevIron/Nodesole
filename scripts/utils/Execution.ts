@@ -1,22 +1,23 @@
 import type Node from "../nodes/Node.ts";
 
-export default function traverse(nodeList: Map<string, Node>, seenNodes: Set<string>, executionStack: string[], curNode: string) {
-    const connections = nodeList.get(curNode)?.getConnections()!;
+export default function traverse(seenNodes: Set<string>, executionStack: string[], curNode: Node) {
+    const connections = curNode.getConnections()!;
+    const curNodeID = curNode.getID();
     
-    if (seenNodes.has(curNode)) return;
-    seenNodes.add(curNode);
+    if (seenNodes.has(curNodeID)) return;
+    seenNodes.add(curNodeID);
 
     for (const [ , conn ] of connections.input) {
         for (const nextNode of conn.nodes) {
-            traverse(nodeList, seenNodes, executionStack, nextNode.getID());
+            traverse(seenNodes, executionStack, nextNode);
         }
     }
 
-    executionStack.push(curNode); 
+    executionStack.push(curNodeID); 
     
     for (const [ , conn ] of connections.output) {
         for (const nextNode of conn.nodes) {
-            traverse(nodeList, seenNodes, executionStack, nextNode.getID());
+            traverse(seenNodes, executionStack, nextNode);
         }
     }
 }

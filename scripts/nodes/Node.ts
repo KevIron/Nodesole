@@ -62,6 +62,7 @@ export default abstract class Node {
 
         for (const [connectorName, connnection] of this._connections.input) {
             if (connnection.dataType === "CONTROL_FLOW") continue;
+            if (connnection.opositeConnectors.length === 0) continue;
 
             const opositeConnector = connnection.opositeConnectors[0];
             const opositeConnectorName = getConnectorData(opositeConnector).name;
