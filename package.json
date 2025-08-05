@@ -3,17 +3,21 @@
   "version": "1.0.0",
   "main": "index.html",
   "scripts": {
-    "start": "tsc -w"
+    "start": "tsc -w",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KevIron/Nodesole.git"
   },
   "author": "KevIron",
-  "license": "ISC",
+  "license": "GPL-3.0-only",
   "bugs": {
     "url": "https://github.com/KevIron/Nodesole/issues"
   },
   "homepage": "https://github.com/KevIron/Nodesole#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
 }
