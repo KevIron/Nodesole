@@ -2,6 +2,7 @@ import Vec2 from "./utils/Vector.ts";
 import EntryNode from "./nodes/EntryNode.ts";
 import ConsoleWritterNode from "./nodes/ConsoleWritterNode.ts";
 import ConstantEmmiterNode from "./nodes/ConstantEmmiterNode.ts";
+import EqualsToNode from "./nodes/EqualsToNode.ts";
 import Inspector from "./Inspector.ts";
 import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./EditorActions.ts";
 
@@ -14,6 +15,7 @@ enum NODE_TYPES {
     ENTRY_NODE,
     CONSOLE_WRITTER_NODE, 
     CONSTANT_EMMITER_NODE,
+    EQUALS_TO_NODE,
 }
 
 export default class Editor {
@@ -101,6 +103,16 @@ export default class Editor {
         
         if (nodeType === NODE_TYPES.CONSTANT_EMMITER_NODE) {
             const node = new ConstantEmmiterNode();
+            const uuid = node.getID();
+
+            this._existingNodes.set(uuid, node);
+
+            node.insertInto(this._nodesContainer);
+            node.setPosition(new Vec2(0, 0));
+        }
+
+        if (nodeType === NODE_TYPES.EQUALS_TO_NODE) {
+            const node = new EqualsToNode();
             const uuid = node.getID();
 
             this._existingNodes.set(uuid, node);
@@ -313,6 +325,8 @@ const editor = new Editor(body);
 
 editor.inserNode(NODE_TYPES.CONSOLE_WRITTER_NODE);
 editor.inserNode(NODE_TYPES.CONSTANT_EMMITER_NODE);
+editor.inserNode(NODE_TYPES.CONSTANT_EMMITER_NODE);
+editor.inserNode(NODE_TYPES.EQUALS_TO_NODE);
 
 const properties = document.querySelector<HTMLElement>(".properties")!;
 const inspector = new Inspector(properties);

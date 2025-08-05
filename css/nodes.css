@@ -146,3 +146,51 @@
         border: 1px solid black;
     }
 }
+
+.node__equals-to {
+    background-color: var(--node-logic);
+    padding: 1.2rem;
+
+    .node-header { display: none }
+
+    .node-body {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-content: center;
+        gap: 0.8rem 2rem;
+        background-color: transparent;
+    }
+
+    .input, 
+    .output {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+
+        color: #e2e2e2;
+        font-size: 1.28rem;
+
+        & > svg {
+            stroke: #e2e2e2;
+            fill: #e2e2e2;
+        }
+    }
+
+    .input {
+        grid-column: 1;
+    }
+
+    .output {
+        grid-column: 3;
+        grid-row: 1 / span 2;
+    }
+
+    .body-text {
+        display: flex;
+        align-items: center;
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        color: #f0f0f0;
+        font-weight: 600;
+    }
+}
