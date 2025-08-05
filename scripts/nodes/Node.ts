@@ -16,8 +16,8 @@ export default abstract class Node {
     protected _nodeContainer: HTMLDivElement | null;
     protected _nodeBody: HTMLDivElement | null;
   
-    private _nodeConnectors: Record<"input" | "output", HTMLElement[]>;
-    private _connections: Record<"input" | "output", Map<string, NodeConnection>>;
+    protected _nodeConnectors: Record<"input" | "output", HTMLElement[]>;
+    protected _connections: Record<"input" | "output", Map<string, NodeConnection>>;
 
     abstract _nodeStyleClass: string;
     abstract _nodeTitle: string;
@@ -28,6 +28,7 @@ export default abstract class Node {
     protected onElementInsert?(): void;
 
     abstract execute(): Promise<void>;
+    // abstract getNodeData();
 
     constructor () {
         this._nodeContainer = null;
@@ -41,7 +42,7 @@ export default abstract class Node {
         };
     }
 
-    private renderConnectors() {
+    protected renderConnectors() {
         if (!this._nodeBody) return;
 
         this._nodeConnectors.input.forEach(input => this._nodeBody!.insertAdjacentElement("beforeend", input));
@@ -62,30 +63,15 @@ export default abstract class Node {
 
         nodeContainer.setAttribute("data-id", this._id);
         nodeHeader.textContent = this._nodeTitle;
-        nodeBody.insertAdjacentHTML("afterbegin", this._nodeBodyTemplate)
+        nodeBody.insertAdjacentHTML("afterbegin", this._nodeBodyTemplate);
+
         this._nodeBody = nodeBody;
         this._nodeContainer = nodeContainer;
 
         this.renderConnectors();
     }
 
-    public setPosition(pos: Vec2) {
-        if (!this._nodeContainer) return;
-
-        const nodeTransform = `translate(${pos.x}px, ${pos.y}px)`;
-        this._nodeContainer.style.transform = nodeTransform;
-    }
-
-    public getPosition() {
-        if (!this._nodeContainer) return new Vec2(0, 0);
-
-        const transform = window.getComputedStyle(this._nodeContainer).transform;
-        const [ x, y ] = transform.replace(/[a-z(),]+/g, "").split(" ").slice(-2);
-
-        return new Vec2(parseFloat(x), parseFloat(y));
-    }
-
-    public addConnector(name: string, description: string, type: "input" | "output", dataType: DATA_TYPES) {
+    public addConnector(name: string, description: string, type: "input" | "output", dataType: DATA_TYPES, connectorContainer?: HTMLDivElement) {
         const formatedName = name.toLowerCase().replace(/\s/g, "-");
 
         const container = document.createElement("div");
@@ -99,8 +85,12 @@ export default abstract class Node {
         connetor.dataset.dataType = dataType;
 
         connetor.setAttribute("viewBox", "0 0 10 10");
-        connetor.insertAdjacentHTML("afterbegin", "<rect width='10' height='10' x='0' y='0'>");
-        
+       
+        if (dataType === "CONTROL_FLOW")
+            connetor.insertAdjacentHTML("afterbegin", "<rect width='10' height='10' x='0' y='0'>");
+        if (dataType === "DATA")
+            connetor.insertAdjacentHTML("afterbegin", "<circle cx='5' cy='5' r='4'>");
+
         container.insertAdjacentHTML("afterbegin", `<p>${description}</p>`);
         container.insertAdjacentElement(type === "input" ? "afterbegin" : "beforeend", connetor);
         
@@ -124,14 +114,6 @@ export default abstract class Node {
         connection.visuals.push(connectionOptions.visual);
     }
 
-    public getID() {
-        return this._id;
-    }
-
-    public getTitle() {
-        return this._nodeTitle;
-    }
-
     public insertInto(container: HTMLDivElement) {
         this.buildElement();
 
@@ -141,11 +123,35 @@ export default abstract class Node {
         this.onElementInsert?.();
     }
 
+    public getPosition() {
+        if (!this._nodeContainer) return new Vec2(0, 0);
+
+        const transform = window.getComputedStyle(this._nodeContainer).transform;
+        const [ x, y ] = transform.replace(/[a-z(),]+/g, "").split(" ").slice(-2);
+
+        return new Vec2(parseFloat(x), parseFloat(y));
+    }
+
+    public setPosition(pos: Vec2) {
+        if (!this._nodeContainer) return;
+
+        const nodeTransform = `translate(${pos.x}px, ${pos.y}px)`;
+        this._nodeContainer.style.transform = nodeTransform;
+    }
+
     public getConnections() {
         return this._connections;
     }
 
     public getConnectors() {
         return this._nodeConnectors;
+    }
+    
+    public getID() {
+        return this._id;
+    }
+
+    public getTitle() {
+        return this._nodeTitle;
     }
 }
