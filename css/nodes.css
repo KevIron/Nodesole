@@ -147,7 +147,8 @@
     }
 }
 
-.node__equals-to {
+.node__equals-to,
+.node__negation {
     background-color: var(--node-logic);
     padding: 1.2rem;
 
@@ -192,5 +193,11 @@
         grid-row: 1 / span 2;
         color: #f0f0f0;
         font-weight: 600;
+    }
+}
+
+.node__negation {
+    .input {
+        grid-row: span 2;
     }
 }

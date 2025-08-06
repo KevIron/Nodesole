@@ -1,6 +1,6 @@
 import Node, { NodeValue } from "../Node.ts";
 
-export default class EqualsToNode extends Node {
+export default class NegationNode extends Node {
     _nodeStyleClass: string;
     _nodeTitle: string;
     _nodeBodyTemplate: string;
@@ -8,34 +8,32 @@ export default class EqualsToNode extends Node {
     constructor() {
         super();
 
-        this._nodeStyleClass = "node__equals-to";
-        this._nodeTitle = "EqualsTo";
+        this._nodeStyleClass = "node__negation";
+        this._nodeTitle = "Negation";
         this._nodeBodyTemplate = `
             <div class='body-text'>
-                <p>EQUALS</p>
+                <p>NEGATE</p>
             </div>
         `;
 
         this.addConnector("a", "A", "input", "DATA");
-        this.addConnector("b", "B", "input", "DATA");
-        this.addConnector("c", "C", "output", "DATA");
+        this.addConnector("b", "B", "output", "DATA");
     }
     
     public async execute(): Promise<void> {
         const inputData = this.evaluateInput();
 
+
         const inputA = inputData["a"];
-        const inputB = inputData["b"];
-        
-        if (!inputA || !inputB) return;
+        if (!inputA) return;
 
         let returnValue: NodeValue = {
             valueType: "boolean",
             value: ""
         };
 
-        returnValue.value = (inputA.value === inputB.value) ? true : false;
+        if (inputA.valueType === "boolean") returnValue.value = !inputA.value;
         
-        this.setOutputData("c", returnValue);
+        this.setOutputData("b", returnValue);
     }
 }

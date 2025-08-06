@@ -52,6 +52,7 @@ export default class ConstantEmmiterNode extends Node {
                 break;
             case "number": 
                 constantValue = parseFloat(constantValue);
+                if (Number.isNaN(constantValue)) constantValue = 0;
                 break;
             case "boolean": 
                 if (constantValue === "true" || constantValue === "1") constantValue = true;
