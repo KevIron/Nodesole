@@ -5,7 +5,7 @@ Nodesole is a visual, node-base programming language that allows you to create c
 ## How to build
 
 In order to run the project locally you need to have nodejs installed and run the following commands:
-```console
+```bash
     # First clone the repository from github
     git clone https://github.com/KevIron/Nodesole.git
 
