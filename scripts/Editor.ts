@@ -2,7 +2,7 @@ import Vec2 from "./utils/Vector.ts";
 import EntryNode from "./nodes/EntryNode.ts";
 import ConsoleWritterNode from "./nodes/ConsoleWritterNode.ts";
 import ConstantEmmiterNode from "./nodes/ConstantEmmiterNode.ts";
-import EqualsToNode from "./nodes/EqualsToNode.ts";
+import EqualsToNode from "./nodes/logic/EqualsToNode.ts";
 import Inspector from "./Inspector.ts";
 import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./EditorActions.ts";
 

@@ -1,4 +1,4 @@
-import Node, { NodeDataTypes, NodeValue } from "./Node.ts";
+import Node, { NodeDataTypes, NodeValue } from "./../Node.ts";
 
 export default class EqualsToNode extends Node {
     _nodeStyleClass: string;
