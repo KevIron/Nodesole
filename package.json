@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.html",
   "scripts": {
-    "start": "tsc -w",
-    "build": "tsc"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/KevIron/Nodesole#readme",
   "description": "",
   "devDependencies": {
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vite": "^7.1.1"
   }
 }
