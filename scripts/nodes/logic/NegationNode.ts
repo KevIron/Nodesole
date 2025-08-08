@@ -12,7 +12,7 @@ export default class NegationNode extends Node {
         this._nodeTitle = "Negation";
         this._nodeBodyTemplate = `
             <div class='body-text'>
-                <p>NEGATE</p>
+                <p>NOT</p>
             </div>
         `;
 

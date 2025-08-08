@@ -1,23 +1,28 @@
 import Vec2 from "./utils/Vector.ts";
+import traverse from "./utils/Execution.ts";
+
 import EntryNode from "./nodes/EntryNode.ts";
 import ConsoleWritterNode from "./nodes/ConsoleWritterNode.ts";
 import ConstantEmmiterNode from "./nodes/ConstantEmmiterNode.ts";
 import EqualsToNode from "./nodes/logic/EqualsToNode.ts";
 import NegationNode from "./nodes/logic/NegationNode.ts";
+import AndNode from "./nodes/logic/AndNode.ts";
+
 import Inspector from "./Inspector.ts";
 import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./EditorActions.ts";
 
 import type { IEditorAction } from "./types.ts";
 import type { Connection } from "./utils/Connections.ts";
 import type Node from "./nodes/Node.ts";
-import traverse from "./utils/Execution.js";
 
 enum NODE_TYPES {
     ENTRY_NODE,
     CONSOLE_WRITTER_NODE, 
     CONSTANT_EMMITER_NODE,
+
     EQUALS_TO_NODE,
     NEGATION_NODE,
+    AND_NODE,
 }
 
 export default class Editor {
@@ -82,56 +87,36 @@ export default class Editor {
     }
 
     public inserNode(nodeType: NODE_TYPES) {
-        if (nodeType === NODE_TYPES.ENTRY_NODE) {
-            const node = new EntryNode();
-            const uuid = node.getID();
+        let createdNode: Node;
 
-            this._existingNodes.set(uuid, node);
-            this._entryNode = node;
-
-            node.insertInto(this._nodesContainer);
-            node.setPosition(new Vec2(0, 0));
+        switch (nodeType) {
+            case NODE_TYPES.ENTRY_NODE:
+                createdNode = new EntryNode();
+                this._entryNode = createdNode;
+                break;
+            case NODE_TYPES.CONSOLE_WRITTER_NODE:
+                createdNode = new ConsoleWritterNode();
+                break;
+            case NODE_TYPES.CONSTANT_EMMITER_NODE:
+                createdNode = new ConstantEmmiterNode();
+                break;
+            case NODE_TYPES.EQUALS_TO_NODE:
+                createdNode = new EqualsToNode();
+                break;
+            case NODE_TYPES.NEGATION_NODE:
+                createdNode = new NegationNode();
+                break;
+            case NODE_TYPES.AND_NODE:
+                createdNode = new AndNode();
+                break;
         }
 
-        if (nodeType === NODE_TYPES.CONSOLE_WRITTER_NODE) {
-            const node = new ConsoleWritterNode();
-            const uuid = node.getID();
+        const uuid = createdNode.getID();
 
-            this._existingNodes.set(uuid, node);
+        this._existingNodes.set(uuid, createdNode);
 
-            node.insertInto(this._nodesContainer);
-            node.setPosition(new Vec2(0, 0));
-        }
-        
-        if (nodeType === NODE_TYPES.CONSTANT_EMMITER_NODE) {
-            const node = new ConstantEmmiterNode();
-            const uuid = node.getID();
-
-            this._existingNodes.set(uuid, node);
-
-            node.insertInto(this._nodesContainer);
-            node.setPosition(new Vec2(0, 0));
-        }
-
-        if (nodeType === NODE_TYPES.EQUALS_TO_NODE) {
-            const node = new EqualsToNode();
-            const uuid = node.getID();
-
-            this._existingNodes.set(uuid, node);
-
-            node.insertInto(this._nodesContainer);
-            node.setPosition(new Vec2(0, 0));
-        }
-        
-        if (nodeType === NODE_TYPES.NEGATION_NODE) {
-            const node = new NegationNode();
-            const uuid = node.getID();
-
-            this._existingNodes.set(uuid, node);
-
-            node.insertInto(this._nodesContainer);
-            node.setPosition(new Vec2(0, 0));
-        }
+        createdNode.insertInto(this._nodesContainer);
+        createdNode.setPosition(new Vec2(0, 0));
     }
 
     public insertConnection(conn: Connection) {
@@ -340,6 +325,7 @@ editor.inserNode(NODE_TYPES.CONSTANT_EMMITER_NODE);
 editor.inserNode(NODE_TYPES.CONSTANT_EMMITER_NODE);
 editor.inserNode(NODE_TYPES.EQUALS_TO_NODE);
 editor.inserNode(NODE_TYPES.NEGATION_NODE);
+editor.inserNode(NODE_TYPES.AND_NODE);
 
 const properties = document.querySelector<HTMLElement>(".properties")!;
 const inspector = new Inspector(properties);
