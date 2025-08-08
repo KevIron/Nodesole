@@ -18,7 +18,6 @@ In order to run the project locally you need to have nodejs installed and run th
     npm install
 
     # Compile the project
-    npm run build
+    npm run dev
 ```
-Now you run your favourite local web server and open the page in your browser
-If you don't have a local web server or just want to try the project out just visit this project [webpage](https://nodesole.netlify.app)
+If you want to just try the project out just visit this project [webpage](https://nodesole.netlify.app)
