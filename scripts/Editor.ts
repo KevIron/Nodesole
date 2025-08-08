@@ -7,6 +7,7 @@ import ConstantEmmiterNode from "./nodes/ConstantEmmiterNode.ts";
 import EqualsToNode from "./nodes/logic/EqualsToNode.ts";
 import NegationNode from "./nodes/logic/NegationNode.ts";
 import AndNode from "./nodes/logic/AndNode.ts";
+import OrNode from "./nodes/logic/OrNode.ts";
 
 import Inspector from "./Inspector.ts";
 import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./EditorActions.ts";
@@ -23,6 +24,7 @@ enum NODE_TYPES {
     EQUALS_TO_NODE,
     NEGATION_NODE,
     AND_NODE,
+    OR_NODE,
 }
 
 export default class Editor {
@@ -108,6 +110,9 @@ export default class Editor {
                 break;
             case NODE_TYPES.AND_NODE:
                 createdNode = new AndNode();
+                break;
+             case NODE_TYPES.OR_NODE:
+                createdNode = new OrNode();
                 break;
         }
 
@@ -326,6 +331,7 @@ editor.inserNode(NODE_TYPES.CONSTANT_EMMITER_NODE);
 editor.inserNode(NODE_TYPES.EQUALS_TO_NODE);
 editor.inserNode(NODE_TYPES.NEGATION_NODE);
 editor.inserNode(NODE_TYPES.AND_NODE);
+editor.inserNode(NODE_TYPES.OR_NODE);
 
 const properties = document.querySelector<HTMLElement>(".properties")!;
 const inspector = new Inspector(properties);

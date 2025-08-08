@@ -149,7 +149,8 @@
 
 .node__equals-to,
 .node__negation,
-.node__and {
+.node__and,
+.node__or {
     background-color: var(--node-logic);
     padding: 1.2rem;
 
