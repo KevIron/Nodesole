@@ -1,12 +1,12 @@
 import Vec2 from "../utils/Vector.js";
-import { DATA_TYPES } from "../utils/Connections.js";
+import { CONNECTION_TYPES } from "../utils/Connections.js";
 import { getConnectorData } from "../utils/Connections.js";
 
 import type { Connection } from "../utils/Connections.js";
 
 export type NodeConnection = {
     readonly connector: SVGSVGElement,
-    readonly dataType: DATA_TYPES,
+    readonly dataType: CONNECTION_TYPES,
     
     visuals: Connection[],
     nodes: Node[],
@@ -104,7 +104,7 @@ export default abstract class Node {
         this.renderConnectors();
     }
 
-    public addConnector(name: string, description: string, type: "input" | "output", dataType: DATA_TYPES, connectorContainer?: HTMLDivElement) {
+    public addConnector(name: string, description: string, type: "input" | "output", connectionType: CONNECTION_TYPES, connectorContainer?: HTMLDivElement) {
         const formatedName = name.toLowerCase().replace(/\s/g, "-");
 
         const container = document.createElement("div");
@@ -115,13 +115,13 @@ export default abstract class Node {
 
         connetor.dataset.type = type;
         connetor.dataset.name = formatedName;
-        connetor.dataset.dataType = dataType;
+        connetor.dataset.connectionType = connectionType;
 
         connetor.setAttribute("viewBox", "0 0 10 10");
        
-        if (dataType === "CONTROL_FLOW")
+        if (connectionType === "CONTROL_FLOW")
             connetor.insertAdjacentHTML("afterbegin", "<rect width='10' height='10' x='0' y='0'>");
-        if (dataType === "DATA")
+        if (connectionType === "DATA")
             connetor.insertAdjacentHTML("afterbegin", "<circle cx='5' cy='5' r='4'>");
 
         container.insertAdjacentHTML("afterbegin", `<p>${description}</p>`);
@@ -130,7 +130,7 @@ export default abstract class Node {
         this._nodeConnectors[type].push(container);
         this._connections[type].set(formatedName, {
             connector: connetor,
-            dataType: dataType,
+            dataType: connectionType,
             visuals: [],
             nodes: [],
             opositeConnectors: []

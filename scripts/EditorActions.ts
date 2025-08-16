@@ -173,7 +173,7 @@ export class DrawConnectionAction implements IEditorAction {
         const firstConnectorData = Connections.getConnectorData(firstConnector);
         const secondConnectorData = Connections.getConnectorData(secondConnector);
         
-        if (firstConnectorData.dataType != secondConnectorData.dataType) { this.stopDrawing(); return; }
+        if (firstConnectorData.connectionType != secondConnectorData.connectionType) { this.stopDrawing(); return; }
 
         const firstNode = this._node; 
 
