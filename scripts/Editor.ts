@@ -8,6 +8,7 @@ import EqualsToNode from "./nodes/logic/EqualsToNode.ts";
 import NegationNode from "./nodes/logic/NegationNode.ts";
 import AndNode from "./nodes/logic/AndNode.ts";
 import OrNode from "./nodes/logic/OrNode.ts";
+import ConditionNode from "./nodes/ConditionNode.ts";
 
 import Inspector from "./Inspector.ts";
 import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./EditorActions.ts";
@@ -25,6 +26,8 @@ enum NODE_TYPES {
     NEGATION_NODE,
     AND_NODE,
     OR_NODE,
+
+    CONDITION_NODE,
 }
 
 export default class Editor {
@@ -113,6 +116,9 @@ export default class Editor {
                 break;
              case NODE_TYPES.OR_NODE:
                 createdNode = new OrNode();
+                break;
+              case NODE_TYPES.CONDITION_NODE:
+                createdNode = new ConditionNode(this._existingNodes);
                 break;
         }
 
@@ -326,9 +332,12 @@ const body = document.querySelector<HTMLElement>(".editor-tabs")!;
 const editor = new Editor(body);
 
 editor.inserNode(NODE_TYPES.CONSOLE_WRITTER_NODE);
+editor.inserNode(NODE_TYPES.CONSOLE_WRITTER_NODE);
+editor.inserNode(NODE_TYPES.CONSOLE_WRITTER_NODE);
 editor.inserNode(NODE_TYPES.CONSTANT_EMMITER_NODE);
 editor.inserNode(NODE_TYPES.CONSTANT_EMMITER_NODE);
 editor.inserNode(NODE_TYPES.EQUALS_TO_NODE);
+editor.inserNode(NODE_TYPES.CONDITION_NODE);
 editor.inserNode(NODE_TYPES.NEGATION_NODE);
 editor.inserNode(NODE_TYPES.AND_NODE);
 editor.inserNode(NODE_TYPES.OR_NODE);

@@ -1,4 +1,5 @@
 import type Node from "../nodes/Node.ts";
+import { getConnectorData } from "./Connections";
 
 export default function traverse(seenNodes: Set<string>, executionStack: string[], curNode: Node) {
     const connections = curNode.getConnections()!;
@@ -11,7 +12,13 @@ export default function traverse(seenNodes: Set<string>, executionStack: string[
     for (const [ , conn ] of connections.input) {
         if (conn.dataType === "IGNORED") continue;
 
-        for (const nextNode of conn.nodes) {
+        for (let i = 0; i < conn.nodes.length; ++i) {
+            const nextNode = conn.nodes[i];
+            const nextConnector = conn.opositeConnectors[i];
+            const nextConnectorType = getConnectorData(nextConnector).connectionType;
+
+            if (nextConnectorType === "IGNORED") continue;
+
             traverse(seenNodes, executionStack, nextNode);
         }
     }
@@ -21,8 +28,14 @@ export default function traverse(seenNodes: Set<string>, executionStack: string[
     for (const [ , conn ] of connections.output) {
         if (conn.dataType === "IGNORED") continue;
 
-        for (const nextNode of conn.nodes) {
+        for (let i = 0; i < conn.nodes.length; ++i) {
+            const nextNode = conn.nodes[i];
+            const nextConnector = conn.opositeConnectors[i];
+            const nextConnectorType = getConnectorData(nextConnector).connectionType;
+
+            if (nextConnectorType === "IGNORED") continue;
+
             traverse(seenNodes, executionStack, nextNode);
-        }
+        }   
     }
 }

@@ -119,7 +119,7 @@ export default abstract class Node {
 
         connetor.setAttribute("viewBox", "0 0 10 10");
        
-        if (connectionType === "CONTROL_FLOW")
+        if (connectionType === "CONTROL_FLOW" || connectionType === "IGNORED")
             connetor.insertAdjacentHTML("afterbegin", "<rect width='10' height='10' x='0' y='0'>");
         if (connectionType === "DATA")
             connetor.insertAdjacentHTML("afterbegin", "<circle cx='5' cy='5' r='4'>");
