@@ -4,6 +4,7 @@ export type Connection = { svg: SVGSVGElement, path: SVGPathElement };
 
 export type DATA_TYPES =
     "CONTROL_FLOW" |
+    "IGNORED" |
     "DATA";
 
 export function createConnectionElement(): Connection {
