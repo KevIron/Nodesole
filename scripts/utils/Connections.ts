@@ -26,24 +26,6 @@ export function setConnectionPosition(conn: Connection, pos: Vec2) {
     connectionStyle.transform = newTransform;
 }
 
-export function findConnectorCenter(connector: Element) {
-    const rect = connector.getBoundingClientRect();
-    const center = new Vec2(rect.x + (rect.width / 2), rect.y + (rect.height / 2));
-
-    return center;
-}
-
-export function getConnectorData(connector: SVGSVGElement): { name: string, type: "input" | "output", connectionType: CONNECTION_TYPES} {
-    const dataset = connector.dataset;
-    const connectorData = {
-        name: dataset.name!,
-        type: dataset.type! as "input" | "output",
-        connectionType: dataset.connectionType! as CONNECTION_TYPES
-    };
-
-    return connectorData;
-}
-
 export function renderConnetion(conn: Connection, pos1: Vec2, pos2: Vec2) {
     // Adjust the width and height
     const connectionStyle = conn.svg.style;
@@ -77,4 +59,22 @@ export function renderConnetion(conn: Connection, pos1: Vec2, pos2: Vec2) {
     const ct2 = new Vec2(end.x - dst, end.y);
     
     conn.path.setAttribute("d", `M ${start.x} ${start.y} C ${ct1.x} ${ct1.y}, ${ct2.x} ${ct2.y}, ${end.x} ${end.y}`);
+}
+
+export function findConnectorCenter(connector: Element) {
+    const rect = connector.getBoundingClientRect();
+    const center = new Vec2(rect.x + (rect.width / 2), rect.y + (rect.height / 2));
+
+    return center;
+}
+
+export function getConnectorData(connector: SVGSVGElement): { name: string, type: "input" | "output", connectionType: CONNECTION_TYPES} {
+    const dataset = connector.dataset;
+    const connectorData = {
+        name: dataset.name!,
+        type: dataset.type! as "input" | "output",
+        connectionType: dataset.connectionType! as CONNECTION_TYPES
+    };
+
+    return connectorData;
 }

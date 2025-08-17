@@ -10,7 +10,6 @@ import AndNode from "./nodes/logic/AndNode.ts";
 import OrNode from "./nodes/logic/OrNode.ts";
 import ConditionNode from "./nodes/ConditionNode.ts";
 
-import Inspector from "./Inspector.ts";
 import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./EditorActions.ts";
 
 import type { IEditorAction } from "./types.ts";
@@ -341,6 +340,3 @@ editor.inserNode(NODE_TYPES.CONDITION_NODE);
 editor.inserNode(NODE_TYPES.NEGATION_NODE);
 editor.inserNode(NODE_TYPES.AND_NODE);
 editor.inserNode(NODE_TYPES.OR_NODE);
-
-const properties = document.querySelector<HTMLElement>(".properties")!;
-const inspector = new Inspector(properties);
