@@ -1,4 +1,4 @@
-import Node, { NodeDataTypes } from "./Node.ts";
+import Node, { NodeDataTypes } from "./Node";
 
 export default class ConstantEmmiterNode extends Node {
     _nodeStyleClass: string;

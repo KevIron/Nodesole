@@ -1,20 +1,20 @@
-import Vec2 from "./utils/Vector.ts";
-import traverse from "./utils/Execution.ts";
+import Vec2 from "./utils/Vector";
+import traverse from "./utils/Execution";
 
-import EntryNode from "./nodes/EntryNode.ts";
-import ConsoleWritterNode from "./nodes/ConsoleWritterNode.ts";
-import ConstantEmmiterNode from "./nodes/ConstantEmmiterNode.ts";
-import EqualsToNode from "./nodes/logic/EqualsToNode.ts";
-import NegationNode from "./nodes/logic/NegationNode.ts";
-import AndNode from "./nodes/logic/AndNode.ts";
-import OrNode from "./nodes/logic/OrNode.ts";
-import ConditionNode from "./nodes/ConditionNode.ts";
+import EntryNode from "./nodes/EntryNode";
+import ConsoleWritterNode from "./nodes/ConsoleWritterNode";
+import ConstantEmmiterNode from "./nodes/ConstantEmmiterNode";
+import EqualsToNode from "./nodes/logic/EqualsToNode";
+import NegationNode from "./nodes/logic/NegationNode";
+import AndNode from "./nodes/logic/AndNode";
+import OrNode from "./nodes/logic/OrNode";
+import ConditionNode from "./nodes/ConditionNode";
 
-import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./EditorActions.ts";
+import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./EditorActions";
 
-import type { IEditorAction } from "./types.ts";
-import type { Connection } from "./utils/Connections.ts";
-import type Node from "./nodes/Node.ts";
+import type { IEditorAction } from "./types";
+import type { Connection } from "./utils/Connections";
+import type Node from "./nodes/Node";
 
 enum NODE_TYPES {
     ENTRY_NODE,

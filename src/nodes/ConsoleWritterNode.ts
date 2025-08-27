@@ -1,4 +1,4 @@
-import Node from "./Node.ts";
+import Node from "./Node";
 
 export default class ConsoleWritterNode extends Node {
     _nodeStyleClass: string;

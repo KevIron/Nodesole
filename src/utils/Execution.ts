@@ -1,4 +1,4 @@
-import type Node from "../nodes/Node.ts";
+import type Node from "../nodes/Node";
 import { getConnectorData } from "./Connections";
 
 export default function traverse(seenNodes: Set<string>, executionStack: string[], curNode: Node) {

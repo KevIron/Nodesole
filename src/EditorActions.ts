@@ -1,11 +1,11 @@
-import Vec2 from "./utils/Vector.ts";
-import Editor from "./Editor.ts";
-import * as Connections from "./utils/Connections.ts";
+import Vec2 from "./utils/Vector";
+import Editor from "./Editor";
+import * as Connections from "./utils/Connections";
 
-import type Node from "./nodes/Node.ts";
-import type { Connection } from "./utils/Connections.ts";
-import type { IEditorAction } from "./types.ts";
-import { NodeConnection } from "./nodes/Node.ts";
+import type Node from "./nodes/Node";
+import type { Connection } from "./utils/Connections";
+import type { IEditorAction } from "./types";
+import { NodeConnection } from "./nodes/Node";
 
 export class MoveNodeAction implements IEditorAction {
     private _node: Node;

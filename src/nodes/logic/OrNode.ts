@@ -1,4 +1,4 @@
-import Node, { NodeValue } from "../Node.ts";
+import Node, { NodeValue } from "../Node";
 
 export default class OrNode extends Node {
     _nodeStyleClass: string;
