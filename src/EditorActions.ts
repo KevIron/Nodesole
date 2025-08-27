@@ -6,35 +6,38 @@ import type Node from "./nodes/Node";
 import type { Connection } from "./utils/Connections";
 import type { IEditorAction } from "./types";
 import { NodeConnection } from "./nodes/Node";
+import ViewportManager from "./core/ViewportManager";
+
+import { browserToViewportPos } from "./utils/Converters";
 
 export class MoveNodeAction implements IEditorAction {
     private _node: Node;
     private _lastOffset: Vec2;
 
-    private _editor: Editor;
+    private _manager: ViewportManager;
     private _canRedraw: boolean;
 
-    constructor(editor: Editor, node: Node) {
+    constructor(manager: ViewportManager, node: Node) {
         this._node = node;
         this._lastOffset = new Vec2(0, 0);
-        this._editor = editor;
+        this._manager = manager;
         this._canRedraw = true;
     }
 
     private redrawConnection(conn: NodeConnection, type: "input" | "output") {
         const firstConnector = conn.connector;
-        const firstConnectorPos = this._editor.convertCoordinates(Connections.findConnectorCenter(firstConnector));
+        const firstConnectorPos = browserToViewportPos(Connections.findConnectorCenter(firstConnector), this._manager.getViewportParams());
 
         for (let i = 0; i < conn.visuals.length; ++i) {
             const secondConnector = conn.opositeConnectors[i];
-            const secondConnectorPos = this._editor.convertCoordinates(Connections.findConnectorCenter(secondConnector));
+            const secondConnectorPos = browserToViewportPos(Connections.findConnectorCenter(secondConnector), this._manager.getViewportParams());
             
             const visual = conn.visuals[i];
 
             const positions: [Vec2, Vec2] = [secondConnectorPos, firstConnectorPos];
             if (type === "output") positions.reverse();
 
-            Connections.renderConnetion(visual, ...positions);
+            Connections.renderConnection(visual, ...positions);
         }
     }
     
@@ -52,7 +55,7 @@ export class MoveNodeAction implements IEditorAction {
             Math.round((clientX - this._lastOffset.x) * 1000) / 1000,
             Math.round((clientY - this._lastOffset.y) * 1000) / 1000
         );
-        const newPos = this._editor.convertCoordinates(pos);
+        const newPos = browserToViewportPos(pos, this._manager.getViewportParams());
 
         this._node.setPosition(newPos);
         this.updateConnections();
@@ -64,8 +67,8 @@ export class MoveNodeAction implements IEditorAction {
 
         const { offsetX, offsetY } = e;
 
-        this._lastOffset.x = Math.round(offsetX * this._editor.getZoomFactor());
-        this._lastOffset.y = Math.round(offsetY * this._editor.getZoomFactor());
+        this._lastOffset.x = Math.round(offsetX * this._manager.getZoomFactor());
+        this._lastOffset.y = Math.round(offsetY * this._manager.getZoomFactor());
     }
 
     public onMove(e: PointerEvent): void {
@@ -82,11 +85,11 @@ export class MoveNodeAction implements IEditorAction {
 
 export class MoveViewportAction implements IEditorAction {
     private _lastPos: Vec2;
-    private _editor: Editor;
+    private _manager: ViewportManager;
 
-    constructor (editor: Editor) {
+    constructor (manager: ViewportManager) {
         this._lastPos = new Vec2(0, 0);
-        this._editor = editor;
+        this._manager = manager;
     }
 
     public onClick(e: PointerEvent): void {
@@ -105,9 +108,9 @@ export class MoveViewportAction implements IEditorAction {
         const curPos = new Vec2(clientX, clientY);
         const distance = curPos.distanceVector(this._lastPos);
 
-        const offset = this._editor.getViewportOffset();
+        const offset = this._manager.getOffset();
 
-        this._editor.setViewportOffset(offset.add(distance));
+        this._manager.setOffset(offset.add(distance));
 
         this._lastPos = curPos;
     }
@@ -120,11 +123,11 @@ export class DrawConnectionAction implements IEditorAction {
     private _clickPos: Vec2;
     private _firstConnector: SVGSVGElement | null;
 
-    private _editor: Editor;
+    private _manager: ViewportManager;
 
-    constructor(editor: Editor, node: Node) {
+    constructor(manager: ViewportManager, node: Node) {
         this._node = node;
-        this._editor = editor;
+        this._manager = manager;
 
         this._clickPos = new Vec2(0, 0);
         this._firstConnector = null;
@@ -148,13 +151,13 @@ export class DrawConnectionAction implements IEditorAction {
 
         // Get connector center 
         const connectionPos = Connections.findConnectorCenter(connector);
-        const viewportConnectorPos = this._editor.convertCoordinates(connectionPos);
+        const viewportConnectorPos = browserToViewportPos(connectionPos, this._manager.getViewportParams());
         this._clickPos = viewportConnectorPos;
 
         this._firstConnector = connector;
         this._firstConnector.classList.add("connected");
 
-        this._editor.insertConnection(this._connection);
+        this._manager.insertConnection(this._connection);
     }
 
     public onRelease(e: PointerEvent): void {
@@ -180,7 +183,7 @@ export class DrawConnectionAction implements IEditorAction {
         const firstNode = this._node; 
 
         const secondNodeEl = secondConnector.closest<HTMLElement>(".node")!;        
-        const secondNode = this._editor.getNodeFromElement(secondNodeEl);
+        const secondNode = this._manager.getNodeFromElement(secondNodeEl);
 
         firstNode.connectTo(secondNode, {
             name: firstConnectorData.name,
@@ -197,23 +200,23 @@ export class DrawConnectionAction implements IEditorAction {
         });
 
         const connectionPos = Connections.findConnectorCenter(secondConnector);
-        const viewportConnctionPos = this._editor.convertCoordinates(connectionPos);
+        const viewportConnectionPos = browserToViewportPos(connectionPos, this._manager.getViewportParams());
 
-        const positions: [Vec2, Vec2] = [ viewportConnctionPos, this._clickPos ];
+        const positions: [Vec2, Vec2] = [ viewportConnectionPos, this._clickPos ];
         if (firstConnectorData.type === "output") positions.reverse();
 
-        Connections.renderConnetion(this._connection, ...positions);
+        Connections.renderConnection(this._connection, ...positions);
 
         secondConnector.classList.add("connected");
     }
 
     public onMove(e: PointerEvent): void {
         const curMousePos = new Vec2(e.clientX, e.clientY);
-        const curPos = this._editor.convertCoordinates(curMousePos);
+        const curPos = browserToViewportPos(curMousePos, this._manager.getViewportParams());
         
         const positions: [Vec2, Vec2] = [ curPos, this._clickPos ];
         if (this._firstConnector?.dataset.type === "output") positions.reverse();
 
-        Connections.renderConnetion(this._connection, ...positions);
+        Connections.renderConnection(this._connection, ...positions);
    }
 }

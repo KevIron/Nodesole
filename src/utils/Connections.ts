@@ -26,7 +26,7 @@ export function setConnectionPosition(conn: Connection, pos: Vec2) {
     connectionStyle.transform = newTransform;
 }
 
-export function renderConnetion(conn: Connection, pos1: Vec2, pos2: Vec2) {
+export function renderConnection(conn: Connection, pos1: Vec2, pos2: Vec2) {
     // Adjust the width and height
     const connectionStyle = conn.svg.style;
     
