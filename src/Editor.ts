@@ -1,27 +1,19 @@
-import traverse from "./utils/Execution";
-import type Node from "./nodes/Node";
-
-enum NODE_TYPES {
-    ENTRY_NODE,
-    CONSOLE_WRITER_NODE, 
-    CONSTANT_EMITTER_NODE,
-
-    EQUALS_TO_NODE,
-    NEGATION_NODE,
-    AND_NODE,
-    OR_NODE,
-
-    CONDITION_NODE,
-}
+import Procedure from "./core/Procedure.ts";
+import ViewportManager from "./core/ViewportManager.ts";
+import Vec2 from "./utils/Vector.ts";
 
 export default class Editor {
-    private _existingNodes: Map<string, Node>;
-    private _entryNode!: Node;
+    private _currentProcedure: Procedure;
 
     constructor() {
-        this._existingNodes = new Map<string, Node>();
+        this._currentProcedure = new Procedure();
+    }
 
-        // this.insertNode(NODE_TYPES.ENTRY_NODE);
+    public displayProcedure() {
+        const container = document.querySelector(".editor-tabs");
+        const viewport = new ViewportManager(this._currentProcedure);
+        container?.insertAdjacentElement("afterbegin", viewport.getElement());
+        viewport.setOffset(new Vec2(0, 0));
     }
 
     // public insertNode(nodeType: NODE_TYPES) {
@@ -63,24 +55,18 @@ export default class Editor {
     //     // createdNode.setPosition(new Vec2(0, 0));
     // }
 
-    public async execute() {
-        const seenNodes = new Set<string>();
-        const executionStack: string[] = [];
+    // public async execute() {
+    //     const seenNodes = new Set<string>();
+    //     const executionStack: string[] = [];
 
-        traverse(seenNodes, executionStack, this._entryNode);
+    //     traverse(seenNodes, executionStack, this._entryNode);
 
-        for (const id of executionStack) {
-            const node = this._existingNodes.get(id)!;
-            await node.execute();
-        }
-    }
-
-    public getNodeFromElement(element: HTMLElement) {
-        const id = element.dataset.id!;
-        const node = this._existingNodes.get(id)!;
-
-        return node;
-    }
+    //     for (const id of executionStack) {
+    //         const node = this._existingNodes.get(id)!;
+    //         await node.execute();
+    //     }
+    // }
 }
 
 const editor = new Editor();
+editor.displayProcedure()

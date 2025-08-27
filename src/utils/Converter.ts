@@ -1,4 +1,4 @@
-import Vec2 from "./Vector.ts";
+import Vec2 from "./Vector";
 
 export function browserToViewportPos(pos: Vec2, params: { zoomFactor: number, offset: Vec2, containerPos: Vec2 }): Vec2 {
     const containerRelativePos = pos.distanceVector(params.containerPos);

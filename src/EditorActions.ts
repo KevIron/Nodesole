@@ -8,7 +8,7 @@ import type { IEditorAction } from "./types";
 import { NodeConnection } from "./nodes/Node";
 import ViewportManager from "./core/ViewportManager";
 
-import { browserToViewportPos } from "./utils/Converters";
+import { browserToViewportPos } from "./utils/Converter";
 
 export class MoveNodeAction implements IEditorAction {
     private _node: Node;

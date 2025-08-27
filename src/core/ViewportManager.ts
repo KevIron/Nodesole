@@ -1,6 +1,9 @@
+import Vec2 from "../utils/Vector.ts";
+import Node from "../nodes/Node.ts";
+import Procedure from "./Procedure.ts";
+
 import { IEditorAction as EditorAction } from "../types.ts";
 import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "../EditorActions.ts";
-import Vec2 from "../utils/Vector.ts";
 
 type ViewportElements = {
     container: HTMLDivElement,
@@ -19,6 +22,7 @@ type ViewportParams = {
 }
 
 export default class ViewportManager {
+    private _displayedProcedure: Procedure;
     private _viewportElements: ViewportElements;
 
     private _currentOffset: Vec2;
@@ -27,7 +31,8 @@ export default class ViewportManager {
     private _currentAction: EditorAction | null;
     private _lastMousePos: Vec2 | null;
 
-    constructor () {
+    constructor (procedure: Procedure) {
+        this._displayedProcedure = procedure;
         this._viewportElements = this.buildViewport();
 
         this._currentOffset = new Vec2(0, 0);
@@ -157,7 +162,6 @@ export default class ViewportManager {
         this._currentOffset.y += (containerRelativePos.y - this._currentOffset.y) * ratio
 
         this.updateViewport();
-        this.renderGrid();
     }
 
     private determineAction(e: PointerEvent): void {
@@ -229,6 +233,8 @@ export default class ViewportManager {
         return this._zoomFactor;
     }
 
+    public setZoomFactor(): void {}
+
     public getViewportParams(): ViewportParams {
         const containerRect = this._viewportElements.container.getBoundingClientRect();
         const containerPos = new Vec2(containerRect.left, containerRect.top)
@@ -239,9 +245,12 @@ export default class ViewportManager {
             containerPos: containerPos
         };
     }
-}
 
-const container = document.querySelector(".editor-tabs");
-const viewport = new ViewportManager();
-container?.insertAdjacentElement("afterbegin", viewport.getElement());
-viewport.updateViewport();
+    public getNodeFromElement(element: HTMLElement): Node {
+        const id = element.dataset.id;
+        if (!id) throw new Error("Element is not a Node!")
+
+        const node = this._displayedProcedure.getNodeFromId(id);
+        return node;
+    }
+}
