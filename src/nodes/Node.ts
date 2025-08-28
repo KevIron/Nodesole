@@ -60,16 +60,16 @@ export default abstract class Node {
     protected evaluateInput() {
         const inputData: Record<string, NodeValue> = {};
 
-        for (const [connectorName, connnection] of this._connections.input) {
-            if (connnection.dataType === "CONTROL_FLOW") continue;
-            if (connnection.opositeConnectors.length === 0) continue;
+        for (const [connectorName, connection] of this._connections.input) {
+            if (connection.dataType === "CONTROL_FLOW") continue;
+            if (connection.opositeConnectors.length === 0) continue;
 
-            const opositeConnector = connnection.opositeConnectors[0];
-            const opositeConnectorName = getConnectorData(opositeConnector).name;
+            const oppositeConnector = connection.opositeConnectors[0];
+            const oppositeConnectorName = getConnectorData(oppositeConnector).name;
 
-            const connectedNode = connnection.nodes[0];
+            const connectedNode = connection.nodes[0];
 
-            inputData[connectorName] = connectedNode.getOutputData(opositeConnectorName);
+            inputData[connectorName] = connectedNode.getOutputData(oppositeConnectorName);
         }
         
         return inputData;
@@ -105,31 +105,31 @@ export default abstract class Node {
     }
 
     public addConnector(name: string, description: string, type: "input" | "output", connectionType: CONNECTION_TYPES, connectorContainer?: HTMLDivElement) {
-        const formatedName = name.toLowerCase().replace(/\s/g, "-");
+        const formattedName = name.toLowerCase().replace(/\s/g, "-");
 
         const container = document.createElement("div");
-        const connetor = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        const connector = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
         container.classList.add(type);
-        connetor.classList.add("connector");
+        connector.classList.add("connector");
 
-        connetor.dataset.type = type;
-        connetor.dataset.name = formatedName;
-        connetor.dataset.connectionType = connectionType;
+        connector.dataset.type = type;
+        connector.dataset.name = formattedName;
+        connector.dataset.connectionType = connectionType;
 
-        connetor.setAttribute("viewBox", "0 0 10 10");
+        connector.setAttribute("viewBox", "0 0 10 10");
        
         if (connectionType === "CONTROL_FLOW" || connectionType === "IGNORED")
-            connetor.insertAdjacentHTML("afterbegin", "<rect width='10' height='10' x='0' y='0'>");
+            connector.insertAdjacentHTML("afterbegin", "<rect width='10' height='10' x='0' y='0'>");
         if (connectionType === "DATA")
-            connetor.insertAdjacentHTML("afterbegin", "<circle cx='5' cy='5' r='4'>");
+            connector.insertAdjacentHTML("afterbegin", "<circle cx='5' cy='5' r='4'>");
 
         container.insertAdjacentHTML("afterbegin", `<p>${description}</p>`);
-        container.insertAdjacentElement(type === "input" ? "afterbegin" : "beforeend", connetor);
+        container.insertAdjacentElement(type === "input" ? "afterbegin" : "beforeend", connector);
         
         this._nodeConnectors[type].push(container);
-        this._connections[type].set(formatedName, {
-            connector: connetor,
+        this._connections[type].set(formattedName, {
+            connector: connector,
             dataType: connectionType,
             visuals: [],
             nodes: [],
