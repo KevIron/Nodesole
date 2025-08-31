@@ -1,14 +1,26 @@
 import EntryNode from "../nodes/EntryNode.ts";
 import Node from "../nodes/Node.ts";
 
+enum CONNECTION_TYPE {
+    IGNORED, 
+    DATA,
+    CONTROL_FLOW
+}
+
 type ConnectedNode = {
     id: string,
     connections: Array<string>,
 }
 
+type Connection = {
+    connector1: string,
+    connector2: string, 
+    connType: CONNECTION_TYPE
+}
+
 export default class Procedure {
     private _nodes: Map<string, Node>;
-    private _connections: Map<string, undefined>;
+    private _connections: Map<string, Connection>;
 
     private _graph: Map<string, Array<ConnectedNode>>;
 
@@ -16,7 +28,7 @@ export default class Procedure {
 
     constructor () {
         this._nodes = new Map<string, Node>();
-        this._connections = new Map<string, undefined>();
+        this._connections = new Map<string, Connection>();
 
         this._graph = new Map<string, Array<ConnectedNode>>();
 
@@ -30,7 +42,7 @@ export default class Procedure {
         this._graph.set(nodeID, []);
     }
 
-    public connect(id1: string, id2: string, connDetails: undefined) {
+    public connect(id1: string, id2: string, connDetails: Connection) {
         if (!this._graph.has(id1)) throw new Error(`Node with ID - ${id1}, doesn't exist!`);
         if (!this._graph.has(id2)) throw new Error(`Node with ID - ${id2}, doesn't exist!`);
 
