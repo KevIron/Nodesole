@@ -61,7 +61,7 @@
     }
 }
 
-.node__console-writter {
+.node__console-writer {
     border: 1px solid var(--node-logic); 
 
     .node-body {

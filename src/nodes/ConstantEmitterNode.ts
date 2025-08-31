@@ -1,6 +1,6 @@
 import Node, { NodeDataTypes } from "./Node";
 
-export default class ConstantEmmiterNode extends Node {
+export default class ConstantEmitterNode extends Node {
     _nodeStyleClass: string;
     _nodeTitle: string;
     _nodeBodyTemplate: string;
@@ -12,7 +12,7 @@ export default class ConstantEmmiterNode extends Node {
         super();
 
         this._nodeStyleClass = "node__constant-emitter";
-        this._nodeTitle = "ConstantEmmiter";
+        this._nodeTitle = "ConstantEmitter";
         this._nodeBodyTemplate = `
             <div class="constant-frm">
                 <label for="type">Constant type:</label>
@@ -29,7 +29,7 @@ export default class ConstantEmmiterNode extends Node {
         this._constantTypeInput = null;
         this._constantValueInput = null;
 
-        this.addConnector("emited-constant", "", "output", "DATA");
+        this.addConnector("emitted-constant", "", "output", "DATA");
     }
 
     protected onElementInsert(): void {
@@ -61,7 +61,7 @@ export default class ConstantEmmiterNode extends Node {
                 break;
         }
 
-        this.setOutputData("emited-constant", {
+        this.setOutputData("emitted-constant", {
             valueType: constantType,
             value: constantValue
         });

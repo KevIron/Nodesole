@@ -1,6 +1,6 @@
-import Node from "./Node";
+import Node from "../Node.ts";
 
-export default class ConsoleWritterNode extends Node {
+export default class ConsoleWriterNode extends Node {
     _nodeStyleClass: string;
     _nodeTitle: string;
     _nodeBodyTemplate: string;
@@ -10,8 +10,8 @@ export default class ConsoleWritterNode extends Node {
     constructor () {
         super();
 
-        this._nodeStyleClass = "node__console-writter";
-        this._nodeTitle = "ConsoleWritter";
+        this._nodeStyleClass = "node__console-writer";
+        this._nodeTitle = "ConsoleWriter";
         this._nodeBodyTemplate = `
             <div class="format-input">
                 <label for="format">Print format:</label>
