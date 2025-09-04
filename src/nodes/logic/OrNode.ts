@@ -1,4 +1,4 @@
-import Node, { NodeValue } from "../Node";
+import Node, { NodeValue } from "../models/Node";
 
 export default class OrNode extends Node {
     _nodeStyleClass: string;

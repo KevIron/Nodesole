@@ -1,4 +1,4 @@
-import Node, { NodeDataTypes } from "./Node";
+import Node, { NodeDataTypes } from "./models/Node";
 
 export default class ConstantEmitterNode extends Node {
     _nodeStyleClass: string;

@@ -1,14 +1,13 @@
-import Vec2 from "./utils/Vector";
-import Editor from "./Editor";
-import * as Connections from "./utils/Connections";
+import Vec2 from "../utils/Vector";
+import * as Connections from "../utils/Connections";
 
-import type Node from "./nodes/Node";
-import type { Connection } from "./utils/Connections";
-import type { IEditorAction } from "./types";
-import { NodeConnection } from "./nodes/Node";
-import ViewportManager from "./core/ViewportManager";
+import type Node from "../nodes/models/Node";
+import type { Connection } from "../utils/Connections";
+import type { IEditorAction } from "../types";
+import { NodeConnection } from "../nodes/models/Node";
+import ViewportManager from "./ViewportManager";
 
-import { browserToViewportPos } from "./utils/Converter";
+import { browserToViewportPos } from "../utils/Converter";
 
 export class MoveNodeAction implements IEditorAction {
     private _node: Node;
@@ -23,29 +22,8 @@ export class MoveNodeAction implements IEditorAction {
         this._manager = manager;
         this._canRedraw = true;
     }
-
-    private redrawConnection(conn: NodeConnection, type: "input" | "output") {
-        const firstConnector = conn.connector;
-        const firstConnectorPos = browserToViewportPos(Connections.findConnectorCenter(firstConnector), this._manager.getViewportParams());
-
-        for (let i = 0; i < conn.visuals.length; ++i) {
-            const secondConnector = conn.opositeConnectors[i];
-            const secondConnectorPos = browserToViewportPos(Connections.findConnectorCenter(secondConnector), this._manager.getViewportParams());
-            
-            const visual = conn.visuals[i];
-
-            const positions: [Vec2, Vec2] = [secondConnectorPos, firstConnectorPos];
-            if (type === "output") positions.reverse();
-
-            Connections.renderConnection(visual, ...positions);
-        }
-    }
     
     private updateConnections() {
-        const connections = this._node.getConnections();
-
-        connections.input.forEach(conn => this.redrawConnection(conn, "input"));
-        connections.output.forEach(conn => this.redrawConnection(conn, "output"));
     }
 
     private handleMove(e: PointerEvent) {
@@ -185,19 +163,7 @@ export class DrawConnectionAction implements IEditorAction {
         const secondNodeEl = secondConnector.closest<HTMLElement>(".node")!;        
         const secondNode = this._manager.getNodeFromElement(secondNodeEl);
 
-        firstNode.connectTo(secondNode, {
-            name: firstConnectorData.name,
-            type: firstConnectorData.type,
-            visual: this._connection,
-            connector: secondConnector
-        });
-
-        secondNode.connectTo(firstNode, {
-            name: secondConnectorData.name, 
-            type: secondConnectorData.type, 
-            visual: this._connection, 
-            connector: firstConnector
-        });
+        // Connect nodes here
 
         const connectionPos = Connections.findConnectorCenter(secondConnector);
         const viewportConnectionPos = browserToViewportPos(connectionPos, this._manager.getViewportParams());

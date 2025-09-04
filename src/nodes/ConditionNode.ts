@@ -1,4 +1,4 @@
-import Node from "./Node.js";
+import Node from "./models/Node.js";
 import traverse from "../utils/Execution.js";
 
 export default class ConditionNode extends Node {

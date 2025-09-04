@@ -1,9 +1,11 @@
 import Vec2 from "../utils/Vector.ts";
-import Node from "../nodes/Node.ts";
+import Node from "../nodes/models/Node";
 import Procedure from "./Procedure.ts";
 
 import { IEditorAction as EditorAction } from "../types.ts";
-import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "../EditorActions.ts";
+import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./ViewportActions";
+
+import type { Connection } from "./Procedure.ts";
 
 type ViewportElements = {
     container: HTMLDivElement,
@@ -43,6 +45,7 @@ export default class ViewportManager {
 
         this.attachEventListeners();
         this.updateViewport();
+        this.renderProcedure();
     }
 
     private buildViewport(): ViewportElements {
@@ -87,6 +90,13 @@ export default class ViewportManager {
 
         this._viewportElements.viewport.container.style.transform = viewportTransform;
         this.renderGrid();
+    }
+
+    private renderProcedure() {
+        const nodes = this._displayedProcedure.getNodes();
+        for (let i = 0; i < nodes.length; ++i) {
+            nodes[i].insertInto(this._viewportElements.viewport.nodes);
+        }
     }
 
     private renderGrid(gridSpacing = 24, lineColor = "hsl(0, 0%, 20%)", lineWidth = 1): void {
@@ -213,6 +223,14 @@ export default class ViewportManager {
         this._viewportElements.container.addEventListener("wheel", (e) => {
             (document.activeElement as HTMLElement)?.blur();
             this.handleScroll(e);
+        });
+
+        this._displayedProcedure.on("nodeAdded", (node: Node) => {
+            node.insertInto(this._viewportElements.viewport.nodes);
+        });
+
+        this._displayedProcedure.on("nodeConnected", (conn: Connection) => {
+            
         });
     }
 

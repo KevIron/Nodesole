@@ -1,4 +1,4 @@
-import Node from "./Node.ts";
+import Node from "./models/Node";
 
 type NodeConstructor = new (...args: any[]) => Node
 

@@ -1,4 +1,4 @@
-import Node from "./Node.js";
+import Node from "./models/Node.js";
 
 export default class EntryNode extends Node {
     public _nodeStyleClass: string;
