@@ -1,6 +1,6 @@
-import Node, { NodeValue } from "../models/Node";
+import Node, { NodeValue } from "../Node";
 
-export default class AndNode extends Node {
+export default class EqualsToNode extends Node {
     _nodeStyleClass: string;
     _nodeTitle: string;
     _nodeBodyTemplate: string;
@@ -8,11 +8,11 @@ export default class AndNode extends Node {
     constructor() {
         super();
 
-        this._nodeStyleClass = "node__and";
-        this._nodeTitle = "And";
+        this._nodeStyleClass = "node__equals-to";
+        this._nodeTitle = "EqualsTo";
         this._nodeBodyTemplate = `
             <div class='body-text'>
-                <p>AND</p>
+                <p>EQUALS</p>
             </div>
         `;
 
@@ -28,17 +28,13 @@ export default class AndNode extends Node {
         const inputB = inputData["b"];
         
         if (!inputA || !inputB) return;
-        
+
         let returnValue: NodeValue = {
             valueType: "boolean",
             value: ""
         };
 
-        if (inputA.valueType !== "boolean" || inputB.valueType !== "boolean") {
-            throw new Error(`Elements must be of type boolean! - NODE_ID: ${this.getID()}`);
-        }
-
-        returnValue.value = (inputA.value && inputB.value);
+        returnValue.value = (inputA.value === inputB.value) ? true : false;
         
         this.setOutputData("c", returnValue);
     }

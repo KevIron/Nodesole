@@ -1,13 +1,8 @@
-import EntryNode from "../nodes/EntryNode.ts";
+import EntryNode from "../nodes/models/EntryNode";
 import Node from "../nodes/models/Node";
+import { CONNECTION_TYPE } from "../types";
 
-enum CONNECTION_TYPE {
-    IGNORED, 
-    DATA,
-    CONTROL_FLOW
-}
-
-type ConnectedNode = {
+export type ConnectedNode = {
     id: string,
     connections: Array<string>
 }

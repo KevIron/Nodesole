@@ -4,7 +4,6 @@ import * as Connections from "../utils/Connections";
 import type Node from "../nodes/models/Node";
 import type { Connection } from "../utils/Connections";
 import type { IEditorAction } from "../types";
-import { NodeConnection } from "../nodes/models/Node";
 import ViewportManager from "./ViewportManager";
 
 import { browserToViewportPos } from "../utils/Converter";
@@ -35,7 +34,7 @@ export class MoveNodeAction implements IEditorAction {
         );
         const newPos = browserToViewportPos(pos, this._manager.getViewportParams());
 
-        this._node.setPosition(newPos);
+        this._node.getView().setPosition(newPos);
         this.updateConnections();
     }
 

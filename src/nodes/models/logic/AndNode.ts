@@ -1,6 +1,6 @@
-import Node, { NodeValue } from "../models/Node";
+import Node, { NodeValue } from "../Node";
 
-export default class OrNode extends Node {
+export default class AndNode extends Node {
     _nodeStyleClass: string;
     _nodeTitle: string;
     _nodeBodyTemplate: string;
@@ -8,11 +8,11 @@ export default class OrNode extends Node {
     constructor() {
         super();
 
-        this._nodeStyleClass = "node__or";
-        this._nodeTitle = "Or";
+        this._nodeStyleClass = "node__and";
+        this._nodeTitle = "And";
         this._nodeBodyTemplate = `
             <div class='body-text'>
-                <p>OR</p>
+                <p>AND</p>
             </div>
         `;
 
@@ -38,7 +38,7 @@ export default class OrNode extends Node {
             throw new Error(`Elements must be of type boolean! - NODE_ID: ${this.getID()}`);
         }
 
-        returnValue.value = (inputA.value || inputB.value);
+        returnValue.value = (inputA.value && inputB.value);
         
         this.setOutputData("c", returnValue);
     }

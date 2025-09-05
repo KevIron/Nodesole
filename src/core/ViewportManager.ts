@@ -1,6 +1,6 @@
-import Vec2 from "../utils/Vector.ts";
+import Vec2 from "../utils/Vector";
 import Node from "../nodes/models/Node";
-import Procedure from "./Procedure.ts";
+import Procedure from "./Procedure";
 
 import { IEditorAction as EditorAction } from "../types.ts";
 import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./ViewportActions";
@@ -95,7 +95,8 @@ export default class ViewportManager {
     private renderProcedure() {
         const nodes = this._displayedProcedure.getNodes();
         for (let i = 0; i < nodes.length; ++i) {
-            nodes[i].insertInto(this._viewportElements.viewport.nodes);
+            const element = nodes[i].getView().getElement();
+            this._viewportElements.viewport.nodes.appendChild(element);
         }
     }
 
@@ -181,7 +182,7 @@ export default class ViewportManager {
         
         if (clickedElement.classList.contains("node")) {
             const node = this.getNodeFromElement(clickedElement);
-            node.getPosition();
+            // node.getPosition();
             this._currentAction = new MoveNodeAction(this, node);
         }
 
@@ -226,7 +227,8 @@ export default class ViewportManager {
         });
 
         this._displayedProcedure.on("nodeAdded", (node: Node) => {
-            node.insertInto(this._viewportElements.viewport.nodes);
+            const element = node.getView().getElement();
+            this._viewportElements.viewport.nodes.appendChild(element);
         });
 
         this._displayedProcedure.on("nodeConnected", (conn: Connection) => {
