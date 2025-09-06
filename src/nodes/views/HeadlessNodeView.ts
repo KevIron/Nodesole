@@ -1,14 +1,21 @@
 import NodeView from "./NodeView";
 
-export default class EntryNodeView extends NodeView {
+export default class HeadlessNodeView extends NodeView {
     public generateTemplate(): string {
         return `
             <div class="node__entry">
                 <div class="node_body">
+                    <div class="column">
+
+                    </div>
                     <span>${this._model.getTitle()}</span>
-                    ${ this.getConnectorMarkup("A") } 
+                    <div class="column">
+                    
+                    </div>
                 </div>
             </div>
         `;
+
+        // ${ this.getConnectorMarkup("A") } 
     }
 }

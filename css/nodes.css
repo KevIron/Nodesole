@@ -25,7 +25,7 @@
 .node_header, 
 .node_body {
     width: 100%;
-    border: 1px solid var(--node-color);
+    border: 2px solid var(--node-color);
     padding: 1rem;
 }
 

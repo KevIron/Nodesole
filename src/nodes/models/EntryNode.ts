@@ -1,5 +1,5 @@
 import { CONNECTION_TYPE } from "../../types";
-import EntryNodeView from "../views/EntryNodeView";
+import HeadlessNodeView from "../views/HeadlessNodeView";
 import NodeView from "../views/NodeView";
 import Node from "./Node";
 
@@ -19,6 +19,6 @@ export default class EntryNode extends Node {
     public async execute(): Promise<void> { }
 
     public createView(): NodeView {
-        return new EntryNodeView(this, "node__entry");
+        return new HeadlessNodeView(this, "node__entry");
     }
 }
