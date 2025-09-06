@@ -1,7 +1,7 @@
-import { CONNECTION_TYPE } from "../../types";
-import HeadlessNodeView from "../views/HeadlessNodeView";
-import NodeView from "../views/NodeView";
-import Node from "./Node";
+import { CONNECTION_TYPE } from "../../../types";
+import HeadlessNodeView from "../../views/HeadlessNodeView";
+import NodeView from "../../views/NodeView";
+import Node from "../Node";
 
 export default class EntryNode extends Node {
     protected _nodeDescription: string;

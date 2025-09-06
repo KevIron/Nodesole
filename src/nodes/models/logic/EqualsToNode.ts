@@ -1,41 +1,28 @@
-import Node, { NodeValue } from "../Node";
+import { CONNECTION_TYPE } from "../../../types";
+import HeadlessNodeView from "../../views/HeadlessNodeView";
+import NodeView from "../../views/NodeView";
+import Node from "../Node";
 
 export default class EqualsToNode extends Node {
-    _nodeStyleClass: string;
-    _nodeTitle: string;
-    _nodeBodyTemplate: string;
+    protected _nodeTitle: string;
+    protected _nodeDescription: string;
 
     constructor() {
         super();
 
-        this._nodeStyleClass = "node__equals-to";
-        this._nodeTitle = "EqualsTo";
-        this._nodeBodyTemplate = `
-            <div class='body-text'>
-                <p>EQUALS</p>
-            </div>
-        `;
+        this._nodeTitle = "==";
+        this._nodeDescription = "A node that returns true if both inputs are equal";
 
-        this.addConnector("a", "A", "input", "DATA");
-        this.addConnector("b", "B", "input", "DATA");
-        this.addConnector("c", "C", "output", "DATA");
+        this.registerConnector("A", "A", "input", CONNECTION_TYPE.DATA);
+        this.registerConnector("B", "B", "output", CONNECTION_TYPE.DATA);
+        this.registerConnector("C", "C", "output", CONNECTION_TYPE.DATA);
     }
-    
-    public async execute(): Promise<void> {
-        const inputData = this.evaluateInput();
 
-        const inputA = inputData["a"];
-        const inputB = inputData["b"];
-        
-        if (!inputA || !inputB) return;
+    execute(): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
 
-        let returnValue: NodeValue = {
-            valueType: "boolean",
-            value: ""
-        };
-
-        returnValue.value = (inputA.value === inputB.value) ? true : false;
-        
-        this.setOutputData("c", returnValue);
+    createView(): NodeView {
+        return new HeadlessNodeView(this, "node__logic");
     }
 }

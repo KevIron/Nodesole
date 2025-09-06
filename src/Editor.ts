@@ -1,7 +1,12 @@
 import Procedure from "./core/Procedure.ts";
 import ViewportManager from "./core/ViewportManager.ts";
-import ConditionNode from "./nodes/models/special/ConditionNode";
 import Vec2 from "./utils/Vector.ts";
+
+import AndNode from "./nodes/models/logic/AndNode";
+import EqualsToNode from "./nodes/models/logic/EqualsToNode";
+import NegationNode from "./nodes/models/logic/NegationNode";
+import OrNode from "./nodes/models/logic/OrNode";
+import ConditionNode from "./nodes/models/special/ConditionNode";
 
 export default class Editor {
     private _currentProcedure: Procedure;
@@ -13,9 +18,15 @@ export default class Editor {
     public displayProcedure() {
         const container = document.querySelector(".editor-tabs");
         const viewport = new ViewportManager(this._currentProcedure);
+        
         container?.insertAdjacentElement("afterbegin", viewport.getElement());
         viewport.setOffset(new Vec2(0, 0));
-        this._currentProcedure.insertNode(new ConditionNode())
+
+        this._currentProcedure.insertNode(new ConditionNode());
+        this._currentProcedure.insertNode(new AndNode());
+        this._currentProcedure.insertNode(new OrNode());
+        this._currentProcedure.insertNode(new NegationNode());
+        this._currentProcedure.insertNode(new EqualsToNode());
     }
 }
 

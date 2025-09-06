@@ -78,7 +78,24 @@
         align-items: center;
         gap: 0.4rem;
     }
+
+    .column {
+        display: grid;
+        gap: 0.8rem;
+    }
+}
+
+.node__logic {
+    .node_body {
+        gap: 1.6rem;
+    }
+
+    .name {
+        color: var(--text--secondary);
+        font-size: 2rem;
+    }
 }
 
 .node__condition { --node-color: var(--node-red) }
 .node__headless { --node-color: var(--node-green) }
+.node__logic { --node-color: var(--text--secondary) }

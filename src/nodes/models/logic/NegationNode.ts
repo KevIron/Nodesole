@@ -1,39 +1,28 @@
-import Node, { NodeValue } from "../Node";
+import { CONNECTION_TYPE } from "../../../types";
+import HeadlessNodeView from "../../views/HeadlessNodeView";
+import NodeView from "../../views/NodeView";
+import Node from "../Node";
 
 export default class NegationNode extends Node {
-    _nodeStyleClass: string;
-    _nodeTitle: string;
-    _nodeBodyTemplate: string;
+    protected _nodeTitle: string;
+    protected _nodeDescription: string;
 
     constructor() {
         super();
 
-        this._nodeStyleClass = "node__negation";
-        this._nodeTitle = "Negation";
-        this._nodeBodyTemplate = `
-            <div class='body-text'>
-                <p>NOT</p>
-            </div>
-        `;
+        this._nodeTitle = "NOT";
+        this._nodeDescription = "A node that returns true if the input is false";
 
-        this.addConnector("a", "A", "input", "DATA");
-        this.addConnector("b", "B", "output", "DATA");
+        this.registerConnector("A", "A", "input", CONNECTION_TYPE.DATA);
+        this.registerConnector("B", "B", "output", CONNECTION_TYPE.DATA);
+        this.registerConnector("C", "C", "output", CONNECTION_TYPE.DATA);
     }
-    
-    public async execute(): Promise<void> {
-        const inputData = this.evaluateInput();
 
+    execute(): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
 
-        const inputA = inputData["a"];
-        if (!inputA) return;
-
-        let returnValue: NodeValue = {
-            valueType: "boolean",
-            value: ""
-        };
-
-        if (inputA.valueType === "boolean") returnValue.value = !inputA.value;
-        
-        this.setOutputData("b", returnValue);
+    createView(): NodeView {
+        return new HeadlessNodeView(this, "node__logic");
     }
 }

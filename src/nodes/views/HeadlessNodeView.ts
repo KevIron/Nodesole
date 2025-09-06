@@ -14,10 +14,10 @@ export default class HeadlessNodeView extends NodeView {
         const bodyMarkup = this.generateBodyMarkup();
 
         return `
-            <div class="node__headless">
+            <div class="node__headless ${ this._styleClass }">
                 <div class="node_body">
                     <div class="column">${ bodyMarkup[0] }</div>
-                    <span>${ this._model.getTitle() }</span>
+                    <span class="name">${ this._model.getTitle() }</span>
                     <div class="column">${ bodyMarkup[1] }</div>
                 </div>
             </div>

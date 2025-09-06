@@ -1,4 +1,4 @@
-import EntryNode from "../nodes/models/EntryNode";
+import EntryNode from "../nodes/models/special/EntryNode";
 import Node from "../nodes/models/Node";
 import { CONNECTION_TYPE } from "../types";
 

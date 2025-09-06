@@ -1,45 +1,28 @@
-import Node, { NodeValue } from "../Node";
+import { CONNECTION_TYPE } from "../../../types";
+import HeadlessNodeView from "../../views/HeadlessNodeView";
+import NodeView from "../../views/NodeView";
+import Node from "../Node";
 
 export default class OrNode extends Node {
-    _nodeStyleClass: string;
-    _nodeTitle: string;
-    _nodeBodyTemplate: string;
+    protected _nodeTitle: string;
+    protected _nodeDescription: string;
 
     constructor() {
         super();
 
-        this._nodeStyleClass = "node__or";
-        this._nodeTitle = "Or";
-        this._nodeBodyTemplate = `
-            <div class='body-text'>
-                <p>OR</p>
-            </div>
-        `;
+        this._nodeTitle = "OR";
+        this._nodeDescription = "A node that returns true if one of the inputs is true";
 
-        this.addConnector("a", "A", "input", "DATA");
-        this.addConnector("b", "B", "input", "DATA");
-        this.addConnector("c", "C", "output", "DATA");
+        this.registerConnector("A", "A", "input", CONNECTION_TYPE.DATA);
+        this.registerConnector("B", "B", "output", CONNECTION_TYPE.DATA);
+        this.registerConnector("C", "C", "output", CONNECTION_TYPE.DATA);
     }
-    
-    public async execute(): Promise<void> {
-        const inputData = this.evaluateInput();
 
-        const inputA = inputData["a"];
-        const inputB = inputData["b"];
-        
-        if (!inputA || !inputB) return;
-        
-        let returnValue: NodeValue = {
-            valueType: "boolean",
-            value: ""
-        };
+    execute(): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
 
-        if (inputA.valueType !== "boolean" || inputB.valueType !== "boolean") {
-            throw new Error(`Elements must be of type boolean! - NODE_ID: ${this.getID()}`);
-        }
-
-        returnValue.value = (inputA.value || inputB.value);
-        
-        this.setOutputData("c", returnValue);
+    createView(): NodeView {
+        return new HeadlessNodeView(this, "node__logic");
     }
 }
