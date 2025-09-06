@@ -1,4 +1,3 @@
-import Node from "../models/Node";
 import NodeView from "./NodeView";
 
 export default class StandardNodeView extends NodeView {

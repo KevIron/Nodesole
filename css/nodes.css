@@ -59,7 +59,7 @@
 
     .node_body {
         display: grid;
-        gap: 8px;
+        gap: 0.8rem;
 
         border-top: none;
         border-radius: 0 0 5px 5px;
@@ -72,12 +72,13 @@
     }
 }
 
-.node__entry {
+.node__headless {
     .node_body {
         display: flex;
-        gap: 8px;
+        align-items: center;
+        gap: 0.4rem;
     }
 }
 
 .node__condition { --node-color: var(--node-red) }
-.node__entry { --node-color: var(--node-green) }
+.node__headless { --node-color: var(--node-green) }
