@@ -1,12 +1,22 @@
 import { CONNECTION_TYPE } from "../../types";
 import type NodeView from "../views/NodeView";
 
+type NodeValue = {
+    value: {
+        number: number,
+        boolean: boolean,
+        string: string, 
+        array: NodeValue[]
+    }
+    type: keyof NodeValue["value"]
+};
+
 type Connector = {
     type: "input" | "output",
     description: string,
     connectionType: CONNECTION_TYPE,
-    value: undefined | null
-}
+    value: NodeValue | null
+};
 
 export default abstract class Node {
     protected abstract _nodeTitle: string;
