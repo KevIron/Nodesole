@@ -19,6 +19,8 @@
 .node {
     font-family: "Fira Code", sans-serif;
     font-size: 1.4rem;
+
+    position: absolute;
     overflow: hidden;
 }
 

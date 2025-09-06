@@ -182,6 +182,8 @@ export default class ViewportManager {
 
         if (clickedElement.classList.contains("viewport-container")) {
             this._currentAction = new MoveViewportAction(this);
+
+            return;
         }
         
         if (clickedElement.closest(".connector")) {
@@ -189,11 +191,14 @@ export default class ViewportManager {
             const node = this.getNodeFromElement(nearestNode);
 
             this._currentAction = new DrawConnectionAction(this, node);
+
+            return;
         }
 
-        if (clickedElement.classList.contains("node")) {
-            const node = this.getNodeFromElement(clickedElement);
-            // node.getPosition();
+        const nearestNode = clickedElement.closest<HTMLElement>(".node");
+
+        if (nearestNode) {
+            const node = this.getNodeFromElement(nearestNode);
             this._currentAction = new MoveNodeAction(this, node);
         }
     }

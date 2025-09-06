@@ -32,6 +32,7 @@ export class MoveNodeAction implements IEditorAction {
             Math.round((clientX - this._lastOffset.x) * 1000) / 1000,
             Math.round((clientY - this._lastOffset.y) * 1000) / 1000
         );
+        
         const newPos = browserToViewportPos(pos, this._manager.getViewportParams());
 
         this._node.getView().setPosition(newPos);
@@ -40,12 +41,17 @@ export class MoveNodeAction implements IEditorAction {
 
     public onClick(e: PointerEvent): void {
         e.preventDefault();
+        
         (document.activeElement as HTMLElement)?.blur();
 
-        const { offsetX, offsetY } = e;
+        const clickPos = new Vec2(e.clientX, e.clientY);
+        const nodePos = this._node.getView().getElement().getBoundingClientRect();
+        
+        const offsetX = clickPos.x - nodePos.left;
+        const offsetY = clickPos.y - nodePos.top;
 
-        this._lastOffset.x = Math.round(offsetX * this._manager.getZoomFactor());
-        this._lastOffset.y = Math.round(offsetY * this._manager.getZoomFactor());
+        this._lastOffset.x = Math.round(offsetX);
+        this._lastOffset.y = Math.round(offsetY);
     }
 
     public onMove(e: PointerEvent): void {
