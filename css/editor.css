@@ -54,6 +54,10 @@
     height: 1.6rem;
 }
 
+.connector-svg:hover {
+    cursor: pointer;
+}
+
 .connector.connected {
     fill: oklch(0.4 0 0) !important;
 }

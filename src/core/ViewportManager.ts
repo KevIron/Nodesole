@@ -186,7 +186,7 @@ export default class ViewportManager {
             return;
         }
         
-        if (clickedElement.closest(".connector")) {
+        if (clickedElement.closest(".connector-svg")) {
             const nearestNode = clickedElement.closest<HTMLElement>(".node")!;
             const node = this.getNodeFromElement(nearestNode);
 

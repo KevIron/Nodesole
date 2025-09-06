@@ -50,6 +50,7 @@
 }
 
 .node_body * { pointer-events: all }
+.node_body span:hover { cursor: default }
 
 /* NODE TYPE SPECIFIC DECLARATIONS */
 
