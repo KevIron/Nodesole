@@ -1,5 +1,6 @@
 import Procedure from "./core/Procedure.ts";
 import ViewportManager from "./core/ViewportManager.ts";
+import ConditionNode from "./nodes/models/special/ConditionNode";
 import Vec2 from "./utils/Vector.ts";
 
 export default class Editor {
@@ -14,6 +15,7 @@ export default class Editor {
         const viewport = new ViewportManager(this._currentProcedure);
         container?.insertAdjacentElement("afterbegin", viewport.getElement());
         viewport.setOffset(new Vec2(0, 0));
+        this._currentProcedure.insertNode(new ConditionNode())
     }
 }
 

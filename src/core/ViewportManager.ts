@@ -179,12 +179,6 @@ export default class ViewportManager {
         e.stopPropagation();
 
         const clickedElement = e.target as HTMLElement;
-        
-        if (clickedElement.classList.contains("node")) {
-            const node = this.getNodeFromElement(clickedElement);
-            // node.getPosition();
-            this._currentAction = new MoveNodeAction(this, node);
-        }
 
         if (clickedElement.classList.contains("viewport-container")) {
             this._currentAction = new MoveViewportAction(this);
@@ -195,6 +189,12 @@ export default class ViewportManager {
             const node = this.getNodeFromElement(nearestNode);
 
             this._currentAction = new DrawConnectionAction(this, node);
+        }
+
+        if (clickedElement.classList.contains("node")) {
+            const node = this.getNodeFromElement(clickedElement);
+            // node.getPosition();
+            this._currentAction = new MoveNodeAction(this, node);
         }
     }
 

@@ -3,13 +3,14 @@ import type NodeView from "../views/NodeView";
 
 type Connector = {
     type: "input" | "output",
-    connectionType: CONNECTION_TYPE
+    description: string,
+    connectionType: CONNECTION_TYPE,
     value: undefined | null
 }
 
 export default abstract class Node {
-    abstract _nodeTitle: string;
-    abstract _nodeDescription: string;
+    protected abstract _nodeTitle: string;
+    protected abstract _nodeDescription: string;
 
     private _id: string;
     private _connectors: Map<string, Connector>;
@@ -24,9 +25,12 @@ export default abstract class Node {
         this._view = null;
     }
 
-    public registerConnector(name: string, type: "input" | "output", connectionType: CONNECTION_TYPE) {
+    public registerConnector(name: string, description: string, type: "input" | "output", connectionType: CONNECTION_TYPE) {
+        if (this._connectors.get(name)) throw new Error(`Connector with name: ${name}, already exists!`)
+
         this._connectors.set(name, {
             type: type,
+            description: description,
             connectionType: connectionType,
             value: null
         });

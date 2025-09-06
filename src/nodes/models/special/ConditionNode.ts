@@ -1,15 +1,24 @@
-import NodeView from "../views/NodeView";
-import Node from "./Node"
+import { CONNECTION_TYPE } from "../../../types";
+import NodeView from "../../views/NodeView";
+import StandardNodeView from "../../views/StandardNodeView";
+import Node from "../Node"
 
 export default class ConditionNode extends Node {
     public _nodeTitle: string;
     public _nodeDescription: string;
 
-    constructor (existingNodes: Map<string, Node>) {
+    constructor () {
         super();
 
         this._nodeTitle = "If Statement";
-        this._nodeDescription = "";
+        this._nodeDescription = "A node that executes different actions based on the input condition";
+
+        this.registerConnector("A", "", "input", CONNECTION_TYPE.CONTROL_FLOW);
+        this.registerConnector("B", "", "output", CONNECTION_TYPE.CONTROL_FLOW);
+
+        this.registerConnector("CONDITION", "Condition", "input", CONNECTION_TYPE.DATA);
+        this.registerConnector("THEN", "Then", "output", CONNECTION_TYPE.CONTROL_FLOW);
+        this.registerConnector("ELSE", "Else", "output", CONNECTION_TYPE.CONTROL_FLOW);
     }
 
     execute(): Promise<void> {
@@ -17,31 +26,6 @@ export default class ConditionNode extends Node {
     }
     
     createView(): NodeView {
-        throw new Error("Method not implemented.");
+        return new StandardNodeView(this, "node__condition");
     }
-
-    // public async execute(): Promise<void> { 
-    //     const inputData = this.evaluateInput(); 
-    //     const condition = inputData["condition"];
-
-    //     const connections = this.getConnections();
-    //     const ifBlock = connections.output.get("if-block")?.nodes[0];
-    //     const elseBlock = connections.output.get("else-block")?.nodes[0];
-
-    //     if (!condition) return;
-
-    //     const executedBlock = (condition.value) ? ifBlock : elseBlock;
-
-    //     if (!executedBlock) return;
-
-    //     const seenNodes = new Set<string>();
-    //     const executionStack = new Array<string>();
- 
-    //     traverse(seenNodes, executionStack, executedBlock);
-        
-    //     for (const id of executionStack) {
-    //         const node = this._existingNodes.get(id)!;
-    //         await node.execute();
-    //     }
-    // }
 }

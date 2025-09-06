@@ -42,11 +42,16 @@
 }
 
 .connector {
-    fill: none;
-    stroke: oklch(0.4 0 0);
-    stroke-width: 1px;
-    width: 16px;
-    height: 16px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    line-height: 0;
+}
+
+.connector-svg {
+    width: 1.6rem;
+    height: 1.6rem;
 }
 
 .connector.connected {

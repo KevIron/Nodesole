@@ -1,7 +1,5 @@
 import Node from "./models/Node";
 
-// insert all nodes imports
-
 type NodeConstructor = new (...args: any[]) => Node
 
 export default class NodeFactory {

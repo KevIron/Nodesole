@@ -4,8 +4,8 @@ import NodeView from "../views/NodeView";
 import Node from "./Node";
 
 export default class EntryNode extends Node {
-    public _nodeDescription: string;
-    public _nodeTitle: string;
+    protected _nodeDescription: string;
+    protected _nodeTitle: string;
 
     constructor () {
         super();
@@ -13,12 +13,12 @@ export default class EntryNode extends Node {
         this._nodeTitle = "EntryNode";
         this._nodeDescription = "A node that's a starting point to the program";
 
-        this.registerConnector("A", "output", CONNECTION_TYPE.CONTROL_FLOW);
+        this.registerConnector("A", "", "output", CONNECTION_TYPE.CONTROL_FLOW);
     }
 
     public async execute(): Promise<void> { }
 
     public createView(): NodeView {
-        return new EntryNodeView(this);
+        return new EntryNodeView(this, "node__entry");
     }
 }
