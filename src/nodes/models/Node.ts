@@ -26,6 +26,8 @@ export default abstract class Node {
     private _connectors: Map<string, Connector>;
     private _view: NodeView | null;
 
+    private _connections: Set<string>;
+
     abstract execute(): Promise<void>;
     abstract createView(): NodeView
 
@@ -33,6 +35,8 @@ export default abstract class Node {
         this._id = crypto.randomUUID();
         this._connectors = new Map<string, Connector>();
         this._view = null;
+
+        this._connections = new Set<string>();
     }
 
     public registerConnector(name: string, description: string, type: "input" | "output", connectionType: CONNECTION_TYPE) {
@@ -57,8 +61,11 @@ export default abstract class Node {
         return connector;
     }
 
-    public setConnectorValue() {
-        
+    public setConnectorValue(name: string, value: NodeValue) {
+        const connector = this._connectors.get(name);
+        if (!connector) throw new Error(`Connector ${name} doesn't exist!`);
+
+        connector.value = value;
     }
 
     public getView() {
@@ -72,5 +79,17 @@ export default abstract class Node {
 
     public getTitle() {
         return this._nodeTitle;
+    }
+
+    public addConnection(id: string) {
+        this._connections.add(id);
+    }
+
+    public removeConnection(id: string) {
+        this._connections.delete(id);
+    }
+
+    public getConnections() {
+        return Array.from(this._connections);
     }
 }

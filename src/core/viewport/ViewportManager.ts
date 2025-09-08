@@ -1,13 +1,14 @@
-import Vec2 from "../utils/Vector";
-import Node from "../nodes/models/Node";
-import Procedure from "./Procedure";
+import Vec2 from "../../utils/Vector";
+import Node from "../../nodes/models/Node";
+import Procedure from "../Procedure";
 
-import { IEditorAction as EditorAction } from "../types.ts";
-import { MoveNodeAction, MoveViewportAction, DrawConnectionAction } from "./ViewportActions";
+import { IEditorAction as EditorAction } from "../../types.ts";
+import { MoveNodeAction, MoveViewportAction } from "./ViewportActions";
 
-import type { Connection } from "./Procedure.ts";
+import type { Connection } from "../Procedure.ts";
+import ConnectionsView from "../viewport/ConnectionsView";
 
-type ViewportElements = {
+export type ViewportElements = {
     container: HTMLDivElement,
     viewport: {
         container: HTMLDivElement,
@@ -33,6 +34,8 @@ export default class ViewportManager {
     private _currentAction: EditorAction | null;
     private _lastMousePos: Vec2 | null;
 
+    private _connectionManager: ConnectionsView;
+
     constructor (procedure: Procedure) {
         this._displayedProcedure = procedure;
         this._viewportElements = this.buildViewport();
@@ -42,6 +45,8 @@ export default class ViewportManager {
 
         this._currentAction = null;
         this._lastMousePos = null;
+
+        this._connectionManager = new ConnectionsView(this, procedure);
 
         this.attachEventListeners();
         this.updateViewport();
@@ -185,21 +190,12 @@ export default class ViewportManager {
 
             return;
         }
-        
-        if (clickedElement.closest(".connector-svg")) {
-            const nearestNode = clickedElement.closest<HTMLElement>(".node")!;
-            const node = this.getNodeFromElement(nearestNode);
-
-            this._currentAction = new DrawConnectionAction(this, node);
-
-            return;
-        }
 
         const nearestNode = clickedElement.closest<HTMLElement>(".node");
 
         if (nearestNode) {
             const node = this.getNodeFromElement(nearestNode);
-            this._currentAction = new MoveNodeAction(this, node);
+            this._currentAction = new MoveNodeAction(this, this._connectionManager, node);
         }
     }
 
@@ -277,5 +273,9 @@ export default class ViewportManager {
 
         const node = this._displayedProcedure.getNodeFromId(id);
         return node;
+    }
+
+    public getViewportElements(): ViewportElements {
+        return this._viewportElements;
     }
 }

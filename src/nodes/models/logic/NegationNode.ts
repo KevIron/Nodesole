@@ -15,7 +15,6 @@ export default class NegationNode extends Node {
 
         this.registerConnector("A", "A", "input", CONNECTION_TYPE.DATA);
         this.registerConnector("B", "B", "output", CONNECTION_TYPE.DATA);
-        this.registerConnector("C", "C", "output", CONNECTION_TYPE.DATA);
     }
 
     execute(): Promise<void> {

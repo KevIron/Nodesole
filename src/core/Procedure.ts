@@ -10,8 +10,8 @@ export type ConnectedNode = {
 export type Connection = {
     node1: string,
     node2: string,
-    connector1: string,
-    connector2: string, 
+    // connector1: string,
+    // connector2: string, 
     connType: CONNECTION_TYPE
 }
 
@@ -64,7 +64,7 @@ export default class Procedure {
         this.emit("nodeAdded", node);
     }
 
-    public connect(connDetails: Connection): void {
+    public connect(connDetails: Connection): string {
         if (!this._graph.has(connDetails.node1)) throw new Error(`Node with ID - ${connDetails.node1}, doesn't exist!`);
         if (!this._graph.has(connDetails.node2)) throw new Error(`Node with ID - ${connDetails.node2}, doesn't exist!`);
 
@@ -84,8 +84,16 @@ export default class Procedure {
             connections: [connectionID] 
         });
 
+        const node1 = this.getNodeFromId(connDetails.node1);
+        const node2 = this.getNodeFromId(connDetails.node2);
+
+        node1.addConnection(connectionID);
+        node2.addConnection(connectionID);
+
         this._connections.set(connectionID, connDetails);
         this.emit("nodeConnected", connDetails);
+
+        return connectionID;
     }
 
     public getNodes(): Node[] {

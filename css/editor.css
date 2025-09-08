@@ -58,14 +58,15 @@
     cursor: pointer;
 }
 
-.connector.connected {
-    fill: oklch(0.4 0 0) !important;
+.connector-svg.connected path,
+.connector-svg.connected circle {
+    fill: hsl(0, 0%, 80%) !important;
 }
 
 .connection {
     position: absolute;
-    stroke: oklch(0.4 0 0);
-    stroke-width: 4;
+    stroke: hsl(0, 0%, 80%);
+    stroke-width: 3;
     pointer-events: none;
     fill: none;
 }

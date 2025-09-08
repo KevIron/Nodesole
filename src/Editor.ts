@@ -1,5 +1,5 @@
 import Procedure from "./core/Procedure.ts";
-import ViewportManager from "./core/ViewportManager.ts";
+import ViewportManager from "./core/viewport/ViewportManager";
 import Vec2 from "./utils/Vector.ts";
 
 import AndNode from "./nodes/models/logic/AndNode";
@@ -22,6 +22,7 @@ export default class Editor {
         container?.insertAdjacentElement("afterbegin", viewport.getElement());
         viewport.setOffset(new Vec2(0, 0));
 
+        this._currentProcedure.insertNode(new ConditionNode());
         this._currentProcedure.insertNode(new ConditionNode());
         this._currentProcedure.insertNode(new AndNode());
         this._currentProcedure.insertNode(new OrNode());
