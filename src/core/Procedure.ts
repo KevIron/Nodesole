@@ -93,6 +93,9 @@ export default class Procedure {
         this._connections.set(connectionID, connDetails);
         this.emit("nodeConnected", connDetails);
 
+
+        console.log(this._graph);
+
         return connectionID;
     }
 
