@@ -1,4 +1,3 @@
-import { CONNECTION_TYPE } from "../../types";
 import { browserToViewportPos } from "../../utils/Converter";
 import { getElementCenter } from "../../utils/Element";
 import Vec2 from "../../utils/Vector";
