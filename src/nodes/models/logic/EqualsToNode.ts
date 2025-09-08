@@ -14,7 +14,7 @@ export default class EqualsToNode extends Node {
         this._nodeDescription = "A node that returns true if both inputs are equal";
 
         this.registerConnector("A", "A", "input", CONNECTION_TYPE.DATA);
-        this.registerConnector("B", "B", "output", CONNECTION_TYPE.DATA);
+        this.registerConnector("B", "B", "input", CONNECTION_TYPE.DATA);
         this.registerConnector("C", "C", "output", CONNECTION_TYPE.DATA);
     }
 

@@ -14,7 +14,7 @@ export default class OrNode extends Node {
         this._nodeDescription = "A node that returns true if one of the inputs is true";
 
         this.registerConnector("A", "A", "input", CONNECTION_TYPE.DATA);
-        this.registerConnector("B", "B", "output", CONNECTION_TYPE.DATA);
+        this.registerConnector("B", "B", "input", CONNECTION_TYPE.DATA);
         this.registerConnector("C", "C", "output", CONNECTION_TYPE.DATA);
     }
 
