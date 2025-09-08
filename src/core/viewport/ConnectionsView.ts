@@ -106,7 +106,10 @@ export default class ConnectionsView {
         const firstConnectorData = getConnectorData(this._drawnConnection.firstConnector.closest(".connector")!);
         const secondConnectorData = getConnectorData(secondConnector);
 
-        if (firstConnectorData.type === secondConnectorData.type || firstConnectorData.connectionType !== secondConnectorData.connectionType) {
+        if (firstConnectorData.type === secondConnectorData.type || 
+            firstConnectorData.connectionType !== secondConnectorData.connectionType ||
+            clickedSVG.classList.contains("connected")
+        ) {
             this.removeTempVisual();
             return;
         }
