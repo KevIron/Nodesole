@@ -120,6 +120,8 @@ export default class ConnectionsView {
         const connectionID = this._procedure.connect({
             node1: this._drawnConnection.firstConnector.closest<HTMLElement>(".node")?.dataset.id!,
             node2: secondConnector.closest<HTMLElement>(".node")?.dataset.id!,
+            connector1: firstConnectorData.name,
+            connector2: secondConnectorData.name,
             connType: parseInt(firstConnectorData.connectionType)
         });
 
@@ -129,6 +131,7 @@ export default class ConnectionsView {
             conn2: secondConnector
         });
 
+        this._drawnConnection.visual.svg.dataset.id = connectionID; 
         this._drawnConnection = null;
     }
 
@@ -214,5 +217,15 @@ export default class ConnectionsView {
         const ct2 = new Vec2(end.x - dst, end.y);
         
         visual.path.setAttribute("d", `M ${start.x} ${start.y} C ${ct1.x} ${ct1.y}, ${ct2.x} ${ct2.y}, ${end.x} ${end.y}`);
+    }
+
+    private removeConnection(id: string) {
+        const connection = this._connectionVisuals.get(id);
+        if (!connection) throw new Error("Connection with a provided id doesn't exist!");
+
+        connection.conn1.classList.remove("connected");
+        connection.conn2.classList.remove("connected");
+        
+        this._connectionVisuals.delete(id);
     }
 }

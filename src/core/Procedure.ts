@@ -10,8 +10,8 @@ export type ConnectedNode = {
 export type Connection = {
     node1: string,
     node2: string,
-    // connector1: string,
-    // connector2: string, 
+    connector1: string,
+    connector2: string, 
     connType: CONNECTION_TYPE
 }
 
