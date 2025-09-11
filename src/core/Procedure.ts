@@ -27,23 +27,22 @@ type ConnectedNodes = Map<ConnectorName, { node: NodeID, conn_type: CONNECTION_T
 
 
 function dfs(graph: Map<NodeID, { input: ConnectedNodes, output: ConnectedNodes }>, visited: Set<string>, stack: Array<string>, cur: string) {
+    if (visited.has(cur)) return;
     visited.add(cur);
 
     // Loop through inputs
     for (const [connectorName, connectedNode] of graph.get(cur)!.input) {
         if (connectedNode.conn_type === CONNECTION_TYPE.IGNORED) continue;
-        if (visited.has(connectedNode.node)) continue;
-        dfs(graph, visited, stack, connectedNode.node);
-    }
-
-    // Loop through outputs
-    for (const [connectorName, connectedNode] of graph.get(cur)!.output) {
-        if (connectedNode.conn_type === CONNECTION_TYPE.IGNORED) continue;
-        if (visited.has(connectedNode.node)) continue;
         dfs(graph, visited, stack, connectedNode.node);
     }
 
     stack.push(cur);
+
+    // Loop through outputs
+    for (const [connectorName, connectedNode] of graph.get(cur)!.output) {
+        if (connectedNode.conn_type === CONNECTION_TYPE.IGNORED) continue;
+        dfs(graph, visited, stack, connectedNode.node);
+    }
 }
 
 function prepareGraph(graph: Map<NodeID, { input: ConnectedNodes, output: ConnectedNodes }>, root: Node) {
@@ -52,7 +51,7 @@ function prepareGraph(graph: Map<NodeID, { input: ConnectedNodes, output: Connec
 
     dfs(graph, visited, executionStack, root.getID());
 
-    console.log(executionStack);
+    return executionStack;
 }
 
 export default class Procedure {
@@ -63,7 +62,7 @@ export default class Procedure {
                         input: ConnectedNodes, 
                         output: ConnectedNodes
                     }>;
-    private _connections: Map<string, { node1: NodeID, node2: NodeID }>;
+    private _connections: Map<string, { node1: NodeID, node2: NodeID, conn1: string, conn2: string}>;
 
     private _entryNode: Node; 
 
@@ -134,7 +133,9 @@ export default class Procedure {
 
         this._connections.set(connectionID, {
             node1: connDetails.node1,
-            node2: connDetails.node2
+            node2: connDetails.node2,
+            conn1: connDetails.conn1name,
+            conn2: connDetails.conn2name
         });
 
         this.emit("nodeConnected");
@@ -142,8 +143,36 @@ export default class Procedure {
         return connectionID;
     }
 
+    public async executeFromRoot(root: Node) {
+        const executionStack = prepareGraph(this._graph, root);
+
+        console.log(executionStack)
+
+        for (let i = 0; i < executionStack.length; ++i) {
+            const curNodeID = executionStack[i];
+            const curNode = this._nodes.get(curNodeID)!;
+
+            curNode.execute();
+
+            // Pass data to next nodes
+            for (const [connectorName, connectedNode] of this._graph.get(curNodeID)!.output) {
+                if (connectedNode.conn_type !== CONNECTION_TYPE.DATA) continue;
+
+                const nextNode = this._nodes.get(connectedNode.node)!;
+
+                const nextConnection = this._connections.get(connectedNode.connectionID)!;
+                const nextConnectorName = ( nextConnection.conn1 === connectorName) ? nextConnection.conn2 : nextConnection.conn1;
+                
+                const nextConnectorValue = curNode.getConnectorValue(connectorName);
+                if (!nextConnectorValue) continue;
+
+                nextNode.setConnectorValue(nextConnectorName, nextConnectorValue);
+            }
+        }
+    }
+
     public async execute() {
-        prepareGraph(this._graph, this._entryNode);
+        this.executeFromRoot(this._entryNode);
     }
 
     public getNodes(): Node[] {

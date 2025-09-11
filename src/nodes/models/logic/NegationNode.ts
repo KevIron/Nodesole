@@ -17,8 +17,16 @@ export default class NegationNode extends Node {
         this.registerConnector("B", "B", "output", CONNECTION_TYPE.DATA);
     }
 
-    execute(): Promise<void> {
-        throw new Error("Method not implemented.");
+    async execute(): Promise<void> {
+        this.setConnectorValue("B", {
+            value: {
+                number: 0,
+                boolean: false,
+                string: "XD",
+                array: []
+            },
+            type: "string"
+        });
     }
 
     createView(): NodeView {

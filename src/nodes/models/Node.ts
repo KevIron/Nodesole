@@ -61,6 +61,13 @@ export default abstract class Node {
         return connector;
     }
 
+    public getConnectorValue(name: string): NodeValue | null {
+        const connector = this._connectors.get(name)
+        if (!connector) throw new Error(`Connector ${name} doesn't exist!`);
+
+        return connector.value;
+    }
+
     public setConnectorValue(name: string, value: NodeValue) {
         const connector = this._connectors.get(name);
         if (!connector) throw new Error(`Connector ${name} doesn't exist!`);

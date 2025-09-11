@@ -21,8 +21,10 @@ export default class ConditionNode extends Node {
         this.registerConnector("ELSE", "Else", "output", CONNECTION_TYPE.IGNORED);
     }
 
-    execute(): Promise<void> {
-        throw new Error("Method not implemented.");
+    async execute(): Promise<void> {
+        const A = this.getConnectorValue("CONDITION");
+        if (!A) return;
+        console.log(A.value[A.type]);
     }
     
     createView(): NodeView {
