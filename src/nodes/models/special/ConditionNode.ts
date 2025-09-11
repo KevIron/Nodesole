@@ -17,8 +17,8 @@ export default class ConditionNode extends Node {
         this.registerConnector("B", "", "output", CONNECTION_TYPE.CONTROL_FLOW);
 
         this.registerConnector("CONDITION", "Condition", "input", CONNECTION_TYPE.DATA);
-        this.registerConnector("THEN", "Then", "output", CONNECTION_TYPE.CONTROL_FLOW);
-        this.registerConnector("ELSE", "Else", "output", CONNECTION_TYPE.CONTROL_FLOW);
+        this.registerConnector("THEN", "Then", "output", CONNECTION_TYPE.IGNORED);
+        this.registerConnector("ELSE", "Else", "output", CONNECTION_TYPE.IGNORED);
     }
 
     execute(): Promise<void> {

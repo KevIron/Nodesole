@@ -22,6 +22,73 @@ type ProcedureEvents =
     "nodeDisconnected" |
     string & {}
 
+const createUndirectedGraph = function (graph: Map<string, Array<ConnectedNode>>) {
+    const undirectedGraph = new Map<string, Array<ConnectedNode>>();
+
+    for (const [ node, _ ] of graph.entries()) {
+        if (!undirectedGraph.has(node)) undirectedGraph.set(node, []);
+
+        for (const nextNode of graph.get(node)!) {
+            if (!undirectedGraph.has(nextNode.id)) undirectedGraph.set(nextNode.id, []);
+
+            undirectedGraph.get(node)?.push(nextNode);
+            undirectedGraph.get(nextNode.id)?.push({ id: node, connections: nextNode.connections });
+        }
+    }
+
+    return undirectedGraph;
+}
+
+const dfs = function (graph: Map<string, Array<ConnectedNode>>, visited: Set<string>, cur: string, ignored = false) {
+    visited.add(cur);
+
+    for (const next of graph.get(cur)!) {
+        if (visited.has(next.id)) continue;
+        if (ignored) {
+            let isIgnored = false;
+
+            for (const connection of next.connections) {
+                const info = 
+            }
+
+            if (isIgnored) continue;
+        }
+
+        dfs(graph, visited, next.id, ignored);
+    }
+}
+
+const createSubgraphs = function (graph: Map<string, Array<ConnectedNode>>) {
+    const visited = new Set<string>();
+    let cnt = 0;
+
+    for (const node of graph.keys()) {
+        if (visited.has(node)) continue;
+        dfs(graph, visited, node);
+        cnt++;
+    }
+
+    console.log(cnt)
+}
+
+const removeUnreachableNodes = function (graph: Map<string, Array<ConnectedNode>>, origin: Node) {
+    const visited = new Set<string>();
+    const unvisited = new Set<string>();
+
+    dfs(graph, visited, origin.getID());
+
+    for (const node of graph.keys()) {
+        if (visited.has(node)) continue;
+        unvisited.add(node);
+    }
+
+    for (const node of unvisited) {
+        graph.delete(node);
+    }
+
+    return graph;
+}
+
 export default class Procedure {
     private _eventListeners: Map<ProcedureEvents, Array<Function>>;
 
@@ -93,10 +160,14 @@ export default class Procedure {
         this._connections.set(connectionID, connDetails);
         this.emit("nodeConnected", connDetails);
 
-
-        console.log(this._graph);
-
         return connectionID;
+    }
+
+    public async execute() {
+        const graph = createUndirectedGraph(this._graph);
+        const clearGraph = removeUnreachableNodes(graph, this._entryNode);
+        
+        console.log(clearGraph);
     }
 
     public getNodes(): Node[] {

@@ -232,9 +232,10 @@ export default class ViewportManager {
             this._viewportElements.viewport.nodes.appendChild(element);
         });
 
-        this._displayedProcedure.on("nodeConnected", (conn: Connection) => {
-            
-        });
+        document.addEventListener("keydown", (e) => {
+            if (e.key !== "k") return;
+            this._displayedProcedure.execute();
+        })
     }
 
     public getElement(): HTMLDivElement {

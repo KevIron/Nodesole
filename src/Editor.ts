@@ -24,6 +24,7 @@ export default class Editor {
 
         this._currentProcedure.insertNode(new ConditionNode());
         this._currentProcedure.insertNode(new ConditionNode());
+        this._currentProcedure.insertNode(new ConditionNode());
         this._currentProcedure.insertNode(new AndNode());
         this._currentProcedure.insertNode(new OrNode());
         this._currentProcedure.insertNode(new NegationNode());
