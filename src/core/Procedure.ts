@@ -2,19 +2,6 @@ import EntryNode from "../nodes/models/special/EntryNode";
 import Node from "../nodes/models/Node";
 import { CONNECTION_TYPE } from "../types";
 
-export type ConnectedNode = {
-    id: string,
-    connections: Array<string>
-}
-
-export type Connection = {
-    node1: string,
-    node2: string,
-    connector1: string,
-    connector2: string, 
-    connType: CONNECTION_TYPE
-}
-
 type ProcedureEvents = 
     "nodeAdded" |
     "nodeRemoved" |
@@ -22,111 +9,46 @@ type ProcedureEvents =
     "nodeDisconnected" |
     string & {}
 
-const createUndirectedGraph = function (graph: Map<string, Array<ConnectedNode>>) {
-    const undirectedGraph = new Map<string, Array<ConnectedNode>>();
 
-    for (const [ node, _ ] of graph.entries()) {
-        if (!undirectedGraph.has(node)) undirectedGraph.set(node, []);
+type NodeID = string;
+type ConnectorName = string;
 
-        for (const nextNode of graph.get(node)!) {
-            if (!undirectedGraph.has(nextNode.id)) undirectedGraph.set(nextNode.id, []);
-
-            undirectedGraph.get(node)?.push(nextNode);
-            undirectedGraph.get(nextNode.id)?.push({ id: node, connections: nextNode.connections });
-        }
-    }
-
-    return undirectedGraph;
+type ConnectionDetails = {
+    node1: NodeID,
+    node2: NodeID,
+    conn1name: string,
+    conn2name: string,
+    conn1type: "input" | "output",
+    conn2type: "input" | "output",
+    connectionType: CONNECTION_TYPE
 }
 
-const dfs = function (graph: Map<string, Array<ConnectedNode>>, visited: Set<string>, cur: string) {
-    visited.add(cur);
-
-    for (const next of graph.get(cur)!) {
-        if (visited.has(next.id)) continue;
-        dfs(graph, visited, next.id);
-    }
-}
-
-const dfsOmitIgnored = function (graph: Map<string, Array<ConnectedNode>>, visited: Set<string>, cur: string, curSubgraph: number, connections: Map<string, Connection>, assignment: Map<string, number>) {
-    visited.add(cur);
-    assignment.set(cur, curSubgraph);
-
-    for (const next of graph.get(cur)!) {
-        if (visited.has(next.id)) continue;
-        if (connections) {
-            let isIgnored = false;
-
-            for (const connection of next.connections) {
-                const info = connections.get(connection)!;
-
-                if (info.connType === CONNECTION_TYPE.IGNORED) {
-                    isIgnored = true;
-                    break;
-                }
-            }
-
-            if (isIgnored) continue;
-        }
-
-        dfsOmitIgnored(graph, visited, next.id, curSubgraph, connections, assignment);
-    }
-}
-
-const createSubgraphs = function (graph: Map<string, Array<ConnectedNode>>, connections: Map<string, Connection>) {
-    const visited = new Set<string>();
-    const subgraphAssignment = new Map<string, number>();
-
-    let subgraphID = 0;
-
-    for (const node of graph.keys()) {
-        if (visited.has(node)) continue;
-        dfsOmitIgnored(graph, visited, node, subgraphID, connections, subgraphAssignment);
-        subgraphID++;
-    }
-
-    console.log(subgraphAssignment);
-}
-
-const removeUnreachableNodes = function (graph: Map<string, Array<ConnectedNode>>, origin: Node) {
-    const visited = new Set<string>();
-    const unvisited = new Set<string>();
-
-    dfs(graph, visited, origin.getID());
-
-    for (const node of graph.keys()) {
-        if (visited.has(node)) continue;
-        unvisited.add(node);
-    }
-
-    for (const node of unvisited) {
-        graph.delete(node);
-    }
-
-    return graph;
-}
+type ConnectedNodes = Map<ConnectorName, { node: NodeID, type: CONNECTION_TYPE, connectionID: string }>;
 
 export default class Procedure {
     private _eventListeners: Map<ProcedureEvents, Array<Function>>;
 
-    private _nodes: Map<string, Node>;
-    private _connections: Map<string, Connection>;
-
-    private _graph: Map<string, Array<ConnectedNode>>;
+    private _nodes: Map<NodeID, Node>;
+    private _graph: Map<NodeID, { 
+                        input: ConnectedNodes, 
+                        output: ConnectedNodes
+                    }>;
 
     private _entryNode: Node; 
 
     constructor () {
         this._eventListeners = new Map<string, Array<Function>>;
 
-        this._nodes = new Map<string, Node>();
-        this._connections = new Map<string, Connection>();
-
-        this._graph = new Map<string, Array<ConnectedNode>>();
+        this._nodes = new Map<NodeID, Node>();
+        this._graph = new Map<NodeID, { 
+            input: ConnectedNodes, 
+            output: ConnectedNodes
+        }>();
 
         this._entryNode = new EntryNode();
         this.insertNode(this._entryNode);
     }
+
 
     private emit(event: ProcedureEvents, ...args: any[]): void {
         this._eventListeners.get(event)?.forEach(callback => callback(...args));
@@ -143,30 +65,34 @@ export default class Procedure {
         const nodeID = node.getID();
 
         this._nodes.set(nodeID, node);
-        this._graph.set(nodeID, []);
+        this._graph.set(nodeID, { 
+            input: new Map(), 
+            output: new Map()
+        });
         
         this.emit("nodeAdded", node);
     }
 
-    public connect(connDetails: Connection): string {
+
+    public connect(connDetails: ConnectionDetails): string {
         if (!this._graph.has(connDetails.node1)) throw new Error(`Node with ID - ${connDetails.node1}, doesn't exist!`);
         if (!this._graph.has(connDetails.node2)) throw new Error(`Node with ID - ${connDetails.node2}, doesn't exist!`);
 
-        const node1Connections = this._graph.get(connDetails.node1)!;
         const connectionID = crypto.randomUUID();
-        
-        let isFound = false;
 
-        node1Connections.forEach(node => {
-            if (node.id !== connDetails.node2 ) return;
-            node.connections.push(connectionID);
-            isFound = true;
-        });
+        const connections1 = this._graph.get(connDetails.node1)!
+        const connections2 = this._graph.get(connDetails.node2)!
 
-        if (!isFound) node1Connections.push({ 
-            id: connDetails.node2, 
-            connections: [connectionID] 
-        });
+        connections1[connDetails.conn1type].set(connDetails.conn1name, {
+            node: connDetails.node2,
+            type: connDetails.connectionType,
+            connectionID: connectionID
+        })
+        connections2[connDetails.conn2type].set(connDetails.conn2name, {
+            node: connDetails.node1,
+            type: connDetails.connectionType,
+            connectionID: connectionID
+        })
 
         const node1 = this.getNodeFromId(connDetails.node1);
         const node2 = this.getNodeFromId(connDetails.node2);
@@ -174,18 +100,13 @@ export default class Procedure {
         node1.addConnection(connectionID);
         node2.addConnection(connectionID);
 
-        this._connections.set(connectionID, connDetails);
-        this.emit("nodeConnected", connDetails);
+        this.emit("nodeConnected");
 
         return connectionID;
     }
 
     public async execute() {
-        const graph = createUndirectedGraph(this._graph);
-        const clearGraph = removeUnreachableNodes(graph, this._entryNode);
-        const subgraphs = createSubgraphs(clearGraph, this._connections);
-        
-        // console.log(clearGraph);
+
     }
 
     public getNodes(): Node[] {

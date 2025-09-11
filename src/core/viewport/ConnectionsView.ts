@@ -121,9 +121,11 @@ export default class ConnectionsView {
         const connectionID = this._procedure.connect({
             node1: this._drawnConnection.firstConnector.closest<HTMLElement>(".node")?.dataset.id!,
             node2: secondConnector.closest<HTMLElement>(".node")?.dataset.id!,
-            connector1: firstConnectorData.name,
-            connector2: secondConnectorData.name,
-            connType: parseInt(firstConnectorData.connectionType)
+            conn1name: firstConnectorData.name,
+            conn2name: secondConnectorData.name,
+            conn1type: firstConnectorData.type,
+            conn2type: secondConnectorData.type,
+            connectionType: parseInt(firstConnectorData.connectionType)
         });
 
         this._connectionVisuals.set(connectionID, {

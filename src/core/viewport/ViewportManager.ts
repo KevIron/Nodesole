@@ -5,7 +5,6 @@ import Procedure from "../Procedure";
 import { IEditorAction as EditorAction } from "../../types.ts";
 import { MoveNodeAction, MoveViewportAction } from "./ViewportActions";
 
-import type { Connection } from "../Procedure.ts";
 import ConnectionsView from "../viewport/ConnectionsView";
 
 export type ViewportElements = {
