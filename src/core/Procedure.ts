@@ -39,36 +39,53 @@ const createUndirectedGraph = function (graph: Map<string, Array<ConnectedNode>>
     return undirectedGraph;
 }
 
-const dfs = function (graph: Map<string, Array<ConnectedNode>>, visited: Set<string>, cur: string, ignored = false) {
+const dfs = function (graph: Map<string, Array<ConnectedNode>>, visited: Set<string>, cur: string) {
     visited.add(cur);
 
     for (const next of graph.get(cur)!) {
         if (visited.has(next.id)) continue;
-        if (ignored) {
+        dfs(graph, visited, next.id);
+    }
+}
+
+const dfsOmitIgnored = function (graph: Map<string, Array<ConnectedNode>>, visited: Set<string>, cur: string, curSubgraph: number, connections: Map<string, Connection>, assignment: Map<string, number>) {
+    visited.add(cur);
+    assignment.set(cur, curSubgraph);
+
+    for (const next of graph.get(cur)!) {
+        if (visited.has(next.id)) continue;
+        if (connections) {
             let isIgnored = false;
 
             for (const connection of next.connections) {
-                const info = 
+                const info = connections.get(connection)!;
+
+                if (info.connType === CONNECTION_TYPE.IGNORED) {
+                    isIgnored = true;
+                    break;
+                }
             }
 
             if (isIgnored) continue;
         }
 
-        dfs(graph, visited, next.id, ignored);
+        dfsOmitIgnored(graph, visited, next.id, curSubgraph, connections, assignment);
     }
 }
 
-const createSubgraphs = function (graph: Map<string, Array<ConnectedNode>>) {
+const createSubgraphs = function (graph: Map<string, Array<ConnectedNode>>, connections: Map<string, Connection>) {
     const visited = new Set<string>();
-    let cnt = 0;
+    const subgraphAssignment = new Map<string, number>();
+
+    let subgraphID = 0;
 
     for (const node of graph.keys()) {
         if (visited.has(node)) continue;
-        dfs(graph, visited, node);
-        cnt++;
+        dfsOmitIgnored(graph, visited, node, subgraphID, connections, subgraphAssignment);
+        subgraphID++;
     }
 
-    console.log(cnt)
+    console.log(subgraphAssignment);
 }
 
 const removeUnreachableNodes = function (graph: Map<string, Array<ConnectedNode>>, origin: Node) {
@@ -166,8 +183,9 @@ export default class Procedure {
     public async execute() {
         const graph = createUndirectedGraph(this._graph);
         const clearGraph = removeUnreachableNodes(graph, this._entryNode);
+        const subgraphs = createSubgraphs(clearGraph, this._connections);
         
-        console.log(clearGraph);
+        // console.log(clearGraph);
     }
 
     public getNodes(): Node[] {

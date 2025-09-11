@@ -1,3 +1,4 @@
+import { CONNECTION_TYPE } from "../../types";
 import { browserToViewportPos } from "../../utils/Converter";
 import { getElementCenter } from "../../utils/Element";
 import Vec2 from "../../utils/Vector";
@@ -106,7 +107,7 @@ export default class ConnectionsView {
         const secondConnectorData = getConnectorData(secondConnector);
 
         if (firstConnectorData.type === secondConnectorData.type || 
-            firstConnectorData.connectionType !== secondConnectorData.connectionType ||
+            ((firstConnectorData.connectionType === CONNECTION_TYPE.IGNORED.toString() ? CONNECTION_TYPE.CONTROL_FLOW.toString() : firstConnectorData.connectionType) !== (secondConnectorData.connectionType === CONNECTION_TYPE.IGNORED.toString() ? CONNECTION_TYPE.CONTROL_FLOW.toString() : secondConnectorData.connectionType)) ||
             clickedSVG.classList.contains("connected")
         ) {
             this.removeTempVisual();
