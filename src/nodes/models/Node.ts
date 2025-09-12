@@ -5,7 +5,6 @@ export type NodeValueTypes = number | boolean | string | NodeValue[];
 
 export type NodeValue = {
     value: NodeValueTypes
-    type: keyof NodeValueTypes
 }
 
 type Connector = {

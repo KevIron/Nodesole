@@ -18,11 +18,19 @@ export default class AndNode extends Node {
         this.registerConnector("C", "C", "output", CONNECTION_TYPE.DATA);
     }
 
-    execute(): Promise<void> {
-        throw new Error("Method not implemented.");
+    public async execute(): Promise<void> {
+        const A = this.getConnectorValue("A");
+        const B = this.getConnectorValue("B");
+
+        if (!A || !B) throw new Error("Not all necessary connectors are connected!");
+        if (typeof A.value !== "boolean" || typeof B.value !== "boolean") throw new Error("This node accepts only boolean data!");
+
+        this.setConnectorValue("C", {
+            value: (A.value === true && B.value === true) ? true : false
+        });
     }
 
-    createView(): NodeView {
+    public createView(): NodeView {
         return new HeadlessNodeView(this, "node__logic");
     }
 }

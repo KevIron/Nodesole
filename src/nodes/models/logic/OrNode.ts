@@ -18,8 +18,16 @@ export default class OrNode extends Node {
         this.registerConnector("C", "C", "output", CONNECTION_TYPE.DATA);
     }
 
-    execute(): Promise<void> {
-        throw new Error("Method not implemented.");
+    async execute(): Promise<void> {
+        const A = this.getConnectorValue("A");
+        const B = this.getConnectorValue("B");
+
+        if (!A || !B) throw new Error("Not all necessary connectors are connected!");
+        if (typeof A.value !== "boolean" || typeof B.value !== "boolean") throw new Error("This node accepts only boolean data!");
+
+        this.setConnectorValue("C", {
+            value: (A.value === true || B.value === true) ? true : false
+        });
     }
 
     createView(): NodeView {

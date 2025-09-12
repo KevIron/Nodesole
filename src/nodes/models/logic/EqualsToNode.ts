@@ -18,8 +18,14 @@ export default class EqualsToNode extends Node {
         this.registerConnector("C", "C", "output", CONNECTION_TYPE.DATA);
     }
 
-    execute(): Promise<void> {
-        throw new Error("Method not implemented.");
+    async execute(): Promise<void> {
+        const A = this.getConnectorValue("A");
+        const B = this.getConnectorValue("B");
+
+        if (!A || !B) throw new Error("Not all necessary connectors are connected!");
+
+        if (typeof A.value !== typeof B.value || A.value !== B.value) this.setConnectorValue("C", { value: false});
+        else this.setConnectorValue("C", { value: true });
     }
 
     createView(): NodeView {

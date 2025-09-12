@@ -18,7 +18,12 @@ export default class NegationNode extends Node {
     }
 
     async execute(): Promise<void> {
-        throw new Error("Method not implemented!");
+        const A = this.getConnectorValue("A");
+
+        if (!A) throw new Error("Not all necessary connectors are connected!");
+        if (typeof A.value !== "boolean") throw new Error("This node accepts only boolean data!");
+
+        this.setConnectorValue("B", { value: (A.value) ? false : true });
     }
 
     createView(): NodeView {

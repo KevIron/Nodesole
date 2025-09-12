@@ -55,10 +55,7 @@ export default class ConstantEmitterNode extends Node {
             value = this._currentValue;
         }
 
-        this.setConnectorValue("A", {
-            value: value,
-            type: this._currentType as keyof NodeValueTypes
-        });
+        this.setConnectorValue("A", { value: value });
     }
     
     createView(): NodeView {
