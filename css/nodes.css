@@ -53,6 +53,18 @@
 .node_body * { pointer-events: all }
 .node_body span:hover { cursor: default }
 
+.node-input,
+.node-select {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--text--secondary);
+    border-radius: 4px;
+    padding: 0 0.4rem;
+
+    font-size: inherit;
+    font-family: inherit;
+    color: var(--text--secondary);
+}
+
 /* NODE TYPE SPECIFIC DECLARATIONS */
 
 .node__standard {
@@ -67,11 +79,13 @@
 
         border-top: none;
         border-radius: 0 0 5px 5px;
+        width: 100%;
     }
 
     .row {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         gap: 2.4rem;
     }
 }
@@ -100,6 +114,28 @@
     }
 }
 
+.node_constant_emitter {
+    .node-inputs { 
+        display: flex;
+        align-items: center;
+        gap: 0.8rem; 
+    }
+
+    .node-input,
+    .node-select {
+        min-width: 8rem;
+    }
+
+    .node-input {
+        max-width: 14rem;
+    }
+
+    .row {
+        gap: 0.8rem;
+    }
+}
+
 .node__condition { --node-color: var(--node-red) }
 .node__headless { --node-color: var(--node-green) }
 .node__logic { --node-color: var(--text--secondary) }
+.node__data { --node-color: var(--node-blue) }

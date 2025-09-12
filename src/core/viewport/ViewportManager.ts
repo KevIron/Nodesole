@@ -192,7 +192,7 @@ export default class ViewportManager {
 
         const nearestNode = clickedElement.closest<HTMLElement>(".node");
 
-        if (nearestNode) {
+        if (nearestNode && !["select", "input"].includes(clickedElement.tagName.toLocaleLowerCase())) {
             const node = this.getNodeFromElement(nearestNode);
             this._currentAction = new MoveNodeAction(this, this._connectionManager, node);
         }

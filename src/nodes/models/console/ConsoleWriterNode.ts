@@ -8,8 +8,8 @@ export default class ConsoleWriterNode extends Node {
     constructor () {
         super();
 
-        this._nodeTitle = "";
-        this._nodeDescription = "";
+        this._nodeTitle = "Console Writer";
+        this._nodeDescription = "Writes the received data in a specified format to the console";
     }
 
     execute(): Promise<void> {

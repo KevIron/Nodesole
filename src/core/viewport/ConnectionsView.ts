@@ -70,14 +70,14 @@ export default class ConnectionsView {
     }
 
     private startDrawing(e: PointerEvent) {
-        e.preventDefault();
-        e.stopPropagation();
-        
         const target = e.target as HTMLElement;
         const connectorSVG = target.closest<HTMLElement>(".connector-svg");
         
         if (!connectorSVG) return;
         if (connectorSVG.classList.contains("connected")) return;
+
+        e.preventDefault();
+        e.stopPropagation();
 
         this._drawnConnection = { 
             visual: this.createConnectionVisual(),

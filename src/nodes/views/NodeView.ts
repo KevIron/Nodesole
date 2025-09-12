@@ -15,16 +15,18 @@ const connectorSVGs = {
         </svg>`,
     }
 
-export default abstract class NodeView {
+export default abstract class NodeView<T extends Node = Node> {
     private _nodeContainer: HTMLDivElement;
     private _isInitialized: boolean;
 
-    protected _model: Node;
+    protected _model: T;
     protected _styleClass: string;
 
     abstract generateTemplate(): string;
+
+    protected onElementParsed?(): void;
     
-    constructor(model: Node, styleClass: string) {
+    constructor(model: T, styleClass: string) {
         this._nodeContainer = document.createElement("div");
         this._model = model;
         this._styleClass = styleClass;
@@ -35,6 +37,8 @@ export default abstract class NodeView {
         this._nodeContainer.dataset.id = this._model.getID();
         this._nodeContainer.classList.add("node");
         this._nodeContainer.insertAdjacentHTML("afterbegin", this.generateTemplate());
+
+        this.onElementParsed?.();
 
         this.setPosition(new Vec2(0, 0));
         this._isInitialized = true;
@@ -71,6 +75,10 @@ export default abstract class NodeView {
 
         const nodeTransform = `translate(${pos.x}px, ${pos.y}px)`;
         this._nodeContainer.style.transform = nodeTransform;
+    }
+
+    protected getNodeContainer() {
+        return this._nodeContainer;
     }
 
     public getElement(): HTMLDivElement {

@@ -1,15 +1,12 @@
 import { CONNECTION_TYPE } from "../../types";
 import type NodeView from "../views/NodeView";
 
-type NodeValue = {
-    value: {
-        number: number,
-        boolean: boolean,
-        string: string, 
-        array: NodeValue[]
-    }
-    type: keyof NodeValue["value"]
-};
+export type NodeValueTypes = number | boolean | string | NodeValue[];
+
+export type NodeValue = {
+    value: NodeValueTypes
+    type: keyof NodeValueTypes
+}
 
 type Connector = {
     type: "input" | "output",
