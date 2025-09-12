@@ -8,6 +8,7 @@ import NegationNode from "./nodes/models/logic/NegationNode";
 import OrNode from "./nodes/models/logic/OrNode";
 import ConditionNode from "./nodes/models/special/ConditionNode";
 import ConstantEmitterNode from "./nodes/models/special/ConstantEmitterNode";
+import ConsoleWriterNode from "./nodes/models/console/ConsoleWriterNode";
 
 export default class Editor {
     private _currentProcedure: Procedure;
@@ -23,14 +24,14 @@ export default class Editor {
         container?.insertAdjacentElement("afterbegin", viewport.getElement());
         viewport.setOffset(new Vec2(0, 0));
 
-        this._currentProcedure.insertNode(new ConditionNode());
-        // this._currentProcedure.insertNode(new ConditionNode());
-        // this._currentProcedure.insertNode(new ConditionNode());
+        this._currentProcedure.insertNode(new ConditionNode(this._currentProcedure));
         // this._currentProcedure.insertNode(new AndNode());
         // this._currentProcedure.insertNode(new OrNode());
         // this._currentProcedure.insertNode(new NegationNode());
         // this._currentProcedure.insertNode(new EqualsToNode());
+        // this._currentProcedure.insertNode(new ConstantEmitterNode());
         this._currentProcedure.insertNode(new ConstantEmitterNode());
+        this._currentProcedure.insertNode(new ConsoleWriterNode());
     }
 }
 

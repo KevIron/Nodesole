@@ -1,3 +1,5 @@
+import { CONNECTION_TYPE } from "../../../types";
+import HeadlessNodeView from "../../views/HeadlessNodeView";
 import NodeView from "../../views/NodeView";
 import Node from "../Node";
 
@@ -10,13 +12,16 @@ export default class ConsoleWriterNode extends Node {
 
         this._nodeTitle = "Console Writer";
         this._nodeDescription = "Writes the received data in a specified format to the console";
+
+        this.registerConnector("A", "data", "input", CONNECTION_TYPE.DATA);
+        this.registerConnector("B", "", "input", CONNECTION_TYPE.CONTROL_FLOW);
     }
 
-    execute(): Promise<void> {
-        throw new Error("Method not implemented.");
+    async execute(): Promise<void> {
+        console.log("XD");
     }
 
     createView(): NodeView {
-        throw new Error("Method not implemented.");
+        return new HeadlessNodeView(this, "node__data");
     }
 }

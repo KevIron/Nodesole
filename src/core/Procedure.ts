@@ -188,4 +188,11 @@ export default class Procedure {
 
         return node;
     }
+
+    public getConnectedNodes(id: string) {
+        const nodes = this._graph.get(id);
+        if (!nodes) throw new Error("Node with provided ID does't exist!");
+        
+        return nodes; 
+    }
 }

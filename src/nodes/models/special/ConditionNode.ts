@@ -1,14 +1,15 @@
+import Procedure from "../../../core/Procedure";
 import { CONNECTION_TYPE } from "../../../types";
 import NodeView from "../../views/NodeView";
 import StandardNodeView from "../../views/StandardNodeView";
-import Node from "../Node"
+import ExecutionAlteringNode from "../ExecutionAlteringNode";
 
-export default class ConditionNode extends Node {
+export default class ConditionNode extends ExecutionAlteringNode {
     public _nodeTitle: string;
     public _nodeDescription: string;
 
-    constructor () {
-        super();
+    constructor (procedure: Procedure) {
+        super(procedure);
 
         this._nodeTitle = "If Statement";
         this._nodeDescription = "A node that executes different actions based on the input condition";
@@ -22,9 +23,16 @@ export default class ConditionNode extends Node {
     }
 
     async execute(): Promise<void> {
-        const A = this.getConnectorValue("CONDITION");
-        if (!A) return;
-        console.log(A);
+        const condition = this.getConnectorValue("CONDITION");
+
+        const thenNode = this.getConnectedNode("THEN");
+        const elseNode = this.getConnectedNode("ELSE");
+
+        if (!thenNode || !condition) throw new Error("Not all required connector are connected!");
+        if (typeof condition.value !== "boolean") throw new Error("Condition must be of type boolean!");
+
+        if (condition.value) this._procedure.executeFromRoot(thenNode);
+        else if (elseNode) this._procedure.executeFromRoot(elseNode);
     }
     
     createView(): NodeView {
