@@ -15,10 +15,15 @@ export default class Editor {
 
     constructor() {
         this._currentProcedure = new Procedure();
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key !== "k") return;
+            this._currentProcedure.execute();
+        });
     }
 
     public displayProcedure() {
-        const container = document.querySelector(".editor-tabs");
+        const container = document.querySelector(".editor-canvas");
         const viewport = new ViewportManager(this._currentProcedure);
         
         container?.insertAdjacentElement("afterbegin", viewport.getElement());

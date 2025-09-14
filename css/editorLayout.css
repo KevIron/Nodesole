@@ -1,0 +1,106 @@
+/* COMMON */
+
+body {
+    background-color: var(--bg-primary);
+    height: 100dvh;
+    gap: 1px;
+}
+
+body,
+.editor-wrapper {
+    display: grid;
+    grid-template-rows: min-content 1fr;
+}
+
+.editor-header,
+.panel {
+    background-color: var(--bg-tertiary);
+}
+
+.editor-body {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+}
+
+/* EDITOR HEADER */
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.2rem 2.4rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    border: none;
+    border-radius: 4px;
+    background-color: var(--bg-quaternary);
+
+    padding: 0.2rem 0.8rem;
+
+    color: var(--text--tertiary);
+}
+
+.btn-icon {
+    width: 2.4rem;
+    height: 2.4rem;
+}
+
+.logo {
+    font-weight: 600;
+    font-size: 2.4rem;
+    color: #0EE267;
+}
+
+/* TABS */
+
+.open-tabs {
+    display: flex;
+    background-color: var(--bg-secondary);
+    gap: 1.2rem;
+
+    padding-top: 0.8rem;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    background-color: var(--bg-secondary);
+    outline: 1px solid var(--text--secondary);
+    
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px 6px 0 0;
+
+    color: var(--text--primary);
+}
+
+.tab.active {
+    background-color: var(--bg-primary);
+}
+
+.tab:first-child {
+    border-radius: 0 5px 0 0;
+}
+
+.tab-icon {
+    width: 2.4rem;
+    height: 2.4rem;
+}
+
+/* SIDE PANELS */
+
+.panels-wrapper {
+    display: grid;
+    grid-template-rows: 6fr 4fr;
+    gap: 1px;
+}

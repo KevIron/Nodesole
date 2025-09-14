@@ -6,20 +6,13 @@
 
 :root {
     --bg-primary: hsl(0, 0%, 10%);
-    --bg-secondary: oklch(0.987 0.0 0);
-    --bg-tertiary: oklch(1 0.0 0);
-    
-    --border-primary: oklch(0.4 0.0 0);
+    --bg-secondary: hsl(0, 0%, 16%);
+    --bg-tertiary: hsl(0, 0%, 20%);
+    --bg-quaternary: hsl(0, 0%, 40%);
 
-    --shadow-primary: 
-        2px 2px 2px oklch(0 0 0 / 0.2),
-        4px 4px 4px oklch(0 0 0 / 0.1);
-    --shadow-primary-reversed: 
-        -2px -2px 2px oklch(0 0 0 / 0.2),
-        -4px -4px 4px oklch(0 0 0 / 0.1);
-
-    --text-primary: oklch(0.2 0.0 0);
-    --text-secondary: oklch(0.3 0.0 0);
+    --text--primary: hsl(0, 0%, 70%);
+    --text--secondary: hsl(0, 0%, 80%);
+    --text--tertiary: hsl(0, 0%, 85%);
 }
 
 html {
@@ -31,10 +24,4 @@ body {
     font-size: 1.6rem;
 }
 
-.editor {
-    display: grid;
-    grid-template-columns: minmax(200px, 20%) 1fr minmax(200px, 20%);
-    
-    /* padding: 1.75rem 2rem; */
-    height: 100vh;
-}
+.vertical-center { align-items: center }

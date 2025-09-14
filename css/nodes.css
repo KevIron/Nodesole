@@ -6,14 +6,7 @@
     --node-green: hsl(145 88% 47%);
     --node-blue: hsl(209 88% 47%);
 
-    --text--primary: hsl(0, 0%, 70%);
-    --text--secondary: hsl(0, 0%, 80%);
-
     --text--dark: hsl(0, 0%, 5%);
-
-    --bg-primary: hsl(0, 0%, 10%);
-    --bg-secondary: hsl(0, 0%, 16%);
-    --bg-tertiary: hsl(0, 0%, 20%);
 }
 
 .node {

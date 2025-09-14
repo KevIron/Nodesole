@@ -10,17 +10,63 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="./css/editor.css">
+    <link rel="stylesheet" href="./css/editorLayout.css">
     <link rel="stylesheet" href="./css/nodes.css">
     <link rel="stylesheet" href="./css/general.css">
 
     <script src="./src/Editor.ts" type="module" defer></script>
 </head>
 <body>
-    <main class="editor">
-        <sections class="selector"></sections>
-        <section class="editor-tabs"></section>
-        <section class="properties">
+    <header class="editor-header vertical-center">
+        <h1 class="logo">NODESOLE</h1>
+        <div class="action-buttons vertical-center">
+            <button class="action-btn">
+                <svg class="btn-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 15.5V4.5L15.5 10L7 15.5Z" fill="#D9D9D9"/>
+                </svg>
+            </button>
+            <button class="action-btn">
+                <svg class="btn-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.5 14.5V5.5H14.5V14.5H5.5Z" fill="#D9D9D9"/>
+                </svg>
+            </button>
+            <button class="action-btn">
+                <svg class="btn-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.5 16C8.73611 16 8.02062 15.8511 7.35353 15.5532C6.68632 15.2554 6.10577 14.853 5.61186 14.3461C5.11784 13.8393 4.72569 13.2436 4.43542 12.559C4.14514 11.8745 4 11.1404 4 10.3566H5.17857C5.17857 11.5771 5.60144 12.6212 6.44717 13.489C7.29291 14.3568 8.31052 14.7907 9.5 14.7907C10.6895 14.7907 11.7071 14.3568 12.5528 13.489C13.3986 12.6212 13.8214 11.5771 13.8214 10.3566C13.8214 9.13609 13.3986 8.09195 12.5528 7.22416C11.7071 6.35637 10.6874 5.92248 9.49362 5.92248H9.40179L10.2366 6.77907L9.40179 7.63566L7.14286 5.31783L9.40179 3L10.2366 3.85659L9.38542 4.71318H9.5C10.2639 4.71318 10.9794 4.8621 11.6465 5.15995C12.3137 5.45779 12.8942 5.86017 13.3881 6.36707C13.8822 6.87385 14.2743 7.46955 14.5646 8.15415C14.8549 8.83863 15 9.57278 15 10.3566C15 11.1404 14.8549 11.8745 14.5646 12.559C14.2743 13.2436 13.8822 13.8393 13.3881 14.3461C12.8942 14.853 12.3137 15.2554 11.6465 15.5532C10.9794 15.8511 10.2639 16 9.5 16Z" fill="#D9D9D9"/>
+                </svg>
+            </button>
+        </div>
+        <button class="action-btn">
+            <svg class="btn-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.20312 13.0469C6.76562 12.651 7.36719 12.3568 8.00781 12.1641C8.64844 11.9714 9.3125 11.875 10 11.875C10.6875 11.875 11.3516 11.9714 11.9922 12.1641C12.6328 12.3568 13.2344 12.651 13.7969 13.0469C14.1615 12.6198 14.4323 12.1458 14.6094 11.625C14.7865 11.1042 14.875 10.5625 14.875 10C14.875 8.64927 14.3998 7.49906 13.4495 6.54937C12.4992 5.59979 11.3482 5.125 9.99641 5.125C8.64464 5.125 7.49479 5.59979 6.54688 6.54937C5.59896 7.49906 5.125 8.64927 5.125 10C5.125 10.5625 5.21354 11.1042 5.39062 11.625C5.56771 12.1458 5.83854 12.6198 6.20312 13.0469ZM10 11.125C9.375 11.125 8.84375 10.9062 8.40625 10.4688C7.96875 10.0312 7.75 9.5 7.75 8.875C7.75 8.25 7.96875 7.71875 8.40625 7.28125C8.84375 6.84375 9.375 6.625 10 6.625C10.625 6.625 11.1562 6.84375 11.5938 7.28125C12.0312 7.71875 12.25 8.25 12.25 8.875C12.25 9.5 12.0312 10.0312 11.5938 10.4688C11.1562 10.9062 10.625 11.125 10 11.125ZM10.0044 16C9.17854 16 8.40104 15.8438 7.67188 15.5312C6.94271 15.2188 6.30469 14.7891 5.75781 14.2422C5.21094 13.6953 4.78125 13.0575 4.46875 12.3288C4.15625 11.6 4 10.8214 4 9.99281C4 9.16427 4.15625 8.38802 4.46875 7.66406C4.78125 6.9401 5.21094 6.30469 5.75781 5.75781C6.30469 5.21094 6.9425 4.78125 7.67125 4.46875C8.4 4.15625 9.17865 4 10.0072 4C10.8357 4 11.612 4.15625 12.3359 4.46875C13.0599 4.78125 13.6953 5.21094 14.2422 5.75781C14.7891 6.30469 15.2188 6.94125 15.5312 7.6675C15.8438 8.39385 16 9.1699 16 9.99563C16 10.8215 15.8438 11.599 15.5312 12.3281C15.2188 13.0573 14.7891 13.6953 14.2422 14.2422C13.6953 14.7891 13.0588 15.2188 12.3325 15.5312C11.6061 15.8438 10.8301 16 10.0044 16Z" fill="#D9D9D9"/>
+            </svg>
+            <span>Username</span>
+        </button>
+    </header>
+    <main class="editor-body">
+        <section class="editor-wrapper">
+            <div class="open-tabs">
+                <div class="tab active">
+                    <span>Main Procedure</span>
+                    <svg class="tab-icon" viewBox="0 0 16 17" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12.5L12 4.5" stroke="#B3B3B3" stroke-linecap="round"/>
+                        <path d="M4 4.5L12 12.5" stroke="#B3B3B3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="tab">
+                    <span>Second Procedure</span>
+                    <svg class="tab-icon" viewBox="0 0 16 17" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12.5L12 4.5" stroke="#B3B3B3" stroke-linecap="round"/>
+                        <path d="M4 4.5L12 12.5" stroke="#B3B3B3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="editor-canvas"></div>
         </section>
+        <aside class="panels-wrapper">
+            <div class="panel"></div>
+            <div class="panel"></div>
+        </aside>
     </main>
 </body>
 </html>

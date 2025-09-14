@@ -209,11 +209,6 @@ export default class ViewportManager {
             (document.activeElement as HTMLElement)?.blur();
             this.handleScroll(e);
         });
-
-        document.addEventListener("keydown", (e) => {
-            if (e.key !== "k") return;
-            this._displayedProcedure.execute();
-        })
     }
 
     public getElement(): HTMLDivElement {

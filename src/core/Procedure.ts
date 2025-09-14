@@ -146,8 +146,6 @@ export default class Procedure {
     public async executeFromRoot(root: Node) {
         const executionStack = prepareGraph(this._graph, root);
 
-        console.log(executionStack)
-
         for (let i = 0; i < executionStack.length; ++i) {
             const curNodeID = executionStack[i];
             const curNode = this._nodes.get(curNodeID)!;
