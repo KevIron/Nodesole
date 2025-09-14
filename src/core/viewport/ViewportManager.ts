@@ -233,8 +233,6 @@ export default class ViewportManager {
         return this._zoomFactor;
     }
 
-    public setZoomFactor(): void {}
-
     public getViewportParams(): ViewportParams {
         const containerRect = this._viewportElements.container.getBoundingClientRect();
         const containerPos = new Vec2(containerRect.left, containerRect.top)
