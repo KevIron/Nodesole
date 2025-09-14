@@ -63,6 +63,8 @@
     font-size: inherit;
     font-family: inherit;
     color: var(--text--secondary);
+
+    white-space: wrap;
 }
 
 /* NODE TYPE SPECIFIC DECLARATIONS */
@@ -87,6 +89,17 @@
         justify-content: space-between;
         align-items: center;
         gap: 2.4rem;
+    }
+
+    .node-input {
+        width: 24rem;
+        padding: 0.4rem 0.4rem;
+    }
+
+    .input-wrapper {
+        display: grid;
+        gap: 0.4rem;
+        margin-top: 0.8rem;
     }
 }
 

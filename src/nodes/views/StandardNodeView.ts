@@ -1,6 +1,11 @@
+import Node from "../models/Node";
 import NodeView from "./NodeView";
 
-export default class StandardNodeView extends NodeView {
+export default class StandardNodeView<T extends Node = Node> extends NodeView<T> {
+    constructor(model: T, styleClass: string) {
+        super(model, styleClass);
+    }
+
     public generateBodyMarkup() {
         const connectors = Array.from(this._model.getConnectors().entries());
 

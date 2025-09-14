@@ -14,18 +14,18 @@ type Connector = {
     value: NodeValue | null
 };
 
-export default abstract class Node {
+export default abstract class Node<V extends NodeView = NodeView> {
     protected abstract _nodeTitle: string;
     protected abstract _nodeDescription: string;
 
     private _id: string;
     private _connectors: Map<string, Connector>;
-    private _view: NodeView | null;
+    private _view: V | null;
 
     private _connections: Set<string>;
 
     abstract execute(): Promise<void>;
-    abstract createView(): NodeView
+    abstract createView(): V
 
     constructor () {
         this._id = crypto.randomUUID();

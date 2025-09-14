@@ -1,9 +1,8 @@
 import { CONNECTION_TYPE } from "../../../types";
-import HeadlessNodeView from "../../views/HeadlessNodeView";
-import NodeView from "../../views/NodeView";
+import ConsoleWriterNodeView from "../../views/specific/ConsoleWriterNodeView";
 import Node from "../Node";
 
-export default class ConsoleWriterNode extends Node {
+export default class ConsoleWriterNode extends Node<ConsoleWriterNodeView> {
     protected _nodeTitle: string;
     protected _nodeDescription: string;
 
@@ -13,15 +12,23 @@ export default class ConsoleWriterNode extends Node {
         this._nodeTitle = "Console Writer";
         this._nodeDescription = "Writes the received data in a specified format to the console";
 
-        this.registerConnector("A", "data", "input", CONNECTION_TYPE.DATA);
-        this.registerConnector("B", "", "input", CONNECTION_TYPE.CONTROL_FLOW);
+        this.registerConnector("A", "", "input", CONNECTION_TYPE.CONTROL_FLOW);
+        this.registerConnector("B", "", "output", CONNECTION_TYPE.CONTROL_FLOW);
+
+        this.registerConnector("DATA", "Data", "input", CONNECTION_TYPE.DATA);
     }
 
     async execute(): Promise<void> {
-        console.log("XD");
+        const Data = this.getConnectorValue("DATA");
+        const formatText = this.getView().getFormatInputValue();
+
+        if (formatText === null) throw new Error("Cannot get the format text!");
+
+        const outputText = formatText.replace("%d", Data?.value.toString() || "%d");
+        console.log(outputText);
     }
 
-    createView(): NodeView {
-        return new HeadlessNodeView(this, "node__data");
+    public createView() {
+        return new ConsoleWriterNodeView(this, "node__data");
     }
 }
