@@ -30,15 +30,20 @@
     z-index: 1;
 }
 
+.node > div {
+    pointer-events: none;
+}
+
 .node_header, 
 .node_body {
     width: 100%;
     border: 2px solid var(--node-color);
     padding: 1rem;
+
+    pointer-events: none;
 }
 
 .node_header { 
-    pointer-events: none;
     padding: 0.2rem 1.2rem;
 
     text-align: center;
@@ -46,14 +51,12 @@
 }
 
 .node_body { 
-    pointer-events: none;
     background-color: var(--bg-tertiary);
     width: min-content;
 
     color: var(--text--primary);
 }
 
-.node_body * { pointer-events: all }
 .node_body span:hover { cursor: default }
 
 .node-input,
@@ -68,6 +71,8 @@
     color: var(--text--secondary);
 
     white-space: wrap;
+
+    pointer-events: all;
 }
 
 /* NODE TYPE SPECIFIC DECLARATIONS */

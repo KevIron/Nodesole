@@ -6,6 +6,15 @@ export default class ConsoleWriterNodeView extends StandardNodeView<ConsoleWrite
 
     protected onElementParsed(): void {
         this._formatInput = this.getNodeContainer().querySelector<HTMLInputElement>("#outputFormat");
+ 
+        if (!this._formatInput) return;
+        this._formatInput.addEventListener("focus", () => {
+            if (!this._formatInput) return;
+            this._formatInput.addEventListener("input", () => {
+                if (!this._formatInput) return;
+                this._model.setFormatString(this._formatInput.textContent)
+            });
+        })
     }
 
     public generateBodyMarkup() {
@@ -38,10 +47,5 @@ export default class ConsoleWriterNodeView extends StandardNodeView<ConsoleWrite
         `;
 
         return rows.join("\n") + inputMarkup;
-    }
-
-    public getFormatInputValue() {
-
-        return this._formatInput?.textContent || null;
     }
 }

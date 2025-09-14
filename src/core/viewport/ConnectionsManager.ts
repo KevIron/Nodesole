@@ -26,7 +26,7 @@ function getConnectorData(connector: HTMLElement) {
     return { name: name, type: type, connectionType: connectionType };
 }
 
-export default class ConnectionsView {
+export default class ConnectionsManager {
     private _viewportElements: ViewportElements;
     private _procedure: Procedure;
     private _manager: ViewportManager;

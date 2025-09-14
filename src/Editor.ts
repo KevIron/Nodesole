@@ -25,11 +25,11 @@ export default class Editor {
         viewport.setOffset(new Vec2(0, 0));
 
         this._currentProcedure.insertNode(new ConditionNode(this._currentProcedure));
-        // this._currentProcedure.insertNode(new AndNode());
-        // this._currentProcedure.insertNode(new OrNode());
-        // this._currentProcedure.insertNode(new NegationNode());
-        // this._currentProcedure.insertNode(new EqualsToNode());
-        // this._currentProcedure.insertNode(new ConstantEmitterNode());
+        this._currentProcedure.insertNode(new AndNode());
+        this._currentProcedure.insertNode(new OrNode());
+        this._currentProcedure.insertNode(new NegationNode());
+        this._currentProcedure.insertNode(new EqualsToNode());
+        this._currentProcedure.insertNode(new ConstantEmitterNode());
         this._currentProcedure.insertNode(new ConstantEmitterNode());
         this._currentProcedure.insertNode(new ConsoleWriterNode());
     }

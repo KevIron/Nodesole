@@ -14,23 +14,21 @@ type Connector = {
     value: NodeValue | null
 };
 
-export default abstract class Node<V extends NodeView = NodeView> {
+export default abstract class Node {
     protected abstract _nodeTitle: string;
     protected abstract _nodeDescription: string;
 
     private _id: string;
     private _connectors: Map<string, Connector>;
-    private _view: V | null;
 
     private _connections: Set<string>;
 
     abstract execute(): Promise<void>;
-    abstract createView(): V
+    abstract createView(): NodeView
 
     constructor () {
         this._id = crypto.randomUUID();
         this._connectors = new Map<string, Connector>();
-        this._view = null;
 
         this._connections = new Set<string>();
     }
@@ -69,11 +67,6 @@ export default abstract class Node<V extends NodeView = NodeView> {
         if (!connector) throw new Error(`Connector ${name} doesn't exist!`);
 
         connector.value = value;
-    }
-
-    public getView() {
-        if (!this._view) this._view = this.createView();
-        return this._view;
     }
     
     public getID() {

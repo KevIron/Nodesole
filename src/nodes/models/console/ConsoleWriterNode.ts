@@ -2,9 +2,11 @@ import { CONNECTION_TYPE } from "../../../types";
 import ConsoleWriterNodeView from "../../views/specific/ConsoleWriterNodeView";
 import Node from "../Node";
 
-export default class ConsoleWriterNode extends Node<ConsoleWriterNodeView> {
+export default class ConsoleWriterNode extends Node{
     protected _nodeTitle: string;
     protected _nodeDescription: string;
+
+    private _formatString: string = "";
 
     constructor () {
         super();
@@ -20,12 +22,16 @@ export default class ConsoleWriterNode extends Node<ConsoleWriterNodeView> {
 
     async execute(): Promise<void> {
         const Data = this.getConnectorValue("DATA");
-        const formatText = this.getView().getFormatInputValue();
+        const formatText = this._formatString;
 
         if (formatText === null) throw new Error("Cannot get the format text!");
 
         const outputText = formatText.replace("%d", Data?.value.toString() || "%d");
         console.log(outputText);
+    }
+
+    public setFormatString(format: string) {
+        this._formatString = format;
     }
 
     public createView() {
