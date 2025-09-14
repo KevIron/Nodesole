@@ -75,8 +75,6 @@ export default class NodesManager {
 
         const { clientX, clientY } = e;
 
-        console.log(clientX, clientY)
-
         const pos = new Vec2(
             Math.round((clientX - this._movedNodeData.clickOffset.x) * 1000) / 1000,
             Math.round((clientY - this._movedNodeData.clickOffset.y) * 1000) / 1000
