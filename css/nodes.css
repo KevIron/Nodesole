@@ -20,6 +20,11 @@
     font-family: "Fira Code", sans-serif;
     font-size: 1.4rem;
 
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+
+    overflow: hidden;
+
     position: absolute;
     overflow: hidden;
     z-index: 1;
@@ -34,7 +39,6 @@
 
 .node_header { 
     pointer-events: none;
-    border-radius: 5px 5px 0 0;
     padding: 0.2rem 1.2rem;
 
     text-align: center;
@@ -44,7 +48,6 @@
 .node_body { 
     pointer-events: none;
     background-color: var(--bg-tertiary);
-    border-radius: 5px;
     width: min-content;
 
     color: var(--text--primary);
