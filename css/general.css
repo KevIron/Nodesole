@@ -13,6 +13,8 @@
     --text--primary: hsl(0, 0%, 70%);
     --text--secondary: hsl(0, 0%, 80%);
     --text--tertiary: hsl(0, 0%, 85%);
+
+    --text-dark: hsl(0, 0%, 60%);
 }
 
 html {
@@ -20,7 +22,7 @@ html {
 }
 
 body {
-    font-family: sans-serif;
+    font-family: "Rubik", sans-serif;
     font-size: 1.6rem;
 }
 
