@@ -9,6 +9,7 @@ import OrNode from "./nodes/models/logic/OrNode";
 import ConditionNode from "./nodes/models/special/ConditionNode";
 import ConstantEmitterNode from "./nodes/models/special/ConstantEmitterNode";
 import ConsoleWriterNode from "./nodes/models/console/ConsoleWriterNode";
+import ConsoleView from "./core/Console";
 
 export default class Editor {
     private _currentProcedure: Procedure;
@@ -20,6 +21,11 @@ export default class Editor {
             if (e.key !== "k") return;
             this._currentProcedure.execute();
         });
+
+        const console = document.querySelector(".console");
+        const consl = new ConsoleView();
+
+        console?.insertAdjacentElement("beforeend", consl.getElement());
     }
 
     public displayProcedure() {

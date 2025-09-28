@@ -110,6 +110,7 @@ body,
 
 .panel {
     padding: 2.4rem;
+    min-width: 0;
 }
 
 .panel-header,
@@ -156,7 +157,6 @@ body,
 }
 
 .console {
-    padding: 8px;
     background-color: var(--bg-secondary);
     box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.15);
     border-radius: 3px;
@@ -166,17 +166,17 @@ body,
 
     font-family: "Fira Mono";
     font-size: 1.4rem;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .console::-webkit-scrollbar {
-  width: 1.2rem;
+    width: 0.4rem;
 }
 
 .console::-webkit-scrollbar-track {
     background-color: inherit;
     background-color: var(--bg-secondary);
-    border-left: 1px solid var(--bg-primary);
+    width: 0.6rem;
 }
 
 .console::-webkit-scrollbar-thumb {
@@ -190,11 +190,23 @@ body,
 .console-content {
     display: flex;
     flex-direction: column;
-    max-height: 100px;
-
-    gap: 0.2rem;
+    max-height: 0;
+    line-height: 1.8rem;
+    padding: 8px;
 
     color: var(--text-dark);
 }
 
+.console-content p::selection {
+    background-color: #fff;
+    color: #000;
+}
+
+.console-content p:focus {
+    outline: none;
+}
+
+.console-content > .user-input {
+    word-break: break-all;
+}
 /* PROPERTIES PANEL */
