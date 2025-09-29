@@ -1,14 +1,14 @@
+import { moveCaretEnd } from "../utils/Input";
+
 export default class ConsoleView {
     private _consoleContentsContainer: HTMLElement;
-    private _latestInput: HTMLElement | null;
+    private _inputRequestCallback: ((input: string) => void) | null;
 
     constructor () {
         this._consoleContentsContainer = document.createElement("div");
         this._consoleContentsContainer.classList.add("console-content");
-
-        this._latestInput = null;
-
-        this.insertInput();
+        
+        this._inputRequestCallback = null;
     }
 
     private insertInput() {
@@ -17,14 +17,17 @@ export default class ConsoleView {
         input.classList.add("user-input");
         input.contentEditable = "plaintext-only";
         input.textContent = "> ";
-
+        
         const handler = this.handleInput.bind(this);
-
+        
         input.addEventListener("focus", () => input.addEventListener("keydown", handler));
         input.addEventListener("focusout", () => input.removeEventListener("keydown", handler));
-
+        
         this._consoleContentsContainer.insertAdjacentElement("beforeend", input);
-        this._latestInput = input;
+
+        input.focus();
+
+        moveCaretEnd(input);
     }
 
     public handleInput(e: KeyboardEvent) {
@@ -32,7 +35,12 @@ export default class ConsoleView {
 
         if (e.key == "Enter") {
             e.preventDefault();
-            console.log(target.textContent);
+            target.contentEditable = "false";
+
+            if (!this._inputRequestCallback) return;
+
+            this._inputRequestCallback(target.textContent.slice(2));
+            this._inputRequestCallback = null;
 
             return;
         }
@@ -67,20 +75,22 @@ export default class ConsoleView {
         }
     }
 
+    public requestInput(fn: (input: string) => void) {
+        this._inputRequestCallback = fn;
+        this.insertInput();
+    }   
+
     public clearConsole() {
         this._consoleContentsContainer.innerHTML = "";
     }
     
     public printMessage(message: string) {
         const messageElement = document.createElement("p");
-        messageElement.textContent = message;
+
+        messageElement.innerHTML = "<span class='info'>PROGRAM ></span> " + message.trim().replace("\n", " ");
 
         this._consoleContentsContainer.insertAdjacentElement("beforeend", messageElement);
     }
-
-    public requestInput(fn: (input: string) => void) {
-        
-    }   
 
     public getElement() {
         return this._consoleContentsContainer;

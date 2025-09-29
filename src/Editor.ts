@@ -21,17 +21,20 @@ export default class Editor {
             if (e.key !== "k") return;
             this._currentProcedure.execute();
         });
-
-        const console = document.querySelector(".console");
-        const consl = new ConsoleView();
-
-        console?.insertAdjacentElement("beforeend", consl.getElement());
     }
 
     public displayProcedure() {
         const container = document.querySelector(".editor-canvas");
         const viewport = new ViewportManager(this._currentProcedure);
-        
+
+        const consoles = document.querySelector(".console");
+        const btnClear = document.querySelector(".btn-clear");
+
+        const consl = new ConsoleView();
+
+        consoles?.insertAdjacentElement("beforeend", consl.getElement());
+        btnClear?.addEventListener("click", (e) => consl.clearConsole());
+
         container?.insertAdjacentElement("afterbegin", viewport.getElement());
         viewport.setOffset(new Vec2(0, 0));
 
@@ -42,7 +45,7 @@ export default class Editor {
         this._currentProcedure.insertNode(new EqualsToNode());
         this._currentProcedure.insertNode(new ConstantEmitterNode());
         this._currentProcedure.insertNode(new ConstantEmitterNode());
-        this._currentProcedure.insertNode(new ConsoleWriterNode());
+        this._currentProcedure.insertNode(new ConsoleWriterNode(consl));
     }
 }
 

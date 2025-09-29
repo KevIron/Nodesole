@@ -12,7 +12,7 @@ export default class ConsoleWriterNodeView extends StandardNodeView<ConsoleWrite
             if (!this._formatInput) return;
             this._formatInput.addEventListener("input", () => {
                 if (!this._formatInput) return;
-                this._model.setFormatString(this._formatInput.textContent)
+                this._model.setFormatString(this._formatInput.innerHTML)
             });
         })
     }

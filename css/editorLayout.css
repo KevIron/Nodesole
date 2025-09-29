@@ -206,7 +206,19 @@ body,
     outline: none;
 }
 
+.console-content > p {
+    word-break: break-all;
+}
+
 .console-content > .user-input {
     word-break: break-all;
 }
+
+.console-content .info {
+    color: #000;
+    background-color: hsl(145, 94%, 87%);
+    letter-spacing: 1.25px;
+    padding-inline: 2px;
+}
+
 /* PROPERTIES PANEL */

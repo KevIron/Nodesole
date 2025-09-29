@@ -1,3 +1,4 @@
+import ConsoleView from "../../../core/Console";
 import { CONNECTION_TYPE } from "../../../types";
 import ConsoleWriterNodeView from "../../views/specific/ConsoleWriterNodeView";
 import Node from "../Node";
@@ -7,9 +8,12 @@ export default class ConsoleWriterNode extends Node{
     protected _nodeDescription: string;
 
     private _formatString: string = "";
+    private _console: ConsoleView;
 
-    constructor () {
+    constructor (console: ConsoleView) {
         super();
+
+        this._console = console;
 
         this._nodeTitle = "Console Writer";
         this._nodeDescription = "Writes the received data in a specified format to the console";
@@ -27,7 +31,7 @@ export default class ConsoleWriterNode extends Node{
         if (formatText === null) throw new Error("Cannot get the format text!");
 
         const outputText = formatText.replace("%d", Data?.value.toString() || "%d");
-        console.log(outputText);
+        this._console.printMessage(outputText);
     }
 
     public setFormatString(format: string) {
