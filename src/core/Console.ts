@@ -75,9 +75,14 @@ export default class ConsoleView {
         }
     }
 
-    public requestInput(fn: (input: string) => void) {
-        this._inputRequestCallback = fn;
+    public async requestInput(): Promise<string> {
         this.insertInput();
+
+        const inputPromise = new Promise<string>((resolve) => {
+            this._inputRequestCallback = (input: string) => resolve(input)
+        });
+        
+        return inputPromise;
     }   
 
     public clearConsole() {
