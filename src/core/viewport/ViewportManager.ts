@@ -142,7 +142,7 @@ export default class ViewportManager {
 
         const prevZoomFactor = this._zoomFactor;
 
-        const zoomSpeed = 0.004;
+        const zoomSpeed = 0.003;
         const maxZoom = 1.75;
         const minZoom = 0.5;
 
@@ -151,7 +151,7 @@ export default class ViewportManager {
 
         // Clamp the zoom and prevent weird decimals
         this._zoomFactor = Math.min(Math.max(minZoom, this._zoomFactor), maxZoom);
-        this._zoomFactor = Math.round(this._zoomFactor * 100) / 100;
+        // this._zoomFactor = Math.round(this._zoomFactor * 100) / 100;
 
         // Calculate the percentage change in distance
         const ratio = 1 - this._zoomFactor / prevZoomFactor;
