@@ -76,7 +76,7 @@ export default class ConsoleView {
     }
 
     public async requestInput(): Promise<string> {
-        this.insertInput();
+        setTimeout(() => { this.insertInput() }, 50);
 
         const inputPromise = new Promise<string>((resolve) => {
             this._inputRequestCallback = (input: string) => resolve(input)

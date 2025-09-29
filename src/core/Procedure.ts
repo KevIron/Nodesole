@@ -150,7 +150,7 @@ export default class Procedure {
             const curNodeID = executionStack[i];
             const curNode = this._nodes.get(curNodeID)!;
 
-            curNode.execute();
+            await curNode.execute();
 
             // Pass data to next nodes
             for (const [connectorName, connectedNode] of this._graph.get(curNodeID)!.output) {

@@ -10,6 +10,7 @@ import ConditionNode from "./nodes/models/special/ConditionNode";
 import ConstantEmitterNode from "./nodes/models/special/ConstantEmitterNode";
 import ConsoleWriterNode from "./nodes/models/console/ConsoleWriterNode";
 import ConsoleView from "./core/Console";
+import ConsoleReaderNode from "./nodes/models/console/ConsoleReaderNode";
 
 export default class Editor {
     private _currentProcedure: Procedure;
@@ -46,6 +47,7 @@ export default class Editor {
         this._currentProcedure.insertNode(new ConstantEmitterNode());
         this._currentProcedure.insertNode(new ConstantEmitterNode());
         this._currentProcedure.insertNode(new ConsoleWriterNode(consl));
+        this._currentProcedure.insertNode(new ConsoleReaderNode(consl));
     }
 }
 
