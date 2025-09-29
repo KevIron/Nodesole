@@ -17,11 +17,6 @@ export default class Editor {
 
     constructor() {
         this._currentProcedure = new Procedure();
-
-        document.addEventListener("keydown", (e) => {
-            if (e.key !== "k") return;
-            this._currentProcedure.execute();
-        });
     }
 
     public displayProcedure() {
@@ -30,11 +25,15 @@ export default class Editor {
 
         const consoles = document.querySelector(".console");
         const btnClear = document.querySelector(".btn-clear");
+        const btnStart = document.querySelector(".action-btn__start");
 
         const consl = new ConsoleView();
 
         consoles?.insertAdjacentElement("beforeend", consl.getElement());
         btnClear?.addEventListener("click", (e) => consl.clearConsole());
+        btnStart?.addEventListener("click", (e) => { 
+            this._currentProcedure.execute();
+        });
 
         container?.insertAdjacentElement("afterbegin", viewport.getElement());
         viewport.setOffset(new Vec2(0, 0));
