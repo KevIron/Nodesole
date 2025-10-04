@@ -9,7 +9,7 @@ import OrNode from "./nodes/models/logic/OrNode";
 import ConditionNode from "./nodes/models/special/ConditionNode";
 import ConstantEmitterNode from "./nodes/models/special/ConstantEmitterNode";
 import ConsoleWriterNode from "./nodes/models/console/ConsoleWriterNode";
-import ConsoleView from "./core/Console";
+import ConsoleView from "./core/ConsoleView";
 import ConsoleReaderNode from "./nodes/models/console/ConsoleReaderNode";
 
 export default class Editor {
@@ -31,7 +31,8 @@ export default class Editor {
 
         consoles?.insertAdjacentElement("beforeend", consl.getElement());
         btnClear?.addEventListener("click", (e) => consl.clearConsole());
-        btnStart?.addEventListener("click", (e) => { 
+        btnStart?.addEventListener("click", (e) => {
+            consl.clearConsole(); 
             this._currentProcedure.execute();
         });
 

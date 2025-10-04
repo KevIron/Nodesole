@@ -8,6 +8,7 @@
     --bg-primary: hsl(0, 0%, 10%);
     --bg-secondary: hsl(0, 0%, 16%);
     --bg-tertiary: hsl(0, 0%, 20%);
+    --bg-quaternary-dark: hsl(0, 0%, 30%);
     --bg-quaternary: hsl(0, 0%, 40%);
 
     --text--primary: hsl(0, 0%, 70%);

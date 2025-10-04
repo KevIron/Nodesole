@@ -4,11 +4,23 @@ export default class ConsoleView {
     private _consoleContentsContainer: HTMLElement;
     private _inputRequestCallback: ((input: string) => void) | null;
 
+    private _isFirstRun: boolean;
+
     constructor () {
         this._consoleContentsContainer = document.createElement("div");
         this._consoleContentsContainer.classList.add("console-content");
         
         this._inputRequestCallback = null;
+        this._isFirstRun = true;
+        
+        this.insertPlaceholderText("Start your program to see the output...");
+    }
+
+    private insertPlaceholderText(text: string) {
+        this._consoleContentsContainer.classList.add("active-placeholder");
+        this._consoleContentsContainer.insertAdjacentHTML("beforeend", `
+            <p class="placeholder">${text}</p>
+        `);
     }
 
     private insertInput() {
@@ -87,13 +99,23 @@ export default class ConsoleView {
 
     public clearConsole() {
         this._consoleContentsContainer.innerHTML = "";
+        
+        if (!this._isFirstRun) { 
+            this.insertPlaceholderText("Console was cleared.");
+            this._isFirstRun = true;
+        }
     }
     
     public printMessage(message: string) {
+        if (this._isFirstRun) {
+            this.clearConsole();
+            this._isFirstRun = false;
+            this._consoleContentsContainer.classList.remove("active-placeholder");
+        }
+
         const messageElement = document.createElement("p");
-
-        messageElement.innerHTML = "<span class='info'>PROGRAM ></span> " + message.trim().replace("\n", " ");
-
+        messageElement.innerHTML = message.trim().replace("\n", " ");
+        
         this._consoleContentsContainer.insertAdjacentElement("beforeend", messageElement);
     }
 
