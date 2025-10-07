@@ -16,6 +16,7 @@
     --text--tertiary: hsl(0, 0%, 85%);
 
     --text-dark: hsl(0, 0%, 60%);
+    --text-dark-2: hsl(0, 0%, 50%);
 }
 
 html {

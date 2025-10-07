@@ -1,4 +1,4 @@
-import { moveCaretEnd } from "../utils/Input";
+import { moveCaretEnd } from "../../utils/Input";
 
 export default class ConsoleView {
     private _consoleContentsContainer: HTMLElement;

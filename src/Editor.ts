@@ -9,8 +9,9 @@ import OrNode from "./nodes/models/logic/OrNode";
 import ConditionNode from "./nodes/models/special/ConditionNode";
 import ConstantEmitterNode from "./nodes/models/special/ConstantEmitterNode";
 import ConsoleWriterNode from "./nodes/models/console/ConsoleWriterNode";
-import ConsoleView from "./core/ConsoleView";
+import ConsoleView from "./core/panels/ConsoleView";
 import ConsoleReaderNode from "./nodes/models/console/ConsoleReaderNode";
+import NodeLibraryView from "./core/panels/NodeLibraryView";
 
 export default class Editor {
     private _currentProcedure: Procedure;
@@ -22,6 +23,7 @@ export default class Editor {
     public displayProcedure() {
         const container = document.querySelector(".editor-canvas");
         const viewport = new ViewportManager(this._currentProcedure);
+        const nodeLibrary = new NodeLibraryView(viewport);
 
         const consoles = document.querySelector(".console");
         const btnClear = document.querySelector(".btn-clear");
@@ -37,6 +39,8 @@ export default class Editor {
         });
 
         container?.insertAdjacentElement("afterbegin", viewport.getElement());
+        container?.insertAdjacentElement("beforeend", nodeLibrary.getElement());
+        
         viewport.setOffset(new Vec2(0, 0));
 
         this._currentProcedure.insertNode(new ConditionNode(this._currentProcedure));

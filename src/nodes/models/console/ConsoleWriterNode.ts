@@ -1,4 +1,4 @@
-import ConsoleView from "../../../core/ConsoleView";
+import ConsoleView from "../../../core/panels/ConsoleView";
 import { CONNECTION_TYPE } from "../../../types";
 import ConsoleWriterNodeView from "../../views/specific/ConsoleWriterNodeView";
 import Node from "../Node";
